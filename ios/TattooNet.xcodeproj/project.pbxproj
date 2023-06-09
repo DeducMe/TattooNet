@@ -8,12 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* TattooNetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TattooNetTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-TattooNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-TattooNet.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-TattooNet-TattooNetTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TattooNet-TattooNetTests.a */; };
+		81396F14C2AEE116962AA013 /* libPods-TattooNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056BD9D51B5D0679D135F11E /* libPods-TattooNet.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		CE30E1A5F204E2C49BB5AB51 /* libPods-TattooNet-TattooNetTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F773A3B8311ED97D89A85D5 /* libPods-TattooNet-TattooNetTests.a */; };
+		FAF5E3272A33292A00105DE8 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3172A33292500105DE8 /* Octicons.ttf */; };
+		FAF5E3282A33292A00105DE8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3182A33292500105DE8 /* FontAwesome.ttf */; };
+		FAF5E3292A33292A00105DE8 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3192A33292600105DE8 /* Foundation.ttf */; };
+		FAF5E32A2A33292A00105DE8 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E31A2A33292600105DE8 /* MaterialCommunityIcons.ttf */; };
+		FAF5E32B2A33292A00105DE8 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E31B2A33292600105DE8 /* Fontisto.ttf */; };
+		FAF5E32C2A33292A00105DE8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E31C2A33292600105DE8 /* SimpleLineIcons.ttf */; };
+		FAF5E32D2A33292A00105DE8 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E31D2A33292700105DE8 /* AntDesign.ttf */; };
+		FAF5E32E2A33292A00105DE8 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E31E2A33292700105DE8 /* FontAwesome5_Solid.ttf */; };
+		FAF5E32F2A33292A00105DE8 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E31F2A33292800105DE8 /* Zocial.ttf */; };
+		FAF5E3302A33292A00105DE8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3202A33292800105DE8 /* EvilIcons.ttf */; };
+		FAF5E3312A33292A00105DE8 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3212A33292800105DE8 /* FontAwesome5_Brands.ttf */; };
+		FAF5E3322A33292A00105DE8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3222A33292800105DE8 /* Feather.ttf */; };
+		FAF5E3332A33292A00105DE8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3232A33292900105DE8 /* Ionicons.ttf */; };
+		FAF5E3342A33292A00105DE8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3242A33292900105DE8 /* Entypo.ttf */; };
+		FAF5E3352A33292A00105DE8 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3252A33292900105DE8 /* MaterialIcons.ttf */; };
+		FAF5E3362A33292A00105DE8 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAF5E3262A33292A00105DE8 /* FontAwesome5_Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,20 +46,36 @@
 		00E356EE1AD99517003FC87E /* TattooNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TattooNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* TattooNetTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TattooNetTests.m; sourceTree = "<group>"; };
+		056BD9D51B5D0679D135F11E /* libPods-TattooNet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TattooNet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		115F0C31D920C6E7B44E8373 /* Pods-TattooNet-TattooNetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet-TattooNetTests.release.xcconfig"; path = "Target Support Files/Pods-TattooNet-TattooNetTests/Pods-TattooNet-TattooNetTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* TattooNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TattooNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TattooNet/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = TattooNet/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TattooNet/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TattooNet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TattooNet/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TattooNet-TattooNetTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TattooNet-TattooNetTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-TattooNet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet.debug.xcconfig"; path = "Target Support Files/Pods-TattooNet/Pods-TattooNet.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-TattooNet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet.release.xcconfig"; path = "Target Support Files/Pods-TattooNet/Pods-TattooNet.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-TattooNet-TattooNetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet-TattooNetTests.debug.xcconfig"; path = "Target Support Files/Pods-TattooNet-TattooNetTests/Pods-TattooNet-TattooNetTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-TattooNet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TattooNet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F773A3B8311ED97D89A85D5 /* libPods-TattooNet-TattooNetTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TattooNet-TattooNetTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TattooNet/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-TattooNet-TattooNetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet-TattooNetTests.release.xcconfig"; path = "Target Support Files/Pods-TattooNet-TattooNetTests/Pods-TattooNet-TattooNetTests.release.xcconfig"; sourceTree = "<group>"; };
+		A20B8274B98DC48B89644DA5 /* Pods-TattooNet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet.release.xcconfig"; path = "Target Support Files/Pods-TattooNet/Pods-TattooNet.release.xcconfig"; sourceTree = "<group>"; };
+		D23110D62CC9BBAA34FA13AC /* Pods-TattooNet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet.debug.xcconfig"; path = "Target Support Files/Pods-TattooNet/Pods-TattooNet.debug.xcconfig"; sourceTree = "<group>"; };
+		E9DF52FD7DAE11B4AB5B3D69 /* Pods-TattooNet-TattooNetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TattooNet-TattooNetTests.debug.xcconfig"; path = "Target Support Files/Pods-TattooNet-TattooNetTests/Pods-TattooNet-TattooNetTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FAF5E3172A33292500105DE8 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		FAF5E3182A33292500105DE8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		FAF5E3192A33292600105DE8 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		FAF5E31A2A33292600105DE8 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		FAF5E31B2A33292600105DE8 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		FAF5E31C2A33292600105DE8 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		FAF5E31D2A33292700105DE8 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		FAF5E31E2A33292700105DE8 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		FAF5E31F2A33292800105DE8 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		FAF5E3202A33292800105DE8 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		FAF5E3212A33292800105DE8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		FAF5E3222A33292800105DE8 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		FAF5E3232A33292900105DE8 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		FAF5E3242A33292900105DE8 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		FAF5E3252A33292900105DE8 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		FAF5E3262A33292A00105DE8 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-TattooNet-TattooNetTests.a in Frameworks */,
+				CE30E1A5F204E2C49BB5AB51 /* libPods-TattooNet-TattooNetTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-TattooNet.a in Frameworks */,
+				81396F14C2AEE116962AA013 /* libPods-TattooNet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +132,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-TattooNet.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-TattooNet-TattooNetTests.a */,
+				056BD9D51B5D0679D135F11E /* libPods-TattooNet.a */,
+				7F773A3B8311ED97D89A85D5 /* libPods-TattooNet-TattooNetTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,6 +148,22 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FAF5E31D2A33292700105DE8 /* AntDesign.ttf */,
+				FAF5E3242A33292900105DE8 /* Entypo.ttf */,
+				FAF5E3202A33292800105DE8 /* EvilIcons.ttf */,
+				FAF5E3222A33292800105DE8 /* Feather.ttf */,
+				FAF5E3182A33292500105DE8 /* FontAwesome.ttf */,
+				FAF5E3212A33292800105DE8 /* FontAwesome5_Brands.ttf */,
+				FAF5E3262A33292A00105DE8 /* FontAwesome5_Regular.ttf */,
+				FAF5E31E2A33292700105DE8 /* FontAwesome5_Solid.ttf */,
+				FAF5E31B2A33292600105DE8 /* Fontisto.ttf */,
+				FAF5E3192A33292600105DE8 /* Foundation.ttf */,
+				FAF5E3232A33292900105DE8 /* Ionicons.ttf */,
+				FAF5E31A2A33292600105DE8 /* MaterialCommunityIcons.ttf */,
+				FAF5E3252A33292900105DE8 /* MaterialIcons.ttf */,
+				FAF5E3172A33292500105DE8 /* Octicons.ttf */,
+				FAF5E31C2A33292600105DE8 /* SimpleLineIcons.ttf */,
+				FAF5E31F2A33292800105DE8 /* Zocial.ttf */,
 				13B07FAE1A68108700A75B9A /* TattooNet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* TattooNetTests */,
@@ -140,10 +188,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-TattooNet.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-TattooNet.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-TattooNet-TattooNetTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-TattooNet-TattooNetTests.release.xcconfig */,
+				D23110D62CC9BBAA34FA13AC /* Pods-TattooNet.debug.xcconfig */,
+				A20B8274B98DC48B89644DA5 /* Pods-TattooNet.release.xcconfig */,
+				E9DF52FD7DAE11B4AB5B3D69 /* Pods-TattooNet-TattooNetTests.debug.xcconfig */,
+				115F0C31D920C6E7B44E8373 /* Pods-TattooNet-TattooNetTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -155,12 +203,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TattooNetTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				348D9156D415984BEAB2AFB9 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				83DEF10AF3F9D1797A737837 /* [CP] Embed Pods Frameworks */,
+				DBB2B25270C7A713454DED77 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,14 +224,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TattooNet" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				285C838A6C6BC6E371731FE3 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				1ECD4308FCFCED3688B95281 /* [CP] Embed Pods Frameworks */,
+				AFDBC308ABD075B3C56DF280 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -243,7 +291,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				FAF5E3302A33292A00105DE8 /* EvilIcons.ttf in Resources */,
+				FAF5E3292A33292A00105DE8 /* Foundation.ttf in Resources */,
+				FAF5E3272A33292A00105DE8 /* Octicons.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				FAF5E3342A33292A00105DE8 /* Entypo.ttf in Resources */,
+				FAF5E3362A33292A00105DE8 /* FontAwesome5_Regular.ttf in Resources */,
+				FAF5E3332A33292A00105DE8 /* Ionicons.ttf in Resources */,
+				FAF5E3312A33292A00105DE8 /* FontAwesome5_Brands.ttf in Resources */,
+				FAF5E32A2A33292A00105DE8 /* MaterialCommunityIcons.ttf in Resources */,
+				FAF5E32E2A33292A00105DE8 /* FontAwesome5_Solid.ttf in Resources */,
+				FAF5E3322A33292A00105DE8 /* Feather.ttf in Resources */,
+				FAF5E3352A33292A00105DE8 /* MaterialIcons.ttf in Resources */,
+				FAF5E32F2A33292A00105DE8 /* Zocial.ttf in Resources */,
+				FAF5E32C2A33292A00105DE8 /* SimpleLineIcons.ttf in Resources */,
+				FAF5E32D2A33292A00105DE8 /* AntDesign.ttf in Resources */,
+				FAF5E3282A33292A00105DE8 /* FontAwesome.ttf in Resources */,
+				FAF5E32B2A33292A00105DE8 /* Fontisto.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +330,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+		1ECD4308FCFCED3688B95281 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -283,29 +347,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TattooNet/Pods-TattooNet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TattooNet-TattooNetTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		285C838A6C6BC6E371731FE3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -327,7 +369,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
+		348D9156D415984BEAB2AFB9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TattooNet-TattooNetTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		83DEF10AF3F9D1797A737837 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -344,7 +408,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TattooNet-TattooNetTests/Pods-TattooNet-TattooNetTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+		AFDBC308ABD075B3C56DF280 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,7 +425,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TattooNet/Pods-TattooNet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+		DBB2B25270C7A713454DED77 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -430,7 +494,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-TattooNet-TattooNetTests.debug.xcconfig */;
+			baseConfigurationReference = E9DF52FD7DAE11B4AB5B3D69 /* Pods-TattooNet-TattooNetTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -457,7 +521,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-TattooNet-TattooNetTests.release.xcconfig */;
+			baseConfigurationReference = 115F0C31D920C6E7B44E8373 /* Pods-TattooNet-TattooNetTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -481,7 +545,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-TattooNet.debug.xcconfig */;
+			baseConfigurationReference = D23110D62CC9BBAA34FA13AC /* Pods-TattooNet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -508,7 +572,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-TattooNet.release.xcconfig */;
+			baseConfigurationReference = A20B8274B98DC48B89644DA5 /* Pods-TattooNet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

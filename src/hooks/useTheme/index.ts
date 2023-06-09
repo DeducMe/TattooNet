@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {Appearance} from 'react-native';
 import {Dimensions} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {colors as constColors, fontSizes, breakpoint} from 'theme';
+import {colors as constColors, fontSizes, breakpoint} from '../../common/theme';
 
 const space = {
   xxxs: 2,
@@ -56,6 +56,10 @@ const defaultShadow = {
   shadowRadius: 6,
 };
 
+const common = {
+  tabNavigationHeight: 60,
+};
+
 export const useTheme = () => {
   const insets = useSafeAreaInsets();
 
@@ -64,9 +68,7 @@ export const useTheme = () => {
   );
 
   useEffect(() => {
-    Appearance.addChangeListener(e => {
-      setColorScheme(e.colorScheme);
-    });
+    Appearance.addChangeListener(e => setColorScheme(e.colorScheme || 'light'));
   }, []);
 
   const colors = constColors(colorScheme);
@@ -82,6 +84,7 @@ export const useTheme = () => {
     breakpoint,
     dimensions: Dimensions.get('screen'),
     insets,
+    common,
   };
 };
 
