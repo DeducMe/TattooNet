@@ -3,6 +3,7 @@ import {Appearance} from 'react-native';
 import {Dimensions} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {colors as constColors, fontSizes, breakpoint} from '../../common/theme';
+import {createTheme} from '@rneui/themed';
 
 const space = {
   xxxs: 2,
@@ -73,6 +74,16 @@ export const useTheme = () => {
 
   const colors = constColors(colorScheme);
 
+  const themeProviderProp = createTheme({
+    lightColors: {
+      primary: colors.primary,
+    },
+    darkColors: {
+      primary: colors.primary,
+    },
+    mode: colorScheme,
+  });
+
   return {
     colors,
     space,
@@ -85,6 +96,7 @@ export const useTheme = () => {
     dimensions: Dimensions.get('screen'),
     insets,
     common,
+    themeProviderProp,
   };
 };
 

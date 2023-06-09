@@ -6,24 +6,22 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {AppProvider} from './src/providers/AppProvider';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import DefaultStackNavigator from 'navigation/DefaultStackNavigator';
-import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+import AppNavigationContainer from 'AppNavigationContainer';
 
 function App(): JSX.Element {
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <NavigationContainer>
         {/* <GestureHandlerRootView style={{flex: 1}}> */}
         <AppProvider>
-          <DefaultStackNavigator></DefaultStackNavigator>
+          <AppNavigationContainer />
         </AppProvider>
         {/* </GestureHandlerRootView> */}
-      </SafeAreaProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
