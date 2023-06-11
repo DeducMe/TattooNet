@@ -3,7 +3,6 @@ import {Appearance} from 'react-native';
 import {Dimensions} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {colors as constColors, fontSizes, breakpoint} from '../../common/theme';
-import {createTheme} from '@rneui/themed';
 
 const space = {
   xxxs: 2,
@@ -18,11 +17,16 @@ const space = {
   xxxxl: 36,
 };
 
-const fontWeights = {
-  light: 200,
-  normal: 400,
-  bold: 600,
-  extraBold: 800,
+const fontWeights: {
+  light: '200';
+  normal: '400';
+  bold: '600';
+  extraBold: '800';
+} = {
+  light: '200',
+  normal: '400',
+  bold: '600',
+  extraBold: '800',
 };
 const height = {
   xxxs: 8,
@@ -74,16 +78,6 @@ export const useTheme = () => {
 
   const colors = constColors(colorScheme);
 
-  const themeProviderProp = createTheme({
-    lightColors: {
-      primary: colors.primary,
-    },
-    darkColors: {
-      primary: colors.primary,
-    },
-    mode: colorScheme,
-  });
-
   return {
     colors,
     space,
@@ -96,7 +90,6 @@ export const useTheme = () => {
     dimensions: Dimensions.get('screen'),
     insets,
     common,
-    themeProviderProp,
   };
 };
 

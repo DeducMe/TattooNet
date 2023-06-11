@@ -11,26 +11,26 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.18.2",
+    "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/bottom-tabs": "^6.5.7",
-    "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
-    "@rneui/base": "^4.0.0-rc.7",
-    "@rneui/themed": "^4.0.0-rc.7",
     "@types/react-native-vector-icons": "^6.4.13",
     "i18n-iso-countries": "^7.6.0",
     "i18next": "^22.5.1",
     "react": "18.2.0",
     "react-native": "0.71.10",
+    "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.11.0",
     "react-native-i18n": "^2.0.15",
+    "react-native-linear-gradient": "^2.6.2",
     "react-native-modalize": "^2.1.1",
     "react-native-onboarding-swiper": "^1.2.0",
     "react-native-portalize": "^1.0.7",
     "react-native-safe-area-context": "^4.5.3",
     "react-native-screens": "^3.20.0",
+    "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-vector-icons": "^9.2.0",
-    "why": "^0.6.2",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
@@ -49,7 +49,8 @@
     "metro-react-native-babel-preset": "0.73.9",
     "prettier": "^2.4.1",
     "react-test-renderer": "18.2.0",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "why": "^0.6.2"
   },
   "jest": {
     "preset": "react-native"

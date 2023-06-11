@@ -23,5 +23,3 @@ export default function SearchBar({
     />
   );
 }
-
-const makeStyles = (theme: any) => StyleSheet.create({});

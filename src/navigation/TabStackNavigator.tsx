@@ -8,8 +8,9 @@ import useTheme from 'hooks/useTheme';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProfileScreen from 'screens/ProfileScreen';
 import FavoritesScreen from 'screens/FavoritesScreen';
-import FeedScreen from 'screens/FeedScreen';
+
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
+import MapScreen from 'screens/MapScreen';
 
 export const CustomButtonTabNavigation = ({children, onPress}: any) => {
   const theme = useTheme();
@@ -55,8 +56,8 @@ const TabStackNavigator = () => {
       },
     },
     {
-      name: 'Feed',
-      component: FeedScreen,
+      name: 'Map',
+      component: MapScreen,
       options: {
         tabBarIcon: ({focused}: any) => (
           <IconComponent
