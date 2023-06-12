@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignInScreen from 'screens/Auth/SignInScreen/SignInScreen';
 import SignUpScreen from 'screens/Auth/SignUpScreen/SignUpScreen';
 import {NavigationContainer} from '@react-navigation/native';
+import OnBoardingScreen from 'screens/OnBoardingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ export default function AuthorizationNavigator() {
     <Stack.Navigator
       initialRouteName="SignIn"
       screenOptions={{headerShown: false}}>
+      <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
       <Stack.Screen name="SignIn" component={SignInScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
     </Stack.Navigator>

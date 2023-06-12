@@ -24,6 +24,7 @@ import useTheme from 'hooks/useTheme';
 import {RootStackParamList} from '../../../../App';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {ActionButton} from 'components/ActionButton';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 export default function SignInScreen() {
   const theme = useTheme();
@@ -157,6 +158,7 @@ export default function SignInScreen() {
           </Pressable>
         </View>
         <ActionButton
+          loading={context.auth.loading}
           onPress={handleSubmit(onSubmit)}
           style={styles.signInButton}
           title="Sign In"
@@ -164,7 +166,8 @@ export default function SignInScreen() {
             fontSize: theme.fontSizes.large,
             color: '#fff',
             fontWeight: theme.fontWeights.bold,
-          }}></ActionButton>
+          }}
+        />
         <View style={{alignSelf: 'center'}}>
           <Pressable
             onPress={() => {

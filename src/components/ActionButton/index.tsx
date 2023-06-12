@@ -1,5 +1,6 @@
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import CustomText from 'components/CustomText';
+import PressableStyled from 'components/PressableStyled';
 import React from 'react';
 import {
   ColorValue,
@@ -10,6 +11,7 @@ import {
   StyleProp,
   ViewStyle,
   TextStyle,
+  ActivityIndicator,
 } from 'react-native';
 // import {  } from 'react-native-gesture-handler';
 
@@ -18,6 +20,7 @@ export interface IActionButtonProps extends TouchableNativeFeedbackProps {
   title?: string;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  loading?: boolean;
 }
 
 const ActionButton: React.FC<IActionButtonProps> = ({
@@ -26,16 +29,22 @@ const ActionButton: React.FC<IActionButtonProps> = ({
   title,
   style,
   textStyle,
+  loading,
 }) => {
   const styles = makeStyles();
   return (
-    <View style={[styles.container, style]}>
-      <TouchableNativeFeedback onPress={onPress}>
+    <PressableStyled
+      disabled={loading}
+      style={[styles.container, style]}
+      onPress={onPress}>
+      {!loading ? (
         <CustomText style={[styles.textStyle, {color: textColor}, textStyle]}>
           {title}
         </CustomText>
-      </TouchableNativeFeedback>
-    </View>
+      ) : (
+        <ActivityIndicator style={{alignSelf: 'center'}} />
+      )}
+    </PressableStyled>
   );
 };
 

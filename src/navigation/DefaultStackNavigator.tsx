@@ -20,11 +20,6 @@ import FeedScreen from 'screens/FeedScreen';
 
 const screens = [
   {
-    name: 'OnBoarding',
-    component: OnBoardingScreen,
-    options: {headerShown: false},
-  },
-  {
     name: 'Master',
     component: MasterScreen,
     options: {headerShown: true},
@@ -77,7 +72,7 @@ const DefaultStackNavigator = () => {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName={screens[0].name}>
+    <Stack.Navigator initialRouteName={'TabStackNavigator'}>
       <Stack.Screen
         options={{
           headerShown: false,

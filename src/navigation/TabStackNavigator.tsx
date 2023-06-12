@@ -12,15 +12,22 @@ import FavoritesScreen from 'screens/FavoritesScreen';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import MapScreen from 'screens/MapScreen';
 
-export const CustomButtonTabNavigation = ({children, onPress}: any) => {
+export const CustomButtonTabNavigation = ({
+  children,
+  onPress,
+  accessibilityState,
+  ...props
+}: any) => {
   const theme = useTheme();
-  const styles = makeStyles(theme);
-
+  const styles = makeStyles();
+  console.log(accessibilityState);
   return (
     <Pressable style={styles.Button} onPress={onPress}>
       <View
         style={{
-          backgroundColor: theme.colors.primary,
+          backgroundColor: accessibilityState.selected
+            ? theme.colors.primary
+            : theme.colors.background,
           ...styles.shadow,
           ...styles.ViewButton,
         }}>

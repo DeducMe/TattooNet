@@ -5,6 +5,8 @@ import useLanguages, {
   Country,
   Language,
 } from 'hooks/providerHooks/useLanguages.tsx';
+import useToast from 'hooks/providerHooks/useToast';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 export type CurrencyT = {
   _id: string;
@@ -18,6 +20,7 @@ type AppContextT = {
     token: Token | undefined;
     login: (payload: {email; password}) => void;
     register: (payload: {name; email; password}) => void;
+    loading: boolean;
   };
 
   currency: {
@@ -27,6 +30,10 @@ type AppContextT = {
     setLocale: Dispatch<SetStateAction<Language>>;
     languages: Country[];
   };
+  toast: {
+    showError: (message: string, supMessage?: string) => void;
+    showSuccess: (message: string, supMessage?: string) => void;
+  };
 };
 
 export const AppContext = React.createContext<AppContextT>({
@@ -34,17 +41,42 @@ export const AppContext = React.createContext<AppContextT>({
     token: undefined,
     login: (payload: {email; password}) => {},
     register: (payload: {name; email; password}) => {},
+    loading: false,
   },
   currency: {currency: []},
   languages: {languages: [], setLocale: token => {}},
+
+  // dont know how to do better really
+  toast: {
+    showError: (message, supMessage) => {
+      Toast.show({
+        text1: message || 'Unprocessed error',
+        text2:
+          supMessage || !message
+            ? 'Please contact our support and give us all your details'
+            : '',
+        type: 'error',
+        visibilityTime: 3000,
+      });
+    },
+    showSuccess: (message, supMessage) => {
+      Toast.show({
+        text1: message,
+        text2: supMessage || '',
+        type: 'success',
+        visibilityTime: 3000,
+      });
+    },
+  },
 });
 
 const {Provider} = AppContext;
 
 export const AppProvider = props => {
-  const auth = useAuth();
   const currency = useCurrency();
   const languages = useLanguages();
+  const toast = useToast();
+  const auth = useAuth();
 
   return (
     <Provider
@@ -52,6 +84,7 @@ export const AppProvider = props => {
         auth,
         currency,
         languages,
+        toast,
       }}>
       {props.children}
     </Provider>
