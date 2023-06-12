@@ -1,3 +1,4 @@
+import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import CustomText from 'components/CustomText';
 import React from 'react';
 import {
@@ -26,10 +27,11 @@ const ActionButton: React.FC<IActionButtonProps> = ({
   style,
   textStyle,
 }) => {
+  const styles = makeStyles();
   return (
     <View style={[styles.container, style]}>
       <TouchableNativeFeedback onPress={onPress}>
-        <CustomText style={[styles.textStyle, { color: textColor }, textStyle]}>
+        <CustomText style={[styles.textStyle, {color: textColor}, textStyle]}>
           {title}
         </CustomText>
       </TouchableNativeFeedback>
@@ -37,14 +39,14 @@ const ActionButton: React.FC<IActionButtonProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: { borderRadius: 4, overflow: 'hidden' },
+const makeStyles = makeStyleSheet(theme => ({
+  container: {borderRadius: theme.space.xxs, overflow: 'hidden'},
   textStyle: {
     alignSelf: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    fontWeight: 'bold',
+    paddingHorizontal: theme.space.s,
+    paddingVertical: theme.space.xxs,
+    fontWeight: theme.fontWeights.bold,
   },
-});
+}));
 
-export { ActionButton };
+export {ActionButton};

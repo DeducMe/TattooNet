@@ -16,22 +16,27 @@ export type CurrencyT = {
 type AppContextT = {
   auth: {
     token: Token | undefined;
-    setToken: ((Token: Token) => void) | undefined;
+    login: (payload: {email; password}) => void;
+    register: (payload: {name; email; password}) => void;
   };
 
   currency: {
     currency: CurrencyT[] | undefined;
   };
   languages: {
-    setLocale: Dispatch<SetStateAction<Language>> | undefined;
+    setLocale: Dispatch<SetStateAction<Language>>;
     languages: Country[];
   };
 };
 
 export const AppContext = React.createContext<AppContextT>({
-  auth: {token: undefined, setToken: undefined},
+  auth: {
+    token: undefined,
+    login: (payload: {email; password}) => {},
+    register: (payload: {name; email; password}) => {},
+  },
   currency: {currency: []},
-  languages: {languages: [], setLocale: undefined},
+  languages: {languages: [], setLocale: token => {}},
 });
 
 const {Provider} = AppContext;

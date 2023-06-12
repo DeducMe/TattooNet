@@ -1,0 +1,6 @@
+{
+  "vim.statusBarColors.visualline": "",
+  "workbench.statusBar.visible": true,
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.compile.nullAnalysis.mode": "disabled"
+}

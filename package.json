@@ -7,18 +7,23 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "devtools": "yarn run react-devtools"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.1.0",
     "@react-native-async-storage/async-storage": "^1.18.2",
+    "@react-native-community/cli-tools": "^11.3.2",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
     "@types/react-native-vector-icons": "^6.4.13",
     "i18n-iso-countries": "^7.6.0",
     "i18next": "^22.5.1",
     "react": "18.2.0",
+    "react-hook-form": "^7.44.3",
     "react-native": "0.71.10",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.11.0",
@@ -31,7 +36,8 @@
     "react-native-screens": "^3.20.0",
     "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-vector-icons": "^9.2.0",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.19",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -50,7 +56,8 @@
     "prettier": "^2.4.1",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4",
-    "why": "^0.6.2"
+    "why": "^0.6.2",
+    "react-devtools": "^4.27.8"
   },
   "jest": {
     "preset": "react-native"

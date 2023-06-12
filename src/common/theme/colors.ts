@@ -1,6 +1,9 @@
 import {Appearance} from 'react-native';
 import {DEFAULT_THEME} from './constants';
 const colors = (theme: 'light' | 'dark') => ({
+  GRADIENT_START: '#6B24AA',
+  GRADIENT_END: '#15002B',
+
   // 	Primary
   primary: {
     light: '#0052D4',
@@ -14,8 +17,8 @@ const colors = (theme: 'light' | 'dark') => ({
 
   // Secondary
   secondary: {
-    light: '#bdc3c7',
-    dark: '#aa647b',
+    light: '#A3BFFF',
+    dark: '#A3BFFF',
   }[theme],
 
   // Error
