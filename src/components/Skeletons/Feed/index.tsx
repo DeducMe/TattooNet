@@ -14,10 +14,10 @@ const FeedSkeleton: React.FC<IFeedSkeletonProps> = ({}) => {
   const navigation = useNavigation();
   return (
     <>
-      <ActionButton
+      {/* <ActionButton
         title="Salon"
         onPress={() => navigation.navigate('Salon', {})}
-      />
+      /> */}
       <ScrollView
         style={{
           marginBottom: theme.common.tabNavigationHeight + theme.space.m,

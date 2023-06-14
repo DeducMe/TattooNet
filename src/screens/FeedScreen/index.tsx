@@ -115,7 +115,10 @@ export default function FeedScreen() {
             );
           }}></FlatList>
         {/* <FeedSkeleton /> */}
-        <FlexWrapFlatList />
+        <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
+          Top tattoos
+        </CustomText>
+        <FlexWrapFlatList onPress={() => navigation.navigate('TattooScreen')} />
       </ScrollView>
     </SafeAreaView>
   );

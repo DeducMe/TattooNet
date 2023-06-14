@@ -7,10 +7,10 @@ export default function MapSkeleton() {
   const navigation = useNavigation();
   return (
     <View>
-      <ActionButton
+      {/* <ActionButton
         title="Salon"
         onPress={() => navigation.navigate('Salon', {})}
-      />
+      /> */}
       <ActionButton
         title="Master"
         onPress={() => navigation.navigate('Master', {})}

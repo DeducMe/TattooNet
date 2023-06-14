@@ -10,6 +10,8 @@ export default function CustomText({
   sub,
   bold,
   grayed,
+  centered,
+  style,
   ...textProps
 }: ICustomTextProps) {
   const theme = useTheme();
@@ -17,10 +19,9 @@ export default function CustomText({
 
   return (
     <Text
-      {...textProps}
       style={[
+        {...textProps},
         styles.text,
-        textProps.style,
         {
           fontSize: h1
             ? theme.fontSizes.h3.md
@@ -28,7 +29,9 @@ export default function CustomText({
             ? theme.fontSizes.large
             : theme.fontSizes.medium,
           fontWeight: bold ? theme.fontWeights.bold : theme.fontWeights.normal,
+          textAlign: centered ? 'center' : 'left',
         },
+        style,
       ]}>
       {children}
     </Text>
@@ -45,4 +48,5 @@ export interface ICustomTextProps extends TextProps {
   sub?: boolean;
   bold?: boolean;
   grayed?: boolean;
+  centered?: boolean;
 }

@@ -20,6 +20,7 @@ export const EmptyComponentMessageBlock: React.FC<
       </View>
       {onPress && (
         <ActionButton
+          roundButton
           style={styles.buttonStyle}
           onPress={onPress}
           title={buttonTitle}></ActionButton>
@@ -38,13 +39,13 @@ const makeStyles = makeStyleSheet(theme => ({
     backgroundColor: theme.colors.background,
   },
   textContainer: {
-    paddingVertical: theme.space.xxxl,
+    paddingVertical: theme.space.m,
   },
   mainEmptyTitle: {
     width: '100%',
     textAlign: 'center',
     fontSize: theme.fontSizes.h1.md,
-    marginBottom: theme.space.l,
+    marginBottom: theme.space.s,
   },
   description: {
     textAlign: 'center',

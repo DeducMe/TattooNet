@@ -17,6 +17,7 @@ import MasterScreen from 'screens/SalonScreen/MasterScreen';
 import SalonScreen from 'screens/SalonScreen';
 import MapScreen from 'screens/MapScreen';
 import FeedScreen from 'screens/FeedScreen';
+import TattooScreen from 'screens/TattooScreen';
 
 const screens = [
   {
@@ -51,7 +52,10 @@ const screens = [
 
   //   noPreset: true,
   // },
-
+  {
+    name: 'TattooScreen',
+    component: TattooScreen,
+  },
   {
     name: 'AllCurrencyScreen',
     component: AllCurrencyScreen,

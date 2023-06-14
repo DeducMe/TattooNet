@@ -25,7 +25,7 @@ export default function FlexWrapFlatList({
         data={Array.from({length: 20})}
         horizontal={false}
         renderItem={({item, index}) => {
-          return <ListItem />;
+          return <ListItem onPress={onPress} />;
         }}
         showsHorizontalScrollIndicator={false}></FlatList>
     </ScrollView>

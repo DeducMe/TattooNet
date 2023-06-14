@@ -21,6 +21,11 @@ type AppContextT = {
     login: (payload: {email; password}) => void;
     register: (payload: {name; email; password}) => void;
     loading: boolean;
+    apiRequestContainer: (payload: {
+      call: string;
+      method: string;
+      body: object;
+    }) => any;
   };
 
   currency: {
@@ -42,6 +47,7 @@ export const AppContext = React.createContext<AppContextT>({
     login: (payload: {email; password}) => {},
     register: (payload: {name; email; password}) => {},
     loading: false,
+    apiRequestContainer: () => {},
   },
   currency: {currency: []},
   languages: {languages: [], setLocale: token => {}},

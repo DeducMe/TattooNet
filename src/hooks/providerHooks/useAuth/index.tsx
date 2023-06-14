@@ -15,10 +15,14 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     setLoading(true);
 
     const {name, email, password} = payload;
-    const reg = await apiRequest('user/register', 'POST', {
-      name,
-      login: email,
-      password,
+    const reg = await apiRequestContainer({
+      call: 'user/register',
+      method: 'POST',
+      body: {
+        name,
+        login: email,
+        password,
+      },
     });
     setLoading(false);
 
@@ -38,9 +42,13 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     setLoading(true);
 
     const {email, password} = payload;
-    const auth = await apiRequest('user/login', 'POST', {
-      login: email,
-      password,
+    const auth = await apiRequestContainer({
+      call: 'user/login',
+      method: 'POST',
+      body: {
+        login: email,
+        password,
+      },
     });
     setLoading(false);
 
@@ -77,7 +85,9 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     body: object;
   }) {
     const response = await apiRequest(call, method, body, 'test');
-    console.log(response);
+    console.log(response, 'sdkjldklfskdjlf');
+
+    return response;
 
     // TODO check for response code here and re-request or navigate to login screen
   }

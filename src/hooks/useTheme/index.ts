@@ -54,11 +54,15 @@ const width = {
 };
 
 const defaultShadow = {
-  elevation: 3,
-  shadowColor: '#000000',
-  shadowOffset: {height: 3, width: 0},
-  shadowOpacity: 0.4,
-  shadowRadius: 6,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+
+  elevation: 5,
 };
 
 const common = {

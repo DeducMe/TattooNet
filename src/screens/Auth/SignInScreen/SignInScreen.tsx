@@ -228,7 +228,6 @@ const makeStyles = makeStyleSheet(theme => ({
     borderRadius: 8,
     marginTop: 32,
     ...theme.defaultShadow,
-    elevation: 12,
   },
   forgotPasswordView: {
     alignSelf: 'flex-end',

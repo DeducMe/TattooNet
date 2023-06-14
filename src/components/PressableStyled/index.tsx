@@ -1,8 +1,15 @@
-import {Animated, Pressable, PressableProps} from 'react-native';
+import {
+  Animated,
+  Pressable,
+  PressableProps,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import React, {ReactNode} from 'react';
 
 export default function PressableStyled({
   children,
+  containerStyle,
   ...props
 }: PressableStyledProps) {
   const animated = new Animated.Value(1);
@@ -23,9 +30,12 @@ export default function PressableStyled({
   return (
     <Pressable {...props} onPressIn={fadeIn} onPressOut={fadeOut}>
       <Animated.View
-        style={{
-          opacity: animated,
-        }}>
+        style={[
+          {
+            opacity: animated,
+          },
+          containerStyle,
+        ]}>
         {children}
       </Animated.View>
     </Pressable>
@@ -34,4 +44,5 @@ export default function PressableStyled({
 
 export interface PressableStyledProps extends PressableProps {
   children: ReactNode;
+  containerStyle?: StyleProp<ViewStyle>;
 }

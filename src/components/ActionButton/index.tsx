@@ -21,6 +21,7 @@ export interface IActionButtonProps extends TouchableNativeFeedbackProps {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   loading?: boolean;
+  roundButton?: boolean;
 }
 
 const ActionButton: React.FC<IActionButtonProps> = ({
@@ -30,15 +31,22 @@ const ActionButton: React.FC<IActionButtonProps> = ({
   style,
   textStyle,
   loading,
+  roundButton,
 }) => {
   const styles = makeStyles();
   return (
     <PressableStyled
       disabled={loading}
-      style={[styles.container, style]}
+      style={[styles.container, roundButton && styles.roundButton, style]}
       onPress={onPress}>
       {!loading ? (
-        <CustomText style={[styles.textStyle, {color: textColor}, textStyle]}>
+        <CustomText
+          bold={roundButton}
+          style={[
+            styles.textStyle,
+            {color: roundButton ? '#fff' : textColor},
+            textStyle,
+          ]}>
           {title}
         </CustomText>
       ) : (
@@ -55,6 +63,15 @@ const makeStyles = makeStyleSheet(theme => ({
     paddingHorizontal: theme.space.s,
     paddingVertical: theme.space.xxs,
     fontWeight: theme.fontWeights.bold,
+  },
+  roundButton: {
+    backgroundColor: theme.colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: theme.space.xs,
+    width: '100%',
+    borderRadius: theme.space.xs,
+    ...theme.defaultShadow,
   },
 }));
 
