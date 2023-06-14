@@ -7,6 +7,10 @@ import useLanguages, {
 } from 'hooks/providerHooks/useLanguages.tsx';
 import useToast from 'hooks/providerHooks/useToast';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import useProfile from 'hooks/providerHooks/useProfile';
+import useFeed from 'hooks/providerHooks/useFeed';
+import useTattoo from 'hooks/providerHooks/useTattoo';
+import useFavorites from 'hooks/providerHooks/useFavorites';
 
 export type CurrencyT = {
   _id: string;
@@ -15,7 +19,7 @@ export type CurrencyT = {
   symbol: string;
 };
 
-type AppContextT = {
+interface AppContextT {
   auth: {
     token: Token | undefined;
     login: (payload: {email; password}) => void;
@@ -39,7 +43,7 @@ type AppContextT = {
     showError: (message: string, supMessage?: string) => void;
     showSuccess: (message: string, supMessage?: string) => void;
   };
-};
+}
 
 export const AppContext = React.createContext<AppContextT>({
   auth: {
@@ -84,6 +88,11 @@ export const AppProvider = props => {
   const toast = useToast();
   const auth = useAuth();
 
+  const profile = useProfile();
+  const feed = useFeed();
+  const tattoo = useTattoo();
+  const favorites = useFavorites();
+
   return (
     <Provider
       value={{
@@ -91,6 +100,10 @@ export const AppProvider = props => {
         currency,
         languages,
         toast,
+        profile,
+        feed,
+        tattoo,
+        favorites,
       }}>
       {props.children}
     </Provider>

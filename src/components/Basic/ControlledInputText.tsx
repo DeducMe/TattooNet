@@ -9,9 +9,17 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import {Control, Controller, FieldValues} from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldErrorsImpl,
+  FieldValues,
+  Merge,
+} from 'react-hook-form';
 import useTheme from 'hooks/useTheme';
 import CustomText from 'components/CustomText';
+import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 
 const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
   const {
@@ -32,7 +40,7 @@ const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
     ...inputProps
   } = props;
   const theme = useTheme();
-  const styles = makeStyles(theme);
+  const styles = makeStyles();
   const textIn = useRef<TextInput>(null); //declare ref
 
   useEffect(() => {
@@ -83,7 +91,7 @@ const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
       />
 
       {!!errorMessage && (
-        <CustomText style={styles.error}>{errorMessage}</CustomText>
+        <CustomText style={styles.error}>{`${errorMessage}`}</CustomText>
       )}
     </>
   );
@@ -91,7 +99,7 @@ const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
 
 export interface IControlledTextInputProps extends TextInputProps {
   control: Control<FieldValues> | undefined;
-  errorMessage: string;
+  errorMessage: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   name: string;
   label: string;
   staticHolder: string;
@@ -106,32 +114,31 @@ export interface IControlledTextInputProps extends TextInputProps {
 }
 export default ControlledTextInput;
 
-const makeStyles = (theme: any) =>
-  StyleSheet.create({
-    input: {
-      padding: 5 /*theme.space.s*/,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.backgroundDarker,
-      color: theme.colors.text?.PLACEHOLDER,
-      fontSize: theme.fontSizes.small,
-      letterSpacing: 0.3,
-    },
-    title: {
-      paddingRight: 5 /*theme.space.s*/,
-      fontSize: theme.fontSizes.medium,
-      fontWeight: '500',
-      textAlignVertical: 'center',
-      color: theme.colors.backgroundDarker,
-    },
-    error: {
-      alignSelf: 'flex-start',
-      marginVertical: 5 /*theme.space.xxs*/,
-      color: theme.colors.ERROR,
-    },
-    separator: {
-      width: 1,
-      height: 40,
-      backgroundColor: theme.colors.backgroundDarker,
-      marginHorizontal: 5 /*{theme.space.s}*/,
-    },
-  });
+const makeStyles = makeStyleSheet(theme => ({
+  input: {
+    padding: 5 /*theme.space.s*/,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.backgroundDarker,
+    color: theme.colors.contrast,
+    fontSize: theme.fontSizes.small,
+    letterSpacing: 0.3,
+  },
+  title: {
+    paddingRight: 5 /*theme.space.s*/,
+    fontSize: theme.fontSizes.medium,
+    fontWeight: '500',
+    textAlignVertical: 'center',
+    color: theme.colors.backgroundDarker,
+  },
+  error: {
+    alignSelf: 'flex-start',
+    marginVertical: 5 /*theme.space.xxs*/,
+    color: theme.colors.error,
+  },
+  separator: {
+    width: 1,
+    height: 40,
+    backgroundColor: theme.colors.backgroundDarker,
+    marginHorizontal: 5 /*{theme.space.s}*/,
+  },
+}));
