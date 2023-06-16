@@ -30,5 +30,5 @@ export default function useFavorites() {
     setFavorites(response.favorites);
   }
 
-  return {addFavorite, removeFavorite, getFavorites};
+  return {addFavorite, removeFavorite, getFavorites, favorites};
 }

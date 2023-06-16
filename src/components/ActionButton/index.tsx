@@ -32,6 +32,7 @@ const ActionButton: React.FC<IActionButtonProps> = ({
   textStyle,
   loading,
   roundButton,
+  children,
 }) => {
   const styles = makeStyles();
   return (
@@ -40,15 +41,20 @@ const ActionButton: React.FC<IActionButtonProps> = ({
       style={[styles.container, roundButton && styles.roundButton, style]}
       onPress={onPress}>
       {!loading ? (
-        <CustomText
-          bold={roundButton}
-          style={[
-            styles.textStyle,
-            {color: roundButton ? '#fff' : textColor},
-            textStyle,
-          ]}>
-          {title}
-        </CustomText>
+        <>
+          {!!title && (
+            <CustomText
+              bold={roundButton}
+              style={[
+                styles.textStyle,
+                {color: roundButton ? '#fff' : textColor},
+                textStyle,
+              ]}>
+              {title}
+            </CustomText>
+          )}
+          {children}
+        </>
       ) : (
         <ActivityIndicator style={{alignSelf: 'center'}} />
       )}
@@ -69,7 +75,7 @@ const makeStyles = makeStyleSheet(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: theme.space.xs,
-    width: '100%',
+    // width: '100%',
     borderRadius: theme.space.xs,
     ...theme.defaultShadow,
   },

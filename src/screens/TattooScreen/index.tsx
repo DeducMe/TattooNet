@@ -6,6 +6,7 @@ import CustomText from 'components/CustomText';
 import ReviewsBlock from 'screens/SalonScreen/MasterScreen/components/TattoosList/Reviews/ReviewsBlock';
 import {ActionButton} from 'components/ActionButton';
 import {useNavigation} from '@react-navigation/native';
+import GalleryList from 'components/GalleryList';
 
 export default function TattooScreen({
   available = !!Math.round(Math.random()),
@@ -17,41 +18,7 @@ export default function TattooScreen({
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          renderItem={({item, index}) => {
-            let width = Math.round(300 * Math.random() * 2);
-            if (width < 150) width = 150;
-            if (width > theme.dimensions.width) width = theme.dimensions.width;
-
-            let height = Math.round(300 * Math.random() * 2);
-            if (height < 150) height = 150;
-            if (height > theme.dimensions.width)
-              height = theme.dimensions.width;
-            return (
-              <View
-                style={{
-                  width: theme.dimensions.width,
-                  height: 350,
-                  backgroundColor: '#000',
-                  overflow: 'hidden',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <FastImage
-                  resizeMode="contain"
-                  style={{width: '100%', height: '100%'}}
-                  source={{
-                    uri: `https://picsum.photos/${width}/${height}?random=${index}`,
-                  }}
-                />
-              </View>
-            );
-          }}
-          pagingEnabled
-          data={Array.from({length: 10})}
-        />
+        <GalleryList data={Array.from({length: 10})} />
       </View>
       <View
         style={{
@@ -59,14 +26,24 @@ export default function TattooScreen({
           marginTop: theme.space.s,
         }}>
         <View>
-          <CustomText
-            style={{
-              lineHeight: 22,
-            }}
-            h1
-            bold>
-            Tattoo Name
-          </CustomText>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <CustomText
+              style={{
+                lineHeight: 22,
+              }}
+              h1
+              bold>
+              Tattoo Name
+            </CustomText>
+
+            <CustomText
+              style={{
+                lineHeight: 22,
+              }}
+              bold>
+              {Math.round(Math.random() * 20000)} ₽
+            </CustomText>
+          </View>
           <View style={{flexDirection: 'row', marginLeft: theme.space.xxxs}}>
             <CustomText
               style={{

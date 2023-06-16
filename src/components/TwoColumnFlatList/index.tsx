@@ -5,12 +5,22 @@ import useTheme from 'hooks/useTheme';
 import FastImage from 'react-native-fast-image';
 import PressableStyled from 'components/PressableStyled';
 
-export default function TwoColumnFlatList() {
+export default function TwoColumnFlatList({
+  editable,
+  marginTabBar,
+}: {
+  editable: boolean;
+  marginTabBar: boolean;
+}) {
   const styles = makeStyles();
   const theme = useTheme();
+
   return (
     <FlatList
       style={styles.flatList}
+      contentContainerStyle={{
+        paddingBottom: marginTabBar ? theme.common.tabNavigationHeight : 0,
+      }}
       columnWrapperStyle={{justifyContent: 'space-between'}}
       numColumns={2}
       data={Array.from({length: 20})}

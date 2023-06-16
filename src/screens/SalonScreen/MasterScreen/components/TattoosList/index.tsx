@@ -6,10 +6,9 @@ import useTheme from 'hooks/useTheme';
 import Portfolio from './Portfolio';
 import Available from './Available';
 import Reviews from './Reviews';
-import CustomText from 'components/CustomText';
 
 const Tab = createMaterialTopTabNavigator();
-export default function TattoosList() {
+export default function TattoosList({editable}: {editable: boolean}) {
   const styles = makeStyles();
   const theme = useTheme();
 
@@ -30,8 +29,18 @@ export default function TattoosList() {
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.secondary,
       }}>
-      <Tab.Screen key={'key'} name={'Portfolio'} component={Portfolio} />
-      <Tab.Screen key={'key'} name={'Available'} component={Available} />
+      <Tab.Screen
+        key={'key'}
+        name={'Portfolio'}
+        component={Portfolio}
+        initialParams={{editable}}
+      />
+      <Tab.Screen
+        key={'key'}
+        name={'Available'}
+        component={Available}
+        initialParams={{editable}}
+      />
       <Tab.Screen key={'key'} name={'Reviews'} component={Reviews} />
     </Tab.Navigator>
   );

@@ -1,7 +1,6 @@
 import {View, Text, Pressable, Image} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Gravatar} from 'react-native-gravatar';
 import CustomText from 'components/CustomText';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {ActionButton} from 'components/ActionButton';
@@ -12,12 +11,45 @@ import BottomSheet from 'components/Basic/BottomSheet';
 import {Modalize} from 'react-native-modalize';
 import {useNavigation} from '@react-navigation/native';
 import SocialButtons from 'components/SocialButtons';
+import StyledControlledTextInput from 'components/StyledControlledTextInput';
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {masterEditable} from './validationSchema';
+import PhoneCodePicker from 'components/PhoneCodePicker';
+import Separator from 'components/Basic/Separator';
+import {AppContext} from 'providers/AppProvider';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Platform} from 'react-native';
+import RNFS from 'react-native-fs';
+import Gravatar from 'components/Gravatar';
 
-export default function MasterProfileHeader() {
+export type MasterProfileHeaderProps = {
+  editable?: boolean;
+};
+
+export const createFormData = async (photo: any) => {
+  const a = await RNFS.readFile(
+    Platform.OS === 'ios'
+      ? 'file:///' + photo.uri.replace('file://', '')
+      : photo.uri,
+    'base64',
+  );
+
+  return a;
+};
+
+export default function MasterProfileHeader({
+  editable,
+}: MasterProfileHeaderProps) {
   const modalizeRef = useRef<Modalize>(null);
+  const editableModalizeRef = useRef<Modalize>(null);
   const navigation = useNavigation();
   const styles = makeStyles();
   const theme = useTheme();
+  const context = useContext(AppContext);
+  const [favorite, setFavorite] = useState(false);
+  const [phoneCodeModalVisible, setPhoneCodeModalVisible] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>('+7');
 
   // useEffect(() => {
   //   if (modalizeRef.current) {
@@ -25,59 +57,214 @@ export default function MasterProfileHeader() {
   //   }
   // }, [modalizeRef.current]);
 
-  const [favorite, setFavorite] = useState(false);
+  console.log(context.profile.profile, 's;klds;lsd');
+
+  function loadAvatar() {
+    launchImageLibrary({mediaType: 'photo'}, async response => {
+      if (response && response.assets && response.assets[0]) {
+        const usrphoto = response.assets[0];
+        console.log(usrphoto);
+
+        context.profile.updateAvatar({
+          avatar: await createFormData(usrphoto),
+        });
+      }
+    });
+  }
+
+  function editInfo() {
+    editableModalizeRef.current?.open();
+  }
+
+  function submitInfo(payload: any) {
+    const {email, phone, address, name} = payload || {};
+    context.profile.updateProfile({
+      email,
+      phone,
+      address,
+      name,
+    });
+  }
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(masterEditable),
+  });
+
   return (
     <>
       <View style={styles.container}>
-        <Gravatar
-          style={styles.avatar}
-          options={{
-            email: 'example@gmail.com',
-            parameters: {size: '300', d: 'mm'},
-            secure: true,
-          }}
-        />
+        <PressableStyled
+          disabled={!editable}
+          onPress={() => {
+            editable && loadAvatar();
+          }}>
+          <Gravatar
+            sourceUri={context.profile?.profile?.avatar}
+            style={styles.avatar}
+            options={{
+              email: 'example@gmail.com',
+              parameters: {size: '300', d: 'mm'},
+              secure: true,
+            }}
+          />
+        </PressableStyled>
         <View style={styles.userInfo}>
           <CustomText h1>Name</CustomText>
           <CustomText>address</CustomText>
 
           <ActionButton
-            onPress={() => modalizeRef.current?.open()}
+            onPress={() => {
+              if (editable) return editInfo();
+              modalizeRef.current?.open();
+            }}
             style={styles.followButton}
             roundButton
-            title="Contact"
+            title={editable ? 'Edit info' : 'Contact'}
           />
         </View>
-        <PressableStyled
-          onPress={() => {
-            setFavorite(!favorite);
-          }}
-          style={{
-            position: 'absolute',
-            right: theme.dimensions.width * 0.1,
-            top: theme.space.xs,
-          }}>
-          <IconComponent
-            iconSet="AntDesign"
-            name={favorite ? 'heart' : 'hearto'}
-            color={theme.colors.error}
-            size={30}
-          />
-        </PressableStyled>
+        {!editable && (
+          <PressableStyled
+            onPress={() => {
+              setFavorite(!favorite);
+            }}
+            style={{
+              position: 'absolute',
+              right: theme.dimensions.width * 0.1,
+              top: theme.space.xs,
+            }}>
+            <IconComponent
+              iconSet="AntDesign"
+              name={favorite ? 'heart' : 'hearto'}
+              color={theme.colors.error}
+              size={30}
+            />
+          </PressableStyled>
+        )}
       </View>
-      <BottomSheet
-        // onClose={() => modalizeRef.current?.close()}
-        modalizeRef={modalizeRef}>
+      <BottomSheet modalizeRef={modalizeRef}>
         <View style={styles.bottomSheetContainer}>
           <PressableStyled>
             <CustomText>phone number</CustomText>
           </PressableStyled>
-          <SocialButtons
+          {/* <SocialButtons
             data={[
               {type: 'facebook', link: 'facebook.com'},
               {type: 'vk', link: 'vk.com'},
             ]}
-          />
+          /> */}
+        </View>
+      </BottomSheet>
+
+      <BottomSheet modalHeight={500} modalizeRef={editableModalizeRef}>
+        <View
+          style={[
+            styles.bottomSheetContainer,
+            {height: 500, justifyContent: 'space-between'},
+          ]}>
+          <View
+            style={{
+              marginTop: theme.space.xs,
+            }}>
+            <StyledControlledTextInput
+              containerStyle={{marginBottom: theme.space.xs}}
+              staticHolder="Name"
+              errorMessage={errors.email?.message || ''}
+              control={control}
+              name="name"
+              label="Name"
+            />
+            <StyledControlledTextInput
+              containerStyle={{marginBottom: theme.space.xs}}
+              staticHolder="Address"
+              errorMessage={errors.email?.message || ''}
+              control={control}
+              name="address"
+              label="Address"
+            />
+            <StyledControlledTextInput
+              containerStyle={{marginBottom: theme.space.xs}}
+              staticHolder="Email"
+              errorMessage={errors.email?.message || ''}
+              control={control}
+              name="email"
+              label="Email"
+            />
+            <View>
+              <CustomText>Phone</CustomText>
+              <View style={{flexDirection: 'row'}}>
+                <View>
+                  <PressableStyled
+                    style={{
+                      width: 50,
+                      height: 50,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    onPress={() => setPhoneCodeModalVisible(true)}>
+                    <View
+                      style={{
+                        width: 50,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: 50,
+                        backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                        borderRadius: theme.space.s,
+                      }}>
+                      <CustomText>{selectedCountry}</CustomText>
+                    </View>
+                    <PhoneCodePicker
+                      visible={phoneCodeModalVisible}
+                      onDismiss={() => setPhoneCodeModalVisible(false)}
+                      onChooseCountry={country => {
+                        setSelectedCountry(country);
+                        // setCountryCode && setCountryCode(country);
+                      }}
+                    />
+                  </PressableStyled>
+                </View>
+
+                <StyledControlledTextInput
+                  containerStyle={{
+                    marginLeft: theme.space.s,
+                    flex: 1,
+                  }}
+                  style={{
+                    height: 30,
+                    width: '100%',
+                    alignItems: 'center',
+                  }}
+                  inputStyle={{
+                    height: 50,
+                  }}
+                  hideTitle
+                  staticHolder="Phone"
+                  errorMessage={errors.phone?.message || ''}
+                  control={control}
+                  name="phone"
+                  label="Phone"
+                />
+              </View>
+            </View>
+            {/* <SocialButtons
+              data={[
+                {type: 'facebook', link: 'facebook.com'},
+                {type: 'vk', link: 'vk.com'},
+              ]}
+            /> */}
+          </View>
+
+          <ActionButton
+            style={{
+              marginBottom: theme.common.tabNavigationHeight + theme.space.xxxl,
+              alignSelf: 'flex-end',
+            }}
+            roundButton
+            onPress={handleSubmit(submitInfo)}
+            title={'Save'}></ActionButton>
         </View>
       </BottomSheet>
     </>

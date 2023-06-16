@@ -6,10 +6,12 @@ export default function BottomSheet({
   modalizeRef,
   children,
   onClose,
+  modalHeight = 250,
 }: {
   modalizeRef: any;
   children: React.ReactNode;
   onClose?: () => void;
+  modalHeight?: number;
 }) {
   return (
     <>
@@ -17,7 +19,7 @@ export default function BottomSheet({
         onClose={onClose}
         ref={modalizeRef}
         avoidKeyboardLikeIOS={true}
-        modalHeight={250}
+        modalHeight={modalHeight}
         scrollViewProps={{keyboardShouldPersistTaps: 'handled'}}>
         {children}
       </Modalize>

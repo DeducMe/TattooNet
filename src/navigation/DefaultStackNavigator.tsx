@@ -18,6 +18,7 @@ import SalonScreen from 'screens/SalonScreen';
 import MapScreen from 'screens/MapScreen';
 import FeedScreen from 'screens/FeedScreen';
 import TattooScreen from 'screens/TattooScreen';
+import AddTattooScreen from 'screens/AddTattoo';
 
 const screens = [
   {
@@ -52,6 +53,11 @@ const screens = [
 
   //   noPreset: true,
   // },
+
+  {
+    name: 'AddTattoo',
+    component: AddTattooScreen,
+  },
   {
     name: 'TattooScreen',
     component: TattooScreen,
