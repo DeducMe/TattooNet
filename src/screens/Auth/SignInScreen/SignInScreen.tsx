@@ -25,11 +25,12 @@ import {RootStackParamList} from '../../../../App';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {ActionButton} from 'components/ActionButton';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import {MainContext} from 'providers/MainProvider';
 
 export default function SignInScreen() {
   const theme = useTheme();
   const styles = makeStyles();
-  const context = useContext(AppContext);
+  const context = useContext(MainContext);
   const [isSecureTextEntry, setIsSecureEntry] = useState(true);
 
   // changeNavigationBarColor('#000');

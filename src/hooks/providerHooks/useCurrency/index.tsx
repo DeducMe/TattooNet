@@ -5,14 +5,12 @@ import {AppContext, CurrencyT} from 'providers/AppProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function useCurrency() {
-  const context = useContext(AppContext);
   const [currency, setCurrency] = useState<CurrencyT[]>();
   const [chosenId, setChosenId] = useState<string | null>(null);
 
   async function getCurrencyApi() {
-    const getCurrency = await apiRequest('currency/list', 'POST', {});
+    const {data: getCurrency} = await apiRequest('currency/list', 'POST', {});
 
-    console.log(getCurrency, 'ALO');
     setCurrency(getCurrency.currency);
   }
 

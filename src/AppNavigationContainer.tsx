@@ -5,10 +5,11 @@ import DefaultStackNavigator from 'navigation/DefaultStackNavigator';
 import {Host} from 'react-native-portalize';
 import {AppContext} from 'providers/AppProvider';
 import AuthorizationNavigator from 'navigation/AuthorizationNavigator';
+import {MainContext} from 'providers/MainProvider';
 
 export default function AppNavigationContainer() {
   const theme = useTheme();
-  const context = useContext(AppContext);
+  const context = useContext(MainContext);
   console.log(context.auth);
   return (
     <Host>

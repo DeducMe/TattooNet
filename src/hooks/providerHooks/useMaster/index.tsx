@@ -1,10 +1,21 @@
 import {AppContext} from 'providers/AppProvider';
+import {MainContext} from 'providers/MainProvider';
 import {useContext, useState} from 'react';
 
 export default function useMaster() {
-  const context = useContext(AppContext);
+  const context = useContext(MainContext);
   const [master, setMaster] = useState(null);
+  const [tattoos, setTattoos] = useState({available: [], portfolio: []});
 
+  async function getTattoos({id}: {id: string}) {
+    const response = await context.auth.apiRequestContainer({
+      call: 'tattoos/master',
+      method: 'GET',
+      body: {id},
+    });
+
+    setTattoos(response.tattoos);
+  }
   async function getMaster({id}: {id: string}) {
     const response = await context.auth.apiRequestContainer({
       call: 'master',
@@ -19,5 +30,5 @@ export default function useMaster() {
     setMaster(null);
   }
 
-  return {getMaster, nullifyMaster, master};
+  return {getMaster, getTattoos, nullifyMaster, master, tattoos};
 }

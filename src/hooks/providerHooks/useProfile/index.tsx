@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppContext} from 'providers/AppProvider';
+import {MainContext} from 'providers/MainProvider';
 import {useContext, useState} from 'react';
 
 export default function useProfile() {
-  const context = useContext(AppContext);
+  const context = useContext(MainContext);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<any>(null);
 
@@ -22,25 +23,30 @@ export default function useProfile() {
   async function getMe() {
     setLoading(true);
     const response = await context.auth.apiRequestContainer({
-      call: 'profile/me',
+      call: 'profile',
       method: 'GET',
-      body: {},
     });
 
+    if (!response.success) return context.toast.showError('get profile error');
+
     setLoading(false);
-    setProfile(response.profile);
+    setProfile(response.data.profile);
   }
 
   async function updateAvatar({avatar}) {
-    console.log(avatar, 'sdlkdslk');
     setLoading(true);
-    const response = await context.auth.apiRequestContainer({
-      call: 'profile',
-      method: 'PUT',
-      body: {
-        avatar,
-      },
-    });
+    console.log(avatar);
+    try {
+      await context.auth.apiRequestContainer({
+        call: 'profile',
+        method: 'PUT',
+        body: {
+          avatar,
+        },
+      });
+    } catch {
+      setLoading(false);
+    }
 
     setLoading(false);
     setProfile({

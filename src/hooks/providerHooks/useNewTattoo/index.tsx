@@ -15,7 +15,7 @@ export default function useNewTatto() {
     const response = await context.auth.apiRequestContainer({
       call: 'tattoo',
       method: 'POST',
-      body: {...(newTattoo || {})},
+      body: newTattoo,
     });
 
     nullify();

@@ -67,6 +67,7 @@ const defaultShadow = {
 
 const common = {
   tabNavigationHeight: 60,
+  tabNavigationInset: 40,
 };
 
 export const useTheme = () => {

@@ -29,6 +29,7 @@
     "react-hook-form": "^7.44.3",
     "react-native": "0.71.10",
     "react-native-fast-image": "^8.6.3",
+    "react-native-floating-action": "^1.22.0",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.11.0",
     "react-native-i18n": "^2.0.15",

@@ -14,7 +14,6 @@ import SocialButtons from 'components/SocialButtons';
 import StyledControlledTextInput from 'components/StyledControlledTextInput';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {masterEditable} from './validationSchema';
 import PhoneCodePicker from 'components/PhoneCodePicker';
 import Separator from 'components/Basic/Separator';
 import {AppContext} from 'providers/AppProvider';
@@ -22,25 +21,33 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {Platform} from 'react-native';
 import RNFS from 'react-native-fs';
 import Gravatar from 'components/Gravatar';
+import {schema} from '../validationSchema';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
-export type MasterProfileHeaderProps = {
+export type ProfileHeaderProps = {
   editable?: boolean;
 };
 
 export const createFormData = async (photo: any) => {
+  console.log(photo);
   const a = await RNFS.readFile(
-    Platform.OS === 'ios'
+    Platform.OS === 'ios' && !photo.uri.includes('file:///')
       ? 'file:///' + photo.uri.replace('file://', '')
       : photo.uri,
     'base64',
-  );
+  ).catch(e => {
+    Toast.show({
+      text1: 'File was not loaded',
+      type: 'error',
+    });
+    return null;
+    console.log(e.message, 'errr');
+  });
 
   return a;
 };
 
-export default function MasterProfileHeader({
-  editable,
-}: MasterProfileHeaderProps) {
+export default function ProfileHeader({editable}: ProfileHeaderProps) {
   const modalizeRef = useRef<Modalize>(null);
   const editableModalizeRef = useRef<Modalize>(null);
   const navigation = useNavigation();
@@ -61,6 +68,7 @@ export default function MasterProfileHeader({
     launchImageLibrary({mediaType: 'photo'}, async response => {
       if (response && response.assets && response.assets[0]) {
         const usrphoto = response.assets[0];
+
         const avatar = await createFormData(usrphoto);
         if (!avatar) return;
 
@@ -90,7 +98,7 @@ export default function MasterProfileHeader({
     handleSubmit,
     formState: {errors},
   } = useForm({
-    resolver: yupResolver(masterEditable),
+    resolver: yupResolver(schema),
   });
 
   return (
@@ -112,18 +120,21 @@ export default function MasterProfileHeader({
           />
         </PressableStyled>
         <View style={styles.userInfo}>
-          <CustomText h1>Name</CustomText>
-          <CustomText>address</CustomText>
-
-          <ActionButton
-            onPress={() => {
-              if (editable) return editInfo();
-              modalizeRef.current?.open();
-            }}
-            style={styles.followButton}
-            roundButton
-            title={editable ? 'Edit info' : 'Contact'}
-          />
+          <CustomText h1>{context.profile.profile?.name || 'Name'}</CustomText>
+          <CustomText>
+            {context.profile.profile?.address || 'Address'}
+          </CustomText>
+          {editable && (
+            <ActionButton
+              onPress={() => {
+                if (editable) return editInfo();
+                modalizeRef.current?.open();
+              }}
+              style={styles.followButton}
+              roundButton
+              title={editable ? 'Edit info' : 'Contact'}
+            />
+          )}
         </View>
         {!editable && (
           <PressableStyled

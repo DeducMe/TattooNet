@@ -1,13 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {apiRequest} from 'common/config';
 import {AppContext} from 'providers/AppProvider';
+import {MainContext} from 'providers/MainProvider';
 import {useContext, useEffect, useState} from 'react';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 export type Token = string;
 
 export default function useAuth(props?: {tokenProp?: Token}) {
-  const context = useContext(AppContext);
+  const context = useContext(MainContext);
   const [token, setToken] = useState<Token>();
   const [loading, setLoading] = useState(false);
 
@@ -15,7 +16,7 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     setLoading(true);
 
     const {name, email, password} = payload;
-    const reg = await apiRequestContainer({
+    const {data: reg} = await apiRequestContainer({
       call: 'user/register',
       method: 'POST',
       body: {
@@ -42,7 +43,7 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     setLoading(true);
 
     const {email, password} = payload;
-    const auth = await apiRequestContainer({
+    const {data: auth} = await apiRequestContainer({
       call: 'user/login',
       method: 'POST',
       body: {
@@ -82,10 +83,10 @@ export default function useAuth(props?: {tokenProp?: Token}) {
   }: {
     call: string;
     method: string;
-    body: object;
+    body?: object;
   }) {
-    const response = await apiRequest(call, method, body, 'test');
-    console.log(response, 'sdkjldklfskdjlf');
+    const response = await apiRequest(call, method, body, token);
+    if (response.token === false) await AsyncStorage.setItem('token', '');
 
     return response;
 

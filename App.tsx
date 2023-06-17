@@ -11,6 +11,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigationContainer from 'AppNavigationContainer';
 import Toast from 'react-native-toast-message';
+import {MainProvider} from 'providers/MainProvider';
 
 export type RootStackParamList = {
   SignUp: undefined;
@@ -35,9 +36,11 @@ function App(): JSX.Element {
     <SafeAreaProvider>
       <NavigationContainer>
         {/* <GestureHandlerRootView style={{flex: 1}}> */}
-        <AppProvider>
-          <AppNavigationContainer />
-        </AppProvider>
+        <MainProvider>
+          <AppProvider>
+            <AppNavigationContainer />
+          </AppProvider>
+        </MainProvider>
         <Toast />
         {/* </GestureHandlerRootView> */}
       </NavigationContainer>

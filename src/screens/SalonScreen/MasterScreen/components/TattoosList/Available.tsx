@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TwoColumnFlatList from 'components/TwoColumnFlatList';
 import {ActionButton} from 'components/ActionButton';
 import useTheme from 'hooks/useTheme';
+import {AppContext} from 'providers/AppProvider';
 
 export default function Available({
   route: {
@@ -11,6 +12,7 @@ export default function Available({
   route: {params: {editable: boolean}};
 }) {
   const theme = useTheme();
+  const context = useContext(AppContext);
   return (
     <>
       {!!editable && (
@@ -22,7 +24,11 @@ export default function Available({
           roundButton
           title="Add new available tattoo"></ActionButton>
       )}
-      <TwoColumnFlatList editable={editable} />
+
+      <TwoColumnFlatList
+        data={context.master.tattoos.portfolio}
+        editable={editable}
+      />
     </>
   );
 }

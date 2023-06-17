@@ -9,8 +9,8 @@ export default function TwoColumnFlatList({
   editable,
   marginTabBar,
 }: {
-  editable: boolean;
-  marginTabBar: boolean;
+  editable?: boolean;
+  marginTabBar?: boolean;
 }) {
   const styles = makeStyles();
   const theme = useTheme();

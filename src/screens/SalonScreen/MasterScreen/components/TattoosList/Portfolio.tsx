@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TwoColumnFlatList from 'components/TwoColumnFlatList';
 import {ActionButton} from 'components/ActionButton';
 import useTheme from 'hooks/useTheme';
 import {useNavigation} from '@react-navigation/native';
+import {AppContext} from 'providers/AppProvider';
 
 export default function Portfolio({
   route: {
@@ -13,6 +14,7 @@ export default function Portfolio({
 }) {
   const theme = useTheme();
   const navigation = useNavigation();
+  const context = useContext(AppContext);
   return (
     <>
       {!!editable && (
@@ -29,7 +31,11 @@ export default function Portfolio({
           roundButton
           title="Add completed tattoo"></ActionButton>
       )}
-      <TwoColumnFlatList marginTabBar editable={editable} />
+      <TwoColumnFlatList
+        data={context.master.tattoos.portfolio}
+        marginTabBar
+        editable={editable}
+      />
     </>
   );
 }
