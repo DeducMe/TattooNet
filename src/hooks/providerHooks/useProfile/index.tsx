@@ -10,9 +10,9 @@ export default function useProfile() {
 
   async function sendEmail(email: string, text: string) {
     setLoading(true);
-    const response = await context.auth.apiRequestContainer({
+    await context.auth.apiRequestContainer({
       call: 'master/mail_request',
-      method: 'GET',
+      method: 'POST',
       body: {email, text},
     });
 

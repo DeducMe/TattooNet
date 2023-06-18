@@ -10,7 +10,7 @@ export default function useMaster() {
   async function getTattoos({id}: {id: string}) {
     const response = await context.auth.apiRequestContainer({
       call: 'tattoos/master',
-      method: 'GET',
+      method: 'POST',
       body: {id},
     });
 

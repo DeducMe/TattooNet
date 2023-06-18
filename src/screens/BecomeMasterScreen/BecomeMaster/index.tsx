@@ -1,7 +1,6 @@
-import {View, Text, Linking} from 'react-native';
+import {View, Text, Linking, ScrollView} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Gravatar} from 'react-native-gravatar';
 import CustomText from 'components/CustomText';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {ActionButton} from 'components/ActionButton';
@@ -14,19 +13,30 @@ import StyledControlledTextInput from 'components/StyledControlledTextInput';
 import {AppContext} from 'providers/AppProvider';
 import Separator from 'components/Basic/Separator';
 import PressableStyled from 'components/PressableStyled';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 export default function BecomeMaster() {
   const theme = useTheme();
   const stlyes = makeStyles();
+  const navigation = useNavigation();
   const context = useContext(AppContext);
+  const [emailSend, setEmailSend] = useState('');
 
   function SendEmail(payload) {
-    console.log(payload);
+    context.profile.sendEmail(payload.email, payload.text);
+    AsyncStorage.setItem('emailSend', payload.email);
+    setEmailSend(payload.email);
+    navigation.goBack();
   }
 
   useEffect(() => {
+    async function start() {
+      setEmailSend((await AsyncStorage.getItem('emailSend')) || '');
+    }
     // get me
     context.profile.getMe();
+    start();
   }, []);
 
   const {
@@ -37,14 +47,28 @@ export default function BecomeMaster() {
     resolver: yupResolver(schema),
   });
   return (
-    <SafeAreaView>
-      <View
-        style={{
+    <SafeAreaView style={{flex: 1}}>
+      {!!emailSend && (
+        <View style={{paddingHorizontal: theme.space.l}}>
+          <CustomText bold>
+            You`ve already sent us an email. We will answer you as soon as
+            possible
+          </CustomText>
+          <View style={{flexDirection: 'row'}}>
+            <CustomText>your email: </CustomText>
+            <CustomText style={{color: theme.colors.primary}}>
+              {emailSend}
+            </CustomText>
+          </View>
+        </View>
+      )}
+      <ScrollView
+        contentContainerStyle={{
           justifyContent: 'center',
           padding: theme.space.l,
         }}>
         <CustomText h2 bold>
-          Want to become a master in TattooNet?
+          Want to become master in TattooNet?
         </CustomText>
         <CustomText>
           Write us your email and we will connect with you as soon as possible!
@@ -113,7 +137,7 @@ export default function BecomeMaster() {
             </CustomText>
           </PressableStyled>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

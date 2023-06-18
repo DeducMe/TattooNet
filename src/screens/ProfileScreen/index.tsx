@@ -6,7 +6,7 @@ import {AppContext} from 'providers/AppProvider';
 import MasterProfileHeader from 'screens/SalonScreen/MasterScreen/components/MasterProfileHeader';
 import FloatingInfo from 'screens/SalonScreen/MasterScreen/components/FloatingInfo';
 import TattoosList from 'screens/SalonScreen/MasterScreen/components/TattoosList';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, ScrollView, View} from 'react-native';
 import ProfileHeader from './components/ProfileHeader';
 import ProfileBody from './components/ProfileBody';
 
@@ -14,10 +14,6 @@ export default function ProfileScreen() {
   const theme = useTheme();
   const stlyes = makeStyles();
   const context = useContext(AppContext);
-
-  function SendEmail(payload) {
-    console.log(payload);
-  }
 
   useEffect(() => {
     // get me

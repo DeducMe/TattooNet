@@ -19,6 +19,7 @@ import MapScreen from 'screens/MapScreen';
 import FeedScreen from 'screens/FeedScreen';
 import TattooScreen from 'screens/TattooScreen';
 import AddTattooScreen from 'screens/AddTattoo';
+import BecomeMasterScreen from 'screens/BecomeMasterScreen';
 
 const screens = [
   {
@@ -65,6 +66,10 @@ const screens = [
   {
     name: 'AllCurrencyScreen',
     component: AllCurrencyScreen,
+  },
+  {
+    name: 'BecomeMaster',
+    component: BecomeMasterScreen,
   },
 ];
 // options: {presentation: 'transparentModal'},

@@ -85,12 +85,17 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     method: string;
     body?: object;
   }) {
-    const response = await apiRequest(call, method, body, token);
+    let response;
+    try {
+      response = await apiRequest(call, method, body, token);
+    } catch ({message}: any) {
+      context.toast.showError(message || 'Api error');
+      console.log(message, 'API ERROR CHECK');
+    }
+
     if (response.token === false) await AsyncStorage.setItem('token', '');
 
     return response;
-
-    // TODO check for response code here and re-request or navigate to login screen
   }
 
   return {token, login, register, loading, apiRequestContainer};
