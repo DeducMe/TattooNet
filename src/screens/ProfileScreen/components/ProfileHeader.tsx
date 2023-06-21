@@ -84,11 +84,10 @@ export default function ProfileHeader({editable}: ProfileHeaderProps) {
   }
 
   function submitInfo(payload: any) {
-    const {email, phone, address, name} = payload || {};
+    const {email, phone, name} = payload || {};
     context.profile.updateProfile({
       email,
       phone,
-      address,
       name,
     });
   }
@@ -187,14 +186,7 @@ export default function ProfileHeader({editable}: ProfileHeaderProps) {
               name="name"
               label="Name"
             />
-            <StyledControlledTextInput
-              containerStyle={{marginBottom: theme.space.xs}}
-              staticHolder="Address"
-              errorMessage={errors.email?.message || ''}
-              control={control}
-              name="address"
-              label="Address"
-            />
+
             <StyledControlledTextInput
               containerStyle={{marginBottom: theme.space.xs}}
               staticHolder="Email"
@@ -271,6 +263,7 @@ export default function ProfileHeader({editable}: ProfileHeaderProps) {
             style={{
               marginBottom: theme.common.tabNavigationHeight + theme.space.xxxl,
               alignSelf: 'flex-end',
+              width: '100%',
             }}
             roundButton
             onPress={handleSubmit(submitInfo)}

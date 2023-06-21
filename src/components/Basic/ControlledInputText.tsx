@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {ReactNode, useEffect, useRef, useState} from 'react';
 import {
   Control,
   Controller,
@@ -37,6 +37,7 @@ const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
     setCountryCode,
     disabledButton,
     countryCode,
+    renderHelper,
     ...inputProps
   } = props;
   const theme = useTheme();
@@ -86,6 +87,7 @@ const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
               placeholderTextColor={theme.colors.contrast}
               placeholder={staticHolder}
             />
+            {!!renderHelper && renderHelper(value)}
           </TouchableOpacity>
         )}
       />
@@ -111,6 +113,7 @@ export interface IControlledTextInputProps extends TextInputProps {
   disabledButton?: boolean;
   setCountryCode?: (text: string) => void;
   countryCode?: string;
+  renderHelper?: (textInput: string) => ReactNode;
 }
 export default ControlledTextInput;
 

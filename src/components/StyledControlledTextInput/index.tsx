@@ -1,5 +1,5 @@
 import {View, Text, StyleProp, TextStyle, ViewStyle} from 'react-native';
-import React from 'react';
+import React, {ReactNode} from 'react';
 import ControlledTextInput, {
   IControlledTextInputProps,
 } from 'components/Basic/ControlledInputText';
@@ -10,6 +10,7 @@ export default function StyledControlledTextInput({
   hideTitle,
   titleStyle,
   containerStyle,
+  renderHelper,
   ...props
 }: StyledControlledTextInputProps) {
   const theme = useTheme();
@@ -30,6 +31,7 @@ export default function StyledControlledTextInput({
       )}
       <ControlledTextInput
         {...props}
+        renderHelper={renderHelper}
         inputStyle={[
           {
             paddingVertical: theme.space.xs,
@@ -49,4 +51,5 @@ export interface StyledControlledTextInputProps
   hideTitle?: boolean;
   titleStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  renderHelper?: (textInput: string) => ReactNode;
 }

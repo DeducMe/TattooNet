@@ -76,11 +76,10 @@ export default function MasterProfileHeader({
   }
 
   function submitInfo(payload: any) {
-    const {email, phone, address, name} = payload || {};
+    const {email, phone, name} = payload || {};
     context.profile.updateProfile({
       email,
       phone,
-      address,
       name,
     });
   }
@@ -93,11 +92,14 @@ export default function MasterProfileHeader({
     resolver: yupResolver(masterEditable),
   });
 
+  console.log(context.profile?.profile.location, 'LOCATION');
+
   return (
     <>
       <View style={styles.container}>
         <PressableStyled
           disabled={!editable}
+          style={{justifyContent: 'center'}}
           onPress={() => {
             editable && loadAvatar();
           }}>
@@ -112,8 +114,8 @@ export default function MasterProfileHeader({
           />
         </PressableStyled>
         <View style={styles.userInfo}>
-          <CustomText h1>Name</CustomText>
-          <CustomText>address</CustomText>
+          <CustomText h1>{context.profile.profile?.name}</CustomText>
+          <CustomText>{context.profile.profile?.address}</CustomText>
 
           <ActionButton
             onPress={() => {
@@ -169,6 +171,7 @@ export default function MasterProfileHeader({
               marginTop: theme.space.xs,
             }}>
             <StyledControlledTextInput
+              defaultValue={context.profile.profile?.name}
               containerStyle={{marginBottom: theme.space.xs}}
               staticHolder="Name"
               errorMessage={errors.email?.message || ''}
@@ -176,15 +179,9 @@ export default function MasterProfileHeader({
               name="name"
               label="Name"
             />
+
             <StyledControlledTextInput
-              containerStyle={{marginBottom: theme.space.xs}}
-              staticHolder="Address"
-              errorMessage={errors.email?.message || ''}
-              control={control}
-              name="address"
-              label="Address"
-            />
-            <StyledControlledTextInput
+              defaultValue={context.profile.profile?.email}
               containerStyle={{marginBottom: theme.space.xs}}
               staticHolder="Email"
               errorMessage={errors.email?.message || ''}
@@ -192,7 +189,7 @@ export default function MasterProfileHeader({
               name="email"
               label="Email"
             />
-            <View>
+            <View style={{marginBottom: theme.space.xs}}>
               <CustomText>Phone</CustomText>
               <View style={{flexDirection: 'row'}}>
                 <View>
@@ -239,6 +236,7 @@ export default function MasterProfileHeader({
                   inputStyle={{
                     height: 50,
                   }}
+                  defaultValue={context.profile.profile?.phone}
                   hideTitle
                   staticHolder="Phone"
                   errorMessage={errors.phone?.message || ''}
@@ -246,6 +244,40 @@ export default function MasterProfileHeader({
                   name="phone"
                   label="Phone"
                 />
+              </View>
+            </View>
+            <View>
+              <CustomText>Address</CustomText>
+
+              <View
+                style={{
+                  borderRadius: theme.space.xs,
+                  borderWidth: 1,
+                  borderColor: theme.colors.contrast,
+                  paddingVertical: theme.space.xs,
+                  paddingHorizontal: theme.space.s,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                <View>
+                  <CustomText bold style={{marginBottom: theme.space.xs}}>
+                    {context.profile.profile?.address}
+                  </CustomText>
+                  <CustomText>
+                    {context.profile.profile?.location?.coordinates?.join(',')}
+                  </CustomText>
+                </View>
+                <ActionButton
+                  onPress={() => navigation.navigate('ChangeAddress', {})}
+                  roundButton
+                  style={{width: 50, height: 50}}>
+                  <IconComponent
+                    color={'#fff'}
+                    name="chevron-right"
+                    iconSet="MaterialCommunityIcons"
+                    size={35}
+                  />
+                </ActionButton>
               </View>
             </View>
             {/* <SocialButtons
@@ -260,6 +292,7 @@ export default function MasterProfileHeader({
             style={{
               marginBottom: theme.common.tabNavigationHeight + theme.space.xxxl,
               alignSelf: 'flex-end',
+              width: '100%',
             }}
             roundButton
             onPress={handleSubmit(submitInfo)}
@@ -279,18 +312,18 @@ const makeStyles = makeStyleSheet(theme => ({
     borderRadius: 30,
     width: 100,
     height: 100,
+    alignSelf: 'center',
   },
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: theme.space.xs,
+    flexDirection: 'row',
+    width: '85%',
+    paddingHorizontal: theme.space.xxxl,
+    justifyContent: 'center',
   },
   userInfo: {
-    width: theme.dimensions.width * 0.3,
     marginLeft: theme.space.l,
-    marginRight: theme.dimensions.width * 0.15,
   },
 
   followButton: {

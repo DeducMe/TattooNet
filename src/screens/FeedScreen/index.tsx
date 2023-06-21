@@ -1,5 +1,5 @@
 import {View, Text, FlatList, ScrollView, Image, Pressable} from 'react-native';
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FeedSkeleton from 'components/Skeletons/Feed';
 import FlexWrapFlatList from 'components/FlexWrapFlatList';
@@ -9,13 +9,25 @@ import FastImage from 'react-native-fast-image';
 import StarBlock from 'components/StarBlock';
 import PressableStyled from 'components/PressableStyled';
 import {useNavigation} from '@react-navigation/native';
+import {AppContext} from 'providers/AppProvider';
 
 export default function FeedScreen() {
   const theme = useTheme();
   const navigation = useNavigation();
+  const context = useContext(AppContext);
+
+  useEffect(() => {
+    context.feed.getFeed();
+  }, []);
+
+  if (context.feed.loading) return <FeedSkeleton />;
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
+          Top masters
+        </CustomText>
         <FlatList
           data={Array.from({length: 6})}
           style={{
@@ -28,7 +40,7 @@ export default function FeedScreen() {
             return (
               <PressableStyled
                 onPress={() => {
-                  navigation.navigate('Salon', {});
+                  navigation.navigate('Master', {});
                 }}
                 style={({pressed}) => [
                   {
@@ -114,7 +126,6 @@ export default function FeedScreen() {
               </PressableStyled>
             );
           }}></FlatList>
-        {/* <FeedSkeleton /> */}
         <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
           Top tattoos
         </CustomText>

@@ -33,21 +33,51 @@ export default function useProfile() {
     setProfile(response.data.profile);
   }
 
-  async function updateAvatar({avatar}) {
+  async function updateAddress({address, location}) {
     setLoading(true);
-    console.log(avatar);
     try {
       await context.auth.apiRequestContainer({
         call: 'profile',
         method: 'PUT',
         body: {
-          avatar,
+          address,
+          location: {
+            type: 'Point',
+            coordinates: [location.longitude, location.latitude],
+          },
+        },
+      });
+    } catch {
+      return setLoading(false);
+    }
+
+    setProfile({
+      ...(profile || {}),
+      address,
+      location: {
+        type: 'Point',
+        coordinates: [location.longitude, location.latitude],
+      },
+    });
+
+    setLoading(false);
+  }
+
+  async function updateAvatar({avatar}) {
+    setLoading(true);
+    let a;
+    try {
+      a = await context.auth.apiRequestContainer({
+        call: 'profile',
+        method: 'PUT',
+        body: {
+          avatar: 'data:image/jpeg;base64,' + avatar,
         },
       });
     } catch {
       setLoading(false);
     }
-
+    console.log(a);
     setLoading(false);
     setProfile({
       ...(profile || {}),
@@ -55,7 +85,7 @@ export default function useProfile() {
     });
   }
 
-  async function updateProfile({email, name, phone, address}) {
+  async function updateProfile({email, name, phone}) {
     setLoading(true);
     const response = await context.auth.apiRequestContainer({
       call: 'profile',
@@ -64,13 +94,20 @@ export default function useProfile() {
         email,
         name,
         phone,
-        address,
       },
     });
 
     setLoading(false);
-    setProfile({...(profile || {}), email, name, phone, address});
+    setProfile({...(profile || {}), email, name, phone});
   }
 
-  return {sendEmail, getMe, updateProfile, updateAvatar, loading, profile};
+  return {
+    sendEmail,
+    getMe,
+    updateProfile,
+    updateAvatar,
+    updateAddress,
+    loading,
+    profile,
+  };
 }

@@ -13,12 +13,30 @@ import useTattoo from 'hooks/providerHooks/useTattoo';
 import useFavorites from 'hooks/providerHooks/useFavorites';
 import useNewTatto from 'hooks/providerHooks/useNewTattoo';
 import useMaster from 'hooks/providerHooks/useMaster';
+import useCountry from 'hooks/providerHooks/useCountry';
 
 export type CurrencyT = {
   _id: string;
   name: string;
   sysname: string;
   symbol: string;
+};
+
+export type CountryT = {
+  _id: string;
+  name: string;
+  ISO: string;
+  code: string;
+  emoji: string;
+  unicode: string;
+  image: string;
+  dial_code: string;
+};
+
+export type CityT = {
+  _id: string;
+  name: string;
+  country: CountryT;
 };
 
 export interface AppContextT {
@@ -29,18 +47,23 @@ export interface AppContextT {
     updateProfile: ({
       email,
       phone,
-      address,
       name,
     }: {
       email: string;
       phone: string;
-      address: string;
       name: string;
+    }) => void;
+    updateAddress: ({
+      address,
+      location,
+    }: {
+      address: string;
+      location: {longitude: number; latitude: number};
     }) => void;
     loading: boolean;
     profile: any;
   };
-  feed: {getFeed: () => void; feed: any};
+  feed: {getFeed: () => void; feed: any; loading: boolean};
   tattoo: {
     getTattoo: ({id}: {id: string}) => void;
     nullifyTattoo: () => void;
@@ -92,11 +115,11 @@ export const AppContext = React.createContext<AppContextT>({
     sendEmail: () => {},
     updateProfile: () => {},
     updateAvatar: () => {},
-
+    updateAddress: () => {},
     loading: false,
     profile: null,
   },
-  feed: {getFeed: () => {}, feed: null},
+  feed: {getFeed: () => {}, feed: null, loading: false},
   tattoo: {
     getTattoo: () => {},
     nullifyTattoo: () => {},
@@ -138,7 +161,6 @@ export const AppProvider = props => {
   const favorites = useFavorites();
   const newTattoo = useNewTatto();
   const master = useMaster();
-
   return (
     <Provider
       value={{

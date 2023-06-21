@@ -100,6 +100,10 @@ export default function ProfileBody() {
           },
         ]}
         onPressItem={name => {
+          if (name === 'addTattoo')
+            navigation.navigate('AddTattoo', {
+              type: 'user',
+            });
           if (name === 'becomeMaster') navigation.navigate('BecomeMaster', {});
         }}></FloatingButton>
     </>

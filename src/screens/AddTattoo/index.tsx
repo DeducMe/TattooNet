@@ -10,9 +10,12 @@ import {schema} from './validationSchema';
 import StyledControlledTextInput from 'components/StyledControlledTextInput';
 import {ActionButton} from 'components/ActionButton';
 import SelectDropdown from 'react-native-select-dropdown';
+import {MainContext} from 'providers/MainProvider';
 
 export default function AddTattooScreen({}) {
   const context = useContext(AppContext);
+  const mainContext = useContext(MainContext);
+
   const theme = useTheme();
 
   function addImage(image: string) {
@@ -41,9 +44,9 @@ export default function AddTattooScreen({}) {
     // await context.auth.login(payload);
   };
 
-  console.log(context.currency.currency);
+  console.log(mainContext.currency.currency);
 
-  const currencies = context.currency.currency?.map(
+  const currencies = mainContext.currency.currency?.map(
     item => item.symbol + ' ' + item.name,
   );
 
@@ -143,7 +146,7 @@ export default function AddTattooScreen({}) {
                 // text represented after item is selected
                 // if data array is an array of objects then return selectedItem.property to render after item is selected
                 return (
-                  context.currency.currency?.[index]?.symbol || selectedItem
+                  mainContext.currency.currency?.[index]?.symbol || selectedItem
                 );
               }}
               rowTextForSelection={(item, index) => {

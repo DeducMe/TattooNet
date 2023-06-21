@@ -4,6 +4,7 @@ import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import useTheme from 'hooks/useTheme';
 import FastImage from 'react-native-fast-image';
 import PressableStyled from 'components/PressableStyled';
+import {useNavigation} from '@react-navigation/native';
 
 export default function TwoColumnFlatList({
   editable,
@@ -14,6 +15,7 @@ export default function TwoColumnFlatList({
 }) {
   const styles = makeStyles();
   const theme = useTheme();
+  const navigation = useNavigation();
 
   return (
     <FlatList
@@ -27,6 +29,7 @@ export default function TwoColumnFlatList({
       renderItem={({item, index}) => {
         return (
           <PressableStyled
+            onPress={() => navigation.navigate('TattooScreen')}
             style={{
               marginTop: theme.space.xs,
               borderRadius: theme.space.s,
@@ -53,7 +56,5 @@ const makeStyles = makeStyleSheet(theme => ({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  flatList: {
-    paddingHorizontal: theme.space.s,
-  },
+  flatList: {},
 }));

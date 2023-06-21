@@ -13,6 +13,8 @@ import useTattoo from 'hooks/providerHooks/useTattoo';
 import useFavorites from 'hooks/providerHooks/useFavorites';
 import useNewTatto from 'hooks/providerHooks/useNewTattoo';
 import useMaster from 'hooks/providerHooks/useMaster';
+import useCountry from 'hooks/providerHooks/useCountry';
+import {CityT, CountryT} from './AppProvider';
 
 export type CurrencyT = {
   _id: string;
@@ -33,7 +35,14 @@ export interface AppContextT {
       body?: object;
     }) => any;
   };
-
+  country: {
+    country: CountryT[];
+    city: CityT[];
+    setCountryChosenId: Dispatch<SetStateAction<string | null>>;
+    setCityChosenId: Dispatch<SetStateAction<string | null>>;
+    countryChosenId: string | null;
+    cityChosenId: string | null;
+  };
   currency: {
     currency: CurrencyT[] | undefined;
   };
@@ -77,6 +86,14 @@ export const MainContext = React.createContext<AppContextT>({
     loading: false,
     apiRequestContainer: () => {},
   },
+  country: {
+    country: [],
+    city: [],
+    setCountryChosenId: () => {},
+    setCityChosenId: () => {},
+    countryChosenId: null,
+    cityChosenId: null,
+  },
   currency: {currency: []},
   languages: {languages: [], setLocale: token => {}},
 });
@@ -85,9 +102,12 @@ const {Provider} = MainContext;
 
 export const MainProvider = props => {
   const currency = useCurrency();
+
   const languages = useLanguages();
+
   const toast = useToast();
   const auth = useAuth();
+  const country = useCountry();
 
   return (
     <Provider
@@ -96,6 +116,7 @@ export const MainProvider = props => {
         currency,
         languages,
         toast,
+        country,
       }}>
       {props.children}
     </Provider>

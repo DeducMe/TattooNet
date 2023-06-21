@@ -20,17 +20,16 @@ import FeedScreen from 'screens/FeedScreen';
 import TattooScreen from 'screens/TattooScreen';
 import AddTattooScreen from 'screens/AddTattoo';
 import BecomeMasterScreen from 'screens/BecomeMasterScreen';
+import ChangeAddress from 'screens/ChangeAddress';
 
 const screens = [
   {
     name: 'Master',
     component: MasterScreen,
-    options: {headerShown: true},
   },
   {
     name: 'Salon',
     component: SalonScreen,
-    options: {headerShown: true},
   },
   {
     name: 'Map',
@@ -40,7 +39,6 @@ const screens = [
   {
     name: 'Feed',
     component: FeedScreen,
-    options: {headerShown: false},
   },
 
   // {
@@ -70,6 +68,10 @@ const screens = [
   {
     name: 'BecomeMaster',
     component: BecomeMasterScreen,
+  },
+  {
+    name: 'ChangeAddress',
+    component: ChangeAddress,
   },
 ];
 // options: {presentation: 'transparentModal'},

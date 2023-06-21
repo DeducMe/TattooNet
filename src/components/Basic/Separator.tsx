@@ -14,6 +14,6 @@ const makeStyles = (theme: any) =>
     separatorView: {
       height: 1,
       width: '100%',
-      backgroundColor: 'black',
+      backgroundColor: '#000',
     },
   });
