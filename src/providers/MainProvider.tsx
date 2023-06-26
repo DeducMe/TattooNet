@@ -10,11 +10,15 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import useProfile from 'hooks/providerHooks/useProfile';
 import useFeed from 'hooks/providerHooks/useFeed';
 import useTattoo from 'hooks/providerHooks/useTattoo';
-import useFavorites from 'hooks/providerHooks/useFavorites';
 import useNewTatto from 'hooks/providerHooks/useNewTattoo';
 import useMaster from 'hooks/providerHooks/useMaster';
 import useCountry from 'hooks/providerHooks/useCountry';
 import {CityT, CountryT} from './AppProvider';
+import {
+  NavigationHelpers,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
 
 export type CurrencyT = {
   _id: string;
@@ -35,6 +39,7 @@ export interface AppContextT {
       body?: object;
     }) => any;
   };
+  navigation: NavigationProp<ReactNavigation.RootParamList> | null;
   country: {
     country: CountryT[];
     city: CityT[];
@@ -78,6 +83,7 @@ export const MainContext = React.createContext<AppContextT>({
       });
     },
   },
+  navigation: null,
 
   auth: {
     token: undefined,
@@ -105,6 +111,7 @@ export const MainProvider = props => {
 
   const languages = useLanguages();
 
+  const navigation = useNavigation();
   const toast = useToast();
   const auth = useAuth();
   const country = useCountry();
@@ -117,6 +124,7 @@ export const MainProvider = props => {
         languages,
         toast,
         country,
+        navigation,
       }}>
       {props.children}
     </Provider>

@@ -1,5 +1,5 @@
 import {View, Text, FlatList, Image, ScrollView} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import useTheme from 'hooks/useTheme';
 import CustomText from 'components/CustomText';
@@ -7,18 +7,23 @@ import ReviewsBlock from 'screens/SalonScreen/MasterScreen/components/TattoosLis
 import {ActionButton} from 'components/ActionButton';
 import {useNavigation} from '@react-navigation/native';
 import GalleryList from 'components/GalleryList';
+import {Tattoo} from 'hooks/providerHooks/useMaster';
+import {AppContext} from 'providers/AppProvider';
 
-export default function TattooScreen({
-  available = !!Math.round(Math.random()),
+function TattooScreen({
+  route,
 }: {
-  available: boolean;
+  route: {params: {available: boolean; item: Tattoo}};
 }) {
+  const {available, item} = route.params || {};
+  const context = useContext(AppContext);
   const navigation = useNavigation();
   const theme = useTheme();
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View>
-        <GalleryList data={Array.from({length: 10})} />
+        <GalleryList data={item.images} />
       </View>
       <View
         style={{
@@ -33,7 +38,7 @@ export default function TattooScreen({
               }}
               h1
               bold>
-              Tattoo Name
+              {item.name}
             </CustomText>
 
             <CustomText
@@ -41,7 +46,7 @@ export default function TattooScreen({
                 lineHeight: 22,
               }}
               bold>
-              {Math.round(Math.random() * 20000)} ₽
+              {item.price} {item.currency?.symbol}
             </CustomText>
           </View>
           <View style={{flexDirection: 'row', marginLeft: theme.space.xxxs}}>
@@ -59,9 +64,16 @@ export default function TattooScreen({
                 marginLeft: theme.space.xxs,
                 lineHeight: 21,
               }}>
-              Master name
+              {item.masterProfile?.name}
             </CustomText>
           </View>
+          <CustomText
+            style={{
+              fontSize: theme.fontSizes.small,
+              lineHeight: 22,
+            }}>
+            {item.description}
+          </CustomText>
         </View>
 
         {available ? (
@@ -71,7 +83,14 @@ export default function TattooScreen({
               This tattoo is available!
             </CustomText>
             <ActionButton
-              onPress={() => navigation.navigate('Master')}
+              onPress={() =>
+                navigation.navigate(
+                  item.masterProfile._id === context.profile.profile._id
+                    ? 'Profile'
+                    : 'Master',
+                  {id: item.masterProfile._id},
+                )
+              }
               style={{marginTop: theme.space.l}}
               roundButton
               title="Master"
@@ -81,7 +100,14 @@ export default function TattooScreen({
           <View style={{marginTop: theme.space.s}}>
             <ReviewsBlock></ReviewsBlock>
             <ActionButton
-              onPress={() => navigation.navigate('Master')}
+              onPress={() =>
+                navigation.navigate(
+                  item.masterProfile._id === context.profile.profile._id
+                    ? 'Profile'
+                    : 'Master',
+                  {id: item.masterProfile._id},
+                )
+              }
               style={{marginVertical: theme.space.l}}
               roundButton
               title="Master"
@@ -92,3 +118,5 @@ export default function TattooScreen({
     </ScrollView>
   );
 }
+
+export default React.memo(TattooScreen);

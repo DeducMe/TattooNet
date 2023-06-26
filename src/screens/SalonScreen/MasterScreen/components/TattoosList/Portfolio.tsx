@@ -15,6 +15,10 @@ export default function Portfolio({
   const theme = useTheme();
   const navigation = useNavigation();
   const context = useContext(AppContext);
+
+  const data = editable
+    ? context.master.myTattoos?.portfolio
+    : context.master.tattoos?.portfolio;
   return (
     <>
       {!!editable && (
@@ -32,9 +36,10 @@ export default function Portfolio({
           title="Add completed tattoo"></ActionButton>
       )}
       <TwoColumnFlatList
-        data={context.master.tattoos.portfolio}
+        data={data}
         marginTabBar
         editable={editable}
+        available={false}
       />
     </>
   );

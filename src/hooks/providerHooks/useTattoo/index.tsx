@@ -8,7 +8,7 @@ export default function useTattoo() {
 
   async function getTattoo({id}: {id: string}) {
     const response = await context.auth.apiRequestContainer({
-      call: 'tattoo',
+      call: 'tattoos',
       method: 'POST',
       body: {id},
     });

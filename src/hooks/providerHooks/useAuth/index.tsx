@@ -89,11 +89,11 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     try {
       response = await apiRequest(call, method, body, token);
     } catch ({message}: any) {
-      context.toast.showError(message || 'Api error');
-      console.log(message, 'API ERROR CHECK');
+      context.toast.showError(message || `Api error in ${call}`);
+      console.log(message, 'API ERROR CHECK in ', call);
     }
 
-    if (response.token === false) await AsyncStorage.setItem('token', '');
+    if (response?.token === false) await AsyncStorage.setItem('token', '');
 
     return response;
   }

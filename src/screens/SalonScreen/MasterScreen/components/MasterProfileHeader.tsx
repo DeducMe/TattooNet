@@ -38,9 +38,7 @@ export const createFormData = async (photo: any) => {
   return a;
 };
 
-export default function MasterProfileHeader({
-  editable,
-}: MasterProfileHeaderProps) {
+function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
   const modalizeRef = useRef<Modalize>(null);
   const editableModalizeRef = useRef<Modalize>(null);
   const navigation = useNavigation();
@@ -134,8 +132,8 @@ export default function MasterProfileHeader({
             }}
             style={{
               position: 'absolute',
-              right: theme.dimensions.width * 0.1,
-              top: theme.space.xs,
+              right: 0,
+              top: 0,
             }}>
             <IconComponent
               iconSet="AntDesign"
@@ -332,3 +330,5 @@ const makeStyles = makeStyleSheet(theme => ({
     paddingHorizontal: theme.space.xxs,
   },
 }));
+
+export default React.memo(MasterProfileHeader);

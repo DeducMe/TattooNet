@@ -10,7 +10,6 @@ import {MainContext} from 'providers/MainProvider';
 export default function AppNavigationContainer() {
   const theme = useTheme();
   const context = useContext(MainContext);
-  console.log(context.auth);
   return (
     <Host>
       {!!context.auth.token ? (

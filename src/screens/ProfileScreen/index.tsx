@@ -15,10 +15,13 @@ export default function ProfileScreen() {
   const stlyes = makeStyles();
   const context = useContext(AppContext);
 
+  console.log(context.profile.profile?._id, 'master');
+
   useEffect(() => {
-    // get me
-    context.profile.getMe();
-  }, []);
+    if (!context.newTattoo.loading) {
+      context.profile.getMe();
+    }
+  }, [context.newTattoo.loading]);
 
   if (context.profile.loading)
     return (
@@ -33,7 +36,7 @@ export default function ProfileScreen() {
         <>
           <MasterProfileHeader editable />
           <FloatingInfo />
-          <TattoosList editable />
+          <TattoosList id={context.profile.profile?._id} editable />
         </>
       ) : (
         <>

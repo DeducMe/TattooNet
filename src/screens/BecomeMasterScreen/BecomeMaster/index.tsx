@@ -35,7 +35,7 @@ export default function BecomeMaster() {
       setEmailSend((await AsyncStorage.getItem('emailSend')) || '');
     }
     // get me
-    context.profile.getMe();
+    // context.profile.getMe();
     start();
   }, []);
 

@@ -12,9 +12,17 @@ import {ActionButton} from 'components/ActionButton';
 import SelectDropdown from 'react-native-select-dropdown';
 import {MainContext} from 'providers/MainProvider';
 
-export default function AddTattooScreen({}) {
+export default function AddTattooScreen({
+  route,
+}: {
+  route: {params: {type: 'completed' | 'available'}};
+}) {
+  const {type} = route.params;
   const context = useContext(AppContext);
   const mainContext = useContext(MainContext);
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    mainContext.currency.currency?.[0]?._id,
+  );
 
   const theme = useTheme();
 
@@ -35,16 +43,24 @@ export default function AddTattooScreen({}) {
   } = useForm({resolver: yupResolver(schema)});
 
   const onSubmit = async (payload: any) => {
-    await context.newTattoo.update({
-      ...payload,
+    const {name, price, text: description} = payload;
+    console.log(payload);
+
+    if (!context.newTattoo.newTattoo?.images?.length) {
+      return mainContext.toast.showError('You need to add at least one image!');
+    }
+    context.newTattoo.updateAndSave({
+      name,
+      price,
+      description,
+      currency: selectedCurrency,
+      type,
     });
 
-    context.newTattoo.save();
+    // context.newTattoo.save();
 
     // await context.auth.login(payload);
   };
-
-  console.log(mainContext.currency.currency);
 
   const currencies = mainContext.currency.currency?.map(
     item => item.symbol + ' ' + item.name,
@@ -106,6 +122,8 @@ export default function AddTattooScreen({}) {
               errorMessage={''}
               staticHolder={'Price'}></StyledControlledTextInput>
             <SelectDropdown
+              defaultButtonText={mainContext.currency.currency?.[0]?.symbol}
+              defaultValue={selectedCurrency}
               rowTextStyle={{
                 fontSize: theme.fontSizes.small,
                 textAlign: 'left',
@@ -140,9 +158,13 @@ export default function AddTattooScreen({}) {
               data={currencies}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
+                setSelectedCurrency(
+                  mainContext.currency.currency?.[index]?._id,
+                );
               }}
               buttonTextAfterSelection={(selectedItem, index) => {
                 console.log(selectedItem);
+
                 // text represented after item is selected
                 // if data array is an array of objects then return selectedItem.property to render after item is selected
                 return (

@@ -77,18 +77,19 @@ export interface AppContextT {
   };
   newTattoo: {
     addImage: (image: string) => void;
-    update: ({
+    updateAndSave: ({
       name,
       price,
       description,
       currency,
+      type,
     }: {
       name: string;
       price?: number;
       currency?: string;
       description?: string;
+      type?: 'completed' | 'available';
     }) => void;
-    save: () => void;
     nullify: () => void;
     deleteImage: (index: number) => void;
     newTattoo: {
@@ -99,12 +100,20 @@ export interface AppContextT {
       currency?: string;
       description?: string;
     };
+    loading: boolean;
   };
   master: {
     getMaster: ({id}: {id: string}) => void;
     getTattoos: ({id}: {id: string}) => void;
+    getMyTattoos: ({id}: {id: string}) => void;
     nullifyMaster: () => void;
+    loading: {
+      master: boolean;
+      tattoos: boolean;
+      myTattoos: boolean;
+    };
     master: any;
+    myTattoos: {available: any[]; portfolio: any[]};
     tattoos: {available: any[]; portfolio: any[]};
   };
 }
@@ -133,8 +142,7 @@ export const AppContext = React.createContext<AppContextT>({
   },
   newTattoo: {
     addImage: () => {},
-    update: () => {},
-    save: () => {},
+    updateAndSave: () => {},
     nullify: () => {},
     deleteImage: () => {},
     newTattoo: {
@@ -142,13 +150,21 @@ export const AppContext = React.createContext<AppContextT>({
       images: [],
       type: 'new',
     },
+    loading: false,
   },
   master: {
     getMaster: () => {},
     getTattoos: () => {},
+    getMyTattoos: () => {},
     nullifyMaster: () => {},
+    loading: {
+      master: false,
+      tattoos: false,
+      myTattoos: false,
+    },
     master: {},
     tattoos: {available: [], portfolio: []},
+    myTattoos: {available: [], portfolio: []},
   },
 });
 

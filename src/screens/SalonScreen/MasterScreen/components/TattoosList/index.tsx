@@ -1,16 +1,34 @@
 import {View, Text} from 'react-native';
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import useTheme from 'hooks/useTheme';
 import Portfolio from './Portfolio';
 import Available from './Available';
 import Reviews from './Reviews';
+import {AppContext} from 'providers/AppProvider';
 
 const Tab = createMaterialTopTabNavigator();
-export default function TattoosList({editable}: {editable: boolean}) {
+export default function TattoosList({
+  editable,
+  id,
+}: {
+  editable?: boolean;
+  id: string;
+}) {
   const styles = makeStyles();
   const theme = useTheme();
+  const context = useContext(AppContext);
+
+  useEffect(() => {
+    editable
+      ? context.master.getMyTattoos({id})
+      : context.master.getTattoos({id});
+
+    return () => {
+      context.master.nullifyMaster();
+    };
+  }, []);
 
   return (
     <Tab.Navigator

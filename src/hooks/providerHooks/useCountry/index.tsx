@@ -12,9 +12,7 @@ export default function useCountry() {
   const [cityChosenId, setCityChosenId] = useState<string | null>(null);
 
   async function getCountryApi() {
-    console.log('ALO');
     const {data} = await apiRequest('country', 'GET');
-    console.log(data, 'COUNTRY');
     setCountry(data.country);
   }
 

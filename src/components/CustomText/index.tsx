@@ -19,8 +19,8 @@ export default function CustomText({
 
   return (
     <Text
+      {...textProps}
       style={[
-        {...textProps},
         styles.text,
         {
           fontSize: h1

@@ -1,35 +1,32 @@
+import useStateWithCallback from 'hooks/useStateWithCallback';
 import {AppContext, AppContextT} from 'providers/AppProvider';
-import {useContext, useState} from 'react';
+import {MainContext} from 'providers/MainProvider';
+import {SetStateAction, useContext, useState} from 'react';
 
 export default function useNewTatto() {
-  const context = useContext(AppContext);
-  const [newTattoo, setNewTattoo] = useState<
+  const context = useContext(MainContext);
+
+  const [newTattoo, setNewTattoo] = useStateWithCallback<
     AppContextT['newTattoo']['newTattoo']
   >({
     name: '',
     images: [],
     type: 'completed',
   });
-
-  async function save() {
-    const response = await context.auth.apiRequestContainer({
-      call: 'tattoo',
-      method: 'POST',
-      body: newTattoo,
-    });
-
-    nullify();
-  }
+  const [loading, setLoading] = useState(false);
 
   function nullify() {
-    setNewTattoo({
-      name: '',
-      images: [],
-      type: 'completed',
-    });
+    setNewTattoo(
+      {
+        name: '',
+        images: [],
+        type: 'completed',
+      },
+      () => {},
+    );
   }
 
-  function update({
+  function updateAndSave({
     name,
     price,
     currency,
@@ -42,27 +39,54 @@ export default function useNewTatto() {
     description?: string;
     type?: string;
   }) {
-    setNewTattoo({
-      ...newTattoo,
-      type: type || 'completed',
-      name,
-      price,
-      currency,
-      description,
-    });
+    setLoading(true);
+    console.log(
+      {name, price, currency, description, type},
+      ' ------------ Time to update',
+    );
+    setNewTattoo(
+      {
+        ...newTattoo,
+        type: type || 'completed',
+        name,
+        price,
+        currency,
+        description,
+      },
+      newTattoo => {
+        context.auth
+          .apiRequestContainer({
+            call: 'tattoos',
+            method: 'POST',
+            body: newTattoo,
+          })
+          .then(response => {
+            if (response.success) nullify();
+            setLoading(false);
+
+            context.navigation?.goBack();
+          });
+      },
+    );
   }
   function addImage(image: string) {
-    setNewTattoo({
-      ...newTattoo,
-      images: newTattoo?.images.concat([image]),
-    });
+    setNewTattoo(
+      {
+        ...newTattoo,
+        images: newTattoo?.images.concat([image]),
+      },
+      () => {},
+    );
   }
   function deleteImage(index: number) {
-    setNewTattoo({
-      ...newTattoo,
-      images: newTattoo?.images.filter((item, i) => i !== index),
-    });
+    setNewTattoo(
+      {
+        ...newTattoo,
+        images: newTattoo?.images.filter((item, i) => i !== index),
+      },
+      () => {},
+    );
   }
 
-  return {addImage, update, save, deleteImage, nullify, newTattoo};
+  return {addImage, updateAndSave, deleteImage, nullify, newTattoo, loading};
 }
