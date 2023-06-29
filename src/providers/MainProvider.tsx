@@ -7,7 +7,7 @@ import useLanguages, {
 } from 'hooks/providerHooks/useLanguages.tsx';
 import useToast from 'hooks/providerHooks/useToast';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import useProfile from 'hooks/providerHooks/useProfile';
+import useMyProfile from 'hooks/providerHooks/useMyProfile';
 import useFeed from 'hooks/providerHooks/useFeed';
 import useTattoo from 'hooks/providerHooks/useTattoo';
 import useNewTatto from 'hooks/providerHooks/useNewTattoo';
@@ -31,6 +31,7 @@ export interface AppContextT {
   auth: {
     token: Token | undefined;
     login: (payload: {email; password}) => void;
+    logout: () => void;
     register: (payload: {name; email; password}) => void;
     loading: boolean;
     apiRequestContainer: (payload: {
@@ -91,6 +92,7 @@ export const MainContext = React.createContext<AppContextT>({
     register: (payload: {name; email; password}) => {},
     loading: false,
     apiRequestContainer: () => {},
+    logout: () => {},
   },
   country: {
     country: [],

@@ -39,7 +39,6 @@ const CountryPicker = forwardRef<ICountryPickerRef, ICountryPickerProps>(
         <Picker
           selectedValue={selectedCountry}
           onValueChange={itemValue => {
-            console.log(itemValue, 'itemValue');
             setSelectedCountry && setSelectedCountry(itemValue);
             setSelectedCountryFlag?.(getCountryEmoji(itemValue.slice(1)));
             setValue?.('country_code', itemValue);

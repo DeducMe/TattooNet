@@ -21,16 +21,19 @@ import TattooScreen from 'screens/TattooScreen';
 import AddTattooScreen from 'screens/AddTattoo';
 import BecomeMasterScreen from 'screens/BecomeMasterScreen';
 import ChangeAddress from 'screens/ChangeAddress';
+import CompleteTattooScreen from 'screens/CompleteTattooScreen';
+import FavoritesScreen from 'screens/FavoritesScreen';
+import SettingsScreen from 'screens/SettingsScreen';
 
 const screens = [
   {
     name: 'Master',
     component: MasterScreen,
   },
-  {
-    name: 'Salon',
-    component: SalonScreen,
-  },
+  // {
+  //   name: 'Salon',
+  //   component: SalonScreen,
+  // },
   {
     name: 'Map',
     component: MapScreen,
@@ -39,6 +42,14 @@ const screens = [
   {
     name: 'Feed',
     component: FeedScreen,
+  },
+  {
+    name: 'Favorites',
+    component: FavoritesScreen,
+  },
+  {
+    name: 'Settings',
+    component: SettingsScreen,
   },
 
   // {
@@ -57,6 +68,11 @@ const screens = [
     name: 'AddTattoo',
     component: AddTattooScreen,
   },
+  {
+    name: 'CompleteTattoo',
+    component: CompleteTattooScreen,
+  },
+
   {
     name: 'TattooScreen',
     component: TattooScreen,

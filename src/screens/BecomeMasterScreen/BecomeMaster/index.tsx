@@ -24,7 +24,7 @@ export default function BecomeMaster() {
   const [emailSend, setEmailSend] = useState('');
 
   function SendEmail(payload) {
-    context.profile.sendEmail(payload.email, payload.text);
+    context.myProfile.sendEmail(payload.email, payload.text);
     AsyncStorage.setItem('emailSend', payload.email);
     setEmailSend(payload.email);
     navigation.goBack();
@@ -35,7 +35,7 @@ export default function BecomeMaster() {
       setEmailSend((await AsyncStorage.getItem('emailSend')) || '');
     }
     // get me
-    // context.profile.getMe();
+    // context.myProfile.getMe();
     start();
   }, []);
 

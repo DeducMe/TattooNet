@@ -22,6 +22,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {Platform} from 'react-native';
 import RNFS from 'react-native-fs';
 import Gravatar from 'components/Gravatar';
+import LoadingView from 'components/Basic/LoadingView';
 
 export type MasterProfileHeaderProps = {
   editable?: boolean;
@@ -62,7 +63,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
         const avatar = await createFormData(usrphoto);
         if (!avatar) return;
 
-        context.profile.updateAvatar({
+        context.myProfile.updateAvatar({
           avatar,
         });
       }
@@ -75,7 +76,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
 
   function submitInfo(payload: any) {
     const {email, phone, name} = payload || {};
-    context.profile.updateProfile({
+    context.myProfile.updateProfile({
       email,
       phone,
       name,
@@ -90,11 +91,13 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
     resolver: yupResolver(masterEditable),
   });
 
-  console.log(context.profile?.profile.location, 'LOCATION');
+  const data = editable ? context.myProfile?.profile : context.master.master;
+
+  const loading = editable ? context.myProfile?.profile : context.master.master;
 
   return (
     <>
-      <View style={styles.container}>
+      <LoadingView loading={loading?.master} style={styles.container}>
         <PressableStyled
           disabled={!editable}
           style={{justifyContent: 'center'}}
@@ -102,7 +105,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
             editable && loadAvatar();
           }}>
           <Gravatar
-            sourceUri={context.profile?.profile?.avatar}
+            sourceUri={data?.avatar}
             style={styles.avatar}
             options={{
               email: 'example@gmail.com',
@@ -112,8 +115,8 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
           />
         </PressableStyled>
         <View style={styles.userInfo}>
-          <CustomText h1>{context.profile.profile?.name}</CustomText>
-          <CustomText>{context.profile.profile?.address}</CustomText>
+          <CustomText h1>{data?.name}</CustomText>
+          <CustomText>{data?.address}</CustomText>
 
           <ActionButton
             onPress={() => {
@@ -143,7 +146,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
             />
           </PressableStyled>
         )}
-      </View>
+      </LoadingView>
       <BottomSheet modalizeRef={modalizeRef}>
         <View style={styles.bottomSheetContainer}>
           <PressableStyled>
@@ -169,7 +172,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
               marginTop: theme.space.xs,
             }}>
             <StyledControlledTextInput
-              defaultValue={context.profile.profile?.name}
+              defaultValue={data?.name}
               containerStyle={{marginBottom: theme.space.xs}}
               staticHolder="Name"
               errorMessage={errors.email?.message || ''}
@@ -179,7 +182,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
             />
 
             <StyledControlledTextInput
-              defaultValue={context.profile.profile?.email}
+              defaultValue={data?.email}
               containerStyle={{marginBottom: theme.space.xs}}
               staticHolder="Email"
               errorMessage={errors.email?.message || ''}
@@ -234,7 +237,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
                   inputStyle={{
                     height: 50,
                   }}
-                  defaultValue={context.profile.profile?.phone}
+                  defaultValue={data?.phone}
                   hideTitle
                   staticHolder="Phone"
                   errorMessage={errors.phone?.message || ''}
@@ -259,10 +262,10 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
                 }}>
                 <View>
                   <CustomText bold style={{marginBottom: theme.space.xs}}>
-                    {context.profile.profile?.address}
+                    {data?.address}
                   </CustomText>
                   <CustomText>
-                    {context.profile.profile?.location?.coordinates?.join(',')}
+                    {data?.location?.coordinates?.join(',')}
                   </CustomText>
                 </View>
                 <ActionButton

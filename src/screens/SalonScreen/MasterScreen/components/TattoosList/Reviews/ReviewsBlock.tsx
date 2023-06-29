@@ -73,5 +73,5 @@ const makeStyles = makeStyleSheet(theme => ({
     flexDirection: 'row',
     marginBottom: theme.space.s,
   },
-  nameText: {marginLeft: theme.space.xxs, width: 140},
+  nameText: {marginLeft: theme.space.xxs},
 }));

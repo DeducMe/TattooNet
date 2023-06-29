@@ -7,13 +7,14 @@ import useLanguages, {
 } from 'hooks/providerHooks/useLanguages.tsx';
 import useToast from 'hooks/providerHooks/useToast';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import useProfile from 'hooks/providerHooks/useProfile';
+import useMyProfile from 'hooks/providerHooks/useMyProfile';
 import useFeed from 'hooks/providerHooks/useFeed';
 import useTattoo from 'hooks/providerHooks/useTattoo';
 import useFavorites from 'hooks/providerHooks/useFavorites';
 import useNewTatto from 'hooks/providerHooks/useNewTattoo';
 import useMaster from 'hooks/providerHooks/useMaster';
 import useCountry from 'hooks/providerHooks/useCountry';
+import useProfile from 'hooks/providerHooks/useProfile';
 
 export type CurrencyT = {
   _id: string;
@@ -40,7 +41,7 @@ export type CityT = {
 };
 
 export interface AppContextT {
-  profile: {
+  myProfile: {
     getMe: () => void;
     sendEmail: (email: string, text: string) => void;
     updateAvatar: ({avatar}: {avatar: string}) => void;
@@ -63,11 +64,24 @@ export interface AppContextT {
     loading: boolean;
     profile: any;
   };
-  feed: {getFeed: () => void; feed: any; loading: boolean};
+  feed: {getFeed: () => void; feed: any[]; loading: boolean};
   tattoo: {
     getTattoo: ({id}: {id: string}) => void;
     nullifyTattoo: () => void;
     tattoo: any;
+    submitTattoo: ({
+      reviewText,
+      _id,
+      userProfileId,
+      images,
+      starRating,
+    }: {
+      reviewText: string;
+      _id: string;
+      userProfileId: string;
+      images: string[];
+      starRating: number;
+    }) => void;
   };
   favorites: {
     addFavorite: ({type, id}: {type: 'master' | 'tattoo'; id: string}) => void;
@@ -106,20 +120,40 @@ export interface AppContextT {
     getMaster: ({id}: {id: string}) => void;
     getTattoos: ({id}: {id: string}) => void;
     getMyTattoos: ({id}: {id: string}) => void;
+    getReviews: ({id}: {id: string}) => void;
+    getMyReviews: ({id}: {id: string}) => void;
     nullifyMaster: () => void;
     loading: {
       master: boolean;
       tattoos: boolean;
       myTattoos: boolean;
+      reviews: boolean;
     };
     master: any;
+    reviews: any[];
+    myReviews: any[];
     myTattoos: {available: any[]; portfolio: any[]};
     tattoos: {available: any[]; portfolio: any[]};
+  };
+  profile: {
+    getUsers: ({
+      query,
+      page,
+      limit,
+    }: {
+      query: string;
+      page: number;
+      limit: number;
+    }) => void;
+    loading: {
+      users: boolean;
+    };
+    users: any;
   };
 }
 
 export const AppContext = React.createContext<AppContextT>({
-  profile: {
+  myProfile: {
     getMe: () => {},
     sendEmail: () => {},
     updateProfile: () => {},
@@ -128,11 +162,12 @@ export const AppContext = React.createContext<AppContextT>({
     loading: false,
     profile: null,
   },
-  feed: {getFeed: () => {}, feed: null, loading: false},
+  feed: {getFeed: () => {}, feed: [], loading: false},
   tattoo: {
     getTattoo: () => {},
     nullifyTattoo: () => {},
     tattoo: null,
+    submitTattoo: () => {},
   },
   favorites: {
     addFavorite: () => {},
@@ -152,15 +187,28 @@ export const AppContext = React.createContext<AppContextT>({
     },
     loading: false,
   },
+  profile: {
+    getUsers: ({query, page, limit}) => {},
+    loading: {
+      users: false,
+    },
+    users: [],
+  },
   master: {
     getMaster: () => {},
     getTattoos: () => {},
     getMyTattoos: () => {},
     nullifyMaster: () => {},
+    getReviews: () => {},
+    getMyReviews: () => {},
+    reviews: [],
+    myReviews: [],
+
     loading: {
       master: false,
       tattoos: false,
       myTattoos: false,
+      reviews: false,
     },
     master: {},
     tattoos: {available: [], portfolio: []},
@@ -171,6 +219,7 @@ export const AppContext = React.createContext<AppContextT>({
 const {Provider} = AppContext;
 
 export const AppProvider = props => {
+  const myProfile = useMyProfile();
   const profile = useProfile();
   const feed = useFeed();
   const tattoo = useTattoo();
@@ -181,6 +230,7 @@ export const AppProvider = props => {
     <Provider
       value={{
         profile,
+        myProfile,
         feed,
         tattoo,
         favorites,

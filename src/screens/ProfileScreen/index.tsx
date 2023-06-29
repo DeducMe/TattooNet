@@ -15,15 +15,13 @@ export default function ProfileScreen() {
   const stlyes = makeStyles();
   const context = useContext(AppContext);
 
-  console.log(context.profile.profile?._id, 'master');
-
   useEffect(() => {
     if (!context.newTattoo.loading) {
-      context.profile.getMe();
+      context.myProfile.getMe();
     }
   }, [context.newTattoo.loading]);
 
-  if (context.profile.loading)
+  if (context.myProfile.loading)
     return (
       <SafeAreaView style={stlyes.container}>
         <ActivityIndicator size={'large'} />
@@ -32,11 +30,11 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={stlyes.container}>
-      {context.profile.profile?.type === 'master' ? (
+      {context.myProfile.profile?.type === 'master' ? (
         <>
           <MasterProfileHeader editable />
           <FloatingInfo />
-          <TattoosList id={context.profile.profile?._id} editable />
+          <TattoosList id={context.myProfile.profile?._id} editable />
         </>
       ) : (
         <>

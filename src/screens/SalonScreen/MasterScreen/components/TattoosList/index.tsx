@@ -24,7 +24,9 @@ export default function TattoosList({
     editable
       ? context.master.getMyTattoos({id})
       : context.master.getTattoos({id});
-
+    editable
+      ? context.master.getMyReviews({id})
+      : context.master.getReviews({id});
     return () => {
       context.master.nullifyMaster();
     };

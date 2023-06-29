@@ -22,7 +22,6 @@ export default function GalleryList({
     launchImageLibrary({mediaType: 'photo'}, async response => {
       if (response && response.assets && response.assets[0]) {
         const usrphoto = response.assets[0];
-        console.log(usrphoto);
         const image = await createFormData(usrphoto);
 
         onAdd && onAdd('data:image/jpeg;base64,' + image);
@@ -35,7 +34,7 @@ export default function GalleryList({
   }
   const theme = useTheme();
   return (
-    <View>
+    <View style={{height: 350, backgroundColor: theme.colors.textColor}}>
       {!!onAdd && (
         <ActionButton
           onPress={loadImage}

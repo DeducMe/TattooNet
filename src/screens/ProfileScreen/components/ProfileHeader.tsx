@@ -72,7 +72,7 @@ export default function ProfileHeader({editable}: ProfileHeaderProps) {
         const avatar = await createFormData(usrphoto);
         if (!avatar) return;
 
-        context.profile.updateAvatar({
+        context.myProfile.updateAvatar({
           avatar,
         });
       }
@@ -85,7 +85,7 @@ export default function ProfileHeader({editable}: ProfileHeaderProps) {
 
   function submitInfo(payload: any) {
     const {email, phone, name} = payload || {};
-    context.profile.updateProfile({
+    context.myProfile.updateProfile({
       email,
       phone,
       name,
@@ -109,7 +109,7 @@ export default function ProfileHeader({editable}: ProfileHeaderProps) {
             editable && loadAvatar();
           }}>
           <Gravatar
-            sourceUri={context.profile?.profile?.avatar}
+            sourceUri={context.myProfile?.profile?.avatar}
             style={styles.avatar}
             options={{
               email: 'example@gmail.com',
@@ -119,9 +119,11 @@ export default function ProfileHeader({editable}: ProfileHeaderProps) {
           />
         </PressableStyled>
         <View style={styles.userInfo}>
-          <CustomText h1>{context.profile.profile?.name || 'Name'}</CustomText>
+          <CustomText h1>
+            {context.myProfile.profile?.name || 'Name'}
+          </CustomText>
           <CustomText>
-            {context.profile.profile?.address || 'Address'}
+            {context.myProfile.profile?.address || 'Address'}
           </CustomText>
           {editable && (
             <ActionButton

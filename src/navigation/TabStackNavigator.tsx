@@ -7,10 +7,10 @@ import {StyleSheet} from 'react-native';
 import useTheme from 'hooks/useTheme';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProfileScreen from 'screens/ProfileScreen';
-import FavoritesScreen from 'screens/FavoritesScreen';
 
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import MapScreen from 'screens/MapScreen';
+import MoreScreen from 'screens/MoreScreen';
 
 export const CustomButtonTabNavigation = ({
   children,
@@ -79,10 +79,10 @@ const TabStackNavigator = () => {
       },
     },
     {
-      name: 'Favorites',
-      component: FavoritesScreen,
+      name: 'More',
+      component: MoreScreen,
       options: {
-        tabBarLabel: 'Favorites',
+        tabBarLabel: 'More',
         tabBarIcon: ({focused}: any) => (
           <View>
             <IconComponent
@@ -99,7 +99,7 @@ const TabStackNavigator = () => {
                   ? theme.colors.activeTintColor
                   : theme.colors.textColor,
               }}>
-              Favorites
+              More
             </Text>
           </View>
         ),

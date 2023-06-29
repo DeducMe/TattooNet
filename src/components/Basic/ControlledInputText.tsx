@@ -82,7 +82,10 @@ const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
               autoCapitalize="none"
               {...inputProps}
               onBlur={onBlur}
-              onChangeText={onChange}
+              onChangeText={e => {
+                inputProps?.onChangeText?.(e);
+                onChange(e);
+              }}
               value={value}
               placeholderTextColor={theme.colors.contrast}
               placeholder={staticHolder}
@@ -100,10 +103,10 @@ const ControlledTextInput: React.FC<IControlledTextInputProps> = props => {
 };
 
 export interface IControlledTextInputProps extends TextInputProps {
-  control: Control<FieldValues> | undefined;
+  control: Control<FieldValues>;
   errorMessage: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   name: string;
-  label: string;
+  label?: string;
   staticHolder: string;
   showLabel?: boolean;
   inputStyle?: StyleProp<TextStyle>;

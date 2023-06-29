@@ -31,6 +31,7 @@ export default function StyledControlledTextInput({
       )}
       <ControlledTextInput
         {...props}
+        disabledButton
         renderHelper={renderHelper}
         inputStyle={[
           {

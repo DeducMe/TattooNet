@@ -4,7 +4,7 @@ import {useContext, useState} from 'react';
 
 export default function useFeed() {
   const context = useContext(MainContext);
-  const [feed, setFeed] = useState(null);
+  const [feed, setFeed] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function getFeed() {
@@ -15,9 +15,7 @@ export default function useFeed() {
     });
     setLoading(false);
 
-    console.log(response);
-
-    setFeed(response.feed);
+    setFeed(response.data.feed);
   }
 
   return {getFeed, feed, loading};

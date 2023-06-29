@@ -76,6 +76,11 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     start();
   }, []);
 
+  async function logout() {
+    await AsyncStorage.setItem('token', '');
+    setToken(undefined);
+  }
+
   async function apiRequestContainer({
     call,
     method,
@@ -98,5 +103,5 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     return response;
   }
 
-  return {token, login, register, loading, apiRequestContainer};
+  return {token, login, register, logout, loading, apiRequestContainer};
 }

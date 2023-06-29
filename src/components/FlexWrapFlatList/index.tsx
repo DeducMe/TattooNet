@@ -14,21 +14,16 @@ export default function FlexWrapFlatList({
 }) {
   const styles = makeStyles();
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainer}>
-      <FlatList
-        scrollEnabled={false}
-        style={styles.flatList}
-        numColumns={10}
-        data={Array.from({length: 20})}
-        horizontal={false}
-        renderItem={({item, index}) => {
-          return <ListItem onPress={onPress} />;
-        }}
-        showsHorizontalScrollIndicator={false}></FlatList>
-    </ScrollView>
+    <FlatList
+      scrollEnabled={false}
+      style={styles.flatList}
+      numColumns={10}
+      data={Array.from({length: 20})}
+      horizontal={false}
+      renderItem={({item, index}) => {
+        return <ListItem onPress={onPress} />;
+      }}
+      showsHorizontalScrollIndicator={false}></FlatList>
   );
 }
 
@@ -38,7 +33,8 @@ const makeStyles = makeStyleSheet(theme => ({
     flexWrap: 'wrap',
   },
   flatList: {
+    justifyContent: 'space-between',
     paddingHorizontal: theme.space.s,
-    height: 300 + theme.space.xs * 2,
+    height: 300,
   },
 }));

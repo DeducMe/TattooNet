@@ -84,8 +84,24 @@ function TattooScreen({
             </CustomText>
             <ActionButton
               onPress={() =>
+                navigation.navigate('CompleteTattoo', {
+                  id: item._id,
+                  isMaster:
+                    item.masterProfile._id === context.myProfile.profile._id,
+                })
+              }
+              style={{marginTop: theme.space.l}}
+              roundButton
+              title={
+                item.masterProfile._id === context.myProfile.profile._id
+                  ? 'Complete tattoo'
+                  : 'I have this on me!'
+              }
+            />
+            <ActionButton
+              onPress={() =>
                 navigation.navigate(
-                  item.masterProfile._id === context.profile.profile._id
+                  item.masterProfile._id === context.myProfile.profile._id
                     ? 'Profile'
                     : 'Master',
                   {id: item.masterProfile._id},
@@ -102,7 +118,7 @@ function TattooScreen({
             <ActionButton
               onPress={() =>
                 navigation.navigate(
-                  item.masterProfile._id === context.profile.profile._id
+                  item.masterProfile._id === context.myProfile.profile._id
                     ? 'Profile'
                     : 'Master',
                   {id: item.masterProfile._id},

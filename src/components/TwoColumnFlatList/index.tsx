@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {FlatList} from 'react-native';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import useTheme from 'hooks/useTheme';
@@ -12,10 +12,12 @@ export default function TwoColumnFlatList({
   available,
   marginTabBar,
   data,
+  ListEmptyComponent,
 }: {
   editable?: boolean;
   available?: boolean;
   marginTabBar?: boolean;
+  ListEmptyComponent?: ReactNode;
   data: Tattoo[];
 }) {
   const styles = makeStyles();
@@ -28,6 +30,7 @@ export default function TwoColumnFlatList({
       contentContainerStyle={{
         paddingBottom: marginTabBar ? theme.common.tabNavigationHeight : 0,
       }}
+      ListEmptyComponent={ListEmptyComponent}
       columnWrapperStyle={{justifyContent: 'space-between'}}
       numColumns={2}
       data={data}

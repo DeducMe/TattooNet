@@ -4,6 +4,8 @@ import {ActionButton} from 'components/ActionButton';
 import useTheme from 'hooks/useTheme';
 import {AppContext} from 'providers/AppProvider';
 import {useNavigation} from '@react-navigation/native';
+import CustomText from 'components/CustomText';
+import {ActivityIndicator} from 'react-native';
 
 export default function Available({
   route: {
@@ -18,8 +20,15 @@ export default function Available({
   const data = editable
     ? context.master.myTattoos?.available
     : context.master.tattoos?.available;
+  const loading = editable
+    ? context.master.loading.myTattoos
+    : context.master.loading.tattoos;
 
-  console.log(context.master.myTattoos);
+  if (loading)
+    return (
+      <ActivityIndicator style={{marginTop: theme.space.s}} size={'large'} />
+    );
+
   return (
     <>
       {!!editable && (
@@ -37,7 +46,16 @@ export default function Available({
           title="Add new available tattoo"></ActionButton>
       )}
 
-      <TwoColumnFlatList data={data} editable={editable} available={true} />
+      <TwoColumnFlatList
+        ListEmptyComponent={
+          <CustomText style={{textAlign: 'center'}}>
+            No available tattoos yet...
+          </CustomText>
+        }
+        data={data}
+        editable={editable}
+        available={true}
+      />
     </>
   );
 }

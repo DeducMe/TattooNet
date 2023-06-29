@@ -1,6 +1,6 @@
 import {AppContext} from 'providers/AppProvider';
 import {CurrencyT, MainContext} from 'providers/MainProvider';
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 
 export type Tattoo = {
   _id: string;
@@ -25,12 +25,19 @@ export default function useMaster() {
     master: false,
     tattoos: false,
     myTattoos: false,
+    reviews: false,
   });
 
   const [tattoos, setTattoos] = useState(initialTattoos);
   const [myTattoos, setMyTattoos] = useState(initialTattoos);
+  const [reviews, setReviews] = useState([]);
+  const [myReviews, setMyReviews] = useState([]);
+  useEffect(() => {
+    console.log(loading, 'USE_EFFECT');
+  }, [loading]);
 
   async function getTattoos({id}: {id: string}) {
+    console.log('TATTOOS LOADING');
     setLoading({...loading, tattoos: true});
     const response = await context.auth.apiRequestContainer({
       call: 'tattoos/master',
@@ -44,7 +51,7 @@ export default function useMaster() {
   }
 
   async function getMyTattoos({id}: {id: string}) {
-    setLoading({...loading, myTattoos: true});
+    setLoading({...loading, tattoos: true});
 
     const response = await context.auth.apiRequestContainer({
       call: 'tattoos/master',
@@ -52,23 +59,62 @@ export default function useMaster() {
       body: {id},
     });
 
-    console.log(response);
     if (response.success) setMyTattoos(response.data.tattoos);
 
-    setLoading({...loading, myTattoos: false});
+    setLoading({...loading, tattoos: false});
   }
 
   async function getMaster({id}: {id: string}) {
-    setLoading({...loading, master: false});
+    console.log('ALO getMaster');
+    setLoading({...loading, master: true});
 
     const response = await context.auth.apiRequestContainer({
-      call: 'profile',
-      method: 'GET',
-      body: {id},
+      call: 'profile/search',
+      method: 'POST',
+      body: {_id: id},
     });
-    if (response.success) setMaster(response.data.master);
 
-    setLoading({...loading, master: true});
+    console.log(response);
+
+    if (response.success) setMaster(response.data.profile[0]);
+
+    setLoading({...loading, master: false});
+  }
+
+  async function getReviews({id}: {id: string}) {
+    console.log('ALO getMaster');
+    setLoading({...loading, reviews: true});
+
+    const response = await context.auth.apiRequestContainer({
+      call: 'reviews/master',
+      method: 'POST',
+      body: {_id: id},
+    });
+
+    console.log(response.data.reviews?.length, 'response.data.reviews');
+
+    if (response.success) setReviews(response.data.reviews);
+
+    setLoading({...loading, reviews: false});
+  }
+
+  async function getMyReviews({id}: {id: string}) {
+    setLoading({...loading, reviews: true});
+
+    const response = await context.auth.apiRequestContainer({
+      call: 'reviews/master',
+      method: 'POST',
+      body: {_id: id},
+    });
+
+    console.log(
+      response.data.reviews?.length,
+      'response.data.reviews MY REVIEWS',
+    );
+
+    if (response.success) setMyReviews(response.data.reviews);
+
+    setLoading({...loading, reviews: false});
   }
 
   function nullifyMaster() {
@@ -79,11 +125,15 @@ export default function useMaster() {
   return {
     getMaster,
     getTattoos,
+    getReviews,
     getMyTattoos,
+    getMyReviews,
     nullifyMaster,
     loading,
     master,
     myTattoos,
     tattoos,
+    reviews,
+    myReviews,
   };
 }

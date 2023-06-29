@@ -14,19 +14,18 @@ export default function ListItem({onPress}: {onPress?: () => void}) {
     <PressableStyled
       onPress={onPress}
       style={{
-        marginTop: theme.space.xs,
         borderRadius: theme.space.s,
         ...theme.defaultShadow,
         overflow: 'hidden',
         backgroundColor: theme.colors.background,
-        height: 150,
+        height: 145,
         width,
         marginRight: theme.space.s,
       }}>
       <FastImage
-        style={{height: 150, width}}
+        style={{height: 145, width}}
         source={{
-          uri: `https://picsum.photos/${width}/150`,
+          uri: `https://picsum.photos/${width}/145`,
         }}
       />
     </PressableStyled>

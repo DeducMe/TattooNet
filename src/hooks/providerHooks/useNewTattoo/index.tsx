@@ -40,10 +40,7 @@ export default function useNewTatto() {
     type?: string;
   }) {
     setLoading(true);
-    console.log(
-      {name, price, currency, description, type},
-      ' ------------ Time to update',
-    );
+
     setNewTattoo(
       {
         ...newTattoo,

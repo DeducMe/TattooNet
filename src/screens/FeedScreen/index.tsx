@@ -20,37 +20,43 @@ export default function FeedScreen() {
     context.feed.getFeed();
   }, []);
 
-  if (context.feed.loading) return <FeedSkeleton />;
+  if (context.feed.loading || !context.feed.feed?.length)
+    return <FeedSkeleton />;
 
   return (
     <SafeAreaView>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
-          Top masters
-        </CustomText>
-        <FlatList
-          data={Array.from({length: 6})}
-          style={{
-            paddingHorizontal: theme.space.s,
-          }}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          keyExtractor={(item, index) => `${index}`}
-          renderItem={({item, index}) => {
-            return (
+      <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
+        Top masters
+      </CustomText>
+      <FlatList
+        data={context.feed.feed}
+        contentContainerStyle={
+          {
+            // paddingHorizontal: theme.space.s,
+          }
+        }
+        keyExtractor={(item, index) => `${index}`}
+        renderItem={({item, index}) => {
+          console.log(item._id);
+          return (
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal
+              style={{flexDirection: 'row'}}>
               <PressableStyled
                 onPress={() => {
-                  navigation.navigate('Master', {});
+                  navigation.navigate('Master', {id: item._id});
                 }}
                 style={({pressed}) => [
                   {
                     opacity: pressed ? 0.5 : 1.0,
                     width: 230,
                     height: 300,
-                    marginRight: theme.dimensions.width / 24,
                     marginBottom: theme.space.s,
+                    marginLeft: theme.space.s,
                     backgroundColor: theme.colors.background,
                     borderRadius: theme.space.s,
+                    flexDirection: 'row',
                     ...theme.defaultShadow,
                   },
                 ]}>
@@ -62,7 +68,7 @@ export default function FeedScreen() {
                     borderTopRightRadius: theme.space.s,
                   }}
                   source={{
-                    uri: `https://picsum.photos/180/230`,
+                    uri: item.avatar,
                   }}
                 />
                 <View
@@ -75,7 +81,7 @@ export default function FeedScreen() {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <CustomText h2>Name</CustomText>
+                    <CustomText h2>{item.name}</CustomText>
                     <StarBlock imageSize={15} rating={Number(5)} />
                   </View>
 
@@ -124,13 +130,13 @@ export default function FeedScreen() {
                   </Pressable>
                 </View>
               </PressableStyled>
-            );
-          }}></FlatList>
-        <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
-          Top tattoos
-        </CustomText>
-        <FlexWrapFlatList onPress={() => navigation.navigate('TattooScreen')} />
-      </ScrollView>
+              <FlexWrapFlatList
+                data={item.tattoos}
+                onPress={() => navigation.navigate('TattooScreen')}
+              />
+            </ScrollView>
+          );
+        }}></FlatList>
     </SafeAreaView>
   );
 }
