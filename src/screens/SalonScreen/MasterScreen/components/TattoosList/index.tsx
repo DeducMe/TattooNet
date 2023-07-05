@@ -8,14 +8,7 @@ import Available from './Available';
 import Reviews from './Reviews';
 import {AppContext} from 'providers/AppProvider';
 
-const Tab = createMaterialTopTabNavigator();
-export default function TattoosList({
-  editable,
-  id,
-}: {
-  editable?: boolean;
-  id: string;
-}) {
+function TattoosList({editable, id}: {editable?: boolean; id: string}) {
   const styles = makeStyles();
   const theme = useTheme();
   const context = useContext(AppContext);
@@ -31,6 +24,8 @@ export default function TattoosList({
       context.master.nullifyMaster();
     };
   }, []);
+
+  const Tab = createMaterialTopTabNavigator();
 
   return (
     <Tab.Navigator
@@ -93,3 +88,5 @@ const makeStyles = makeStyleSheet(theme => ({
     textAlign: 'center',
   },
 }));
+
+export default React.memo(TattoosList);

@@ -4,6 +4,7 @@ import {useContext, useState} from 'react';
 
 export default function useTattoo() {
   const context = useContext(MainContext);
+  const appContext = useContext(AppContext);
   const [tattoo, setTattoo] = useState(null);
   const [loading, setLoading] = useState(false);
   async function getTattoo({id}: {id: string}) {
@@ -28,6 +29,7 @@ export default function useTattoo() {
     userProfileId,
     images,
     starRating,
+    masterId,
   }) {
     setLoading(true);
 
@@ -36,6 +38,14 @@ export default function useTattoo() {
       method: 'POST',
       body: {reviewText, _id, userProfileId, images, starRating},
     });
+
+    const isMaster = masterId === appContext.myProfile?.profile?._id;
+
+    if (isMaster) {
+      await appContext.master.getMyTattoos({id: masterId});
+    } else {
+      await appContext.master.getTattoos({id: masterId});
+    }
 
     setLoading(false);
 

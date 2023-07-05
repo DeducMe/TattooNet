@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import useTheme from 'hooks/useTheme';
-import {AppContext} from 'providers/AppProvider';
+import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
 import MasterProfileHeader from 'screens/SalonScreen/MasterScreen/components/MasterProfileHeader';
 import FloatingInfo from 'screens/SalonScreen/MasterScreen/components/FloatingInfo';
 import TattoosList from 'screens/SalonScreen/MasterScreen/components/TattoosList';
@@ -14,14 +14,24 @@ export default function ProfileScreen() {
   const theme = useTheme();
   const stlyes = makeStyles();
   const context = useContext(AppContext);
+  const postContext = useContext(AppPostContextProvider);
 
   useEffect(() => {
-    if (!context.newTattoo.loading) {
+    if (!postContext.newTattoo.loading) {
       context.myProfile.getMe();
     }
-  }, [context.newTattoo.loading]);
+  }, [postContext.newTattoo.loading]);
 
-  if (context.myProfile.loading)
+  const loading = useMemo(
+    () => context.myProfile.loading,
+    [context.myProfile.loading],
+  );
+  const isMaster = useMemo(
+    () => context.myProfile.profile?.type === 'master',
+    [context.myProfile.profile?.type],
+  );
+
+  if (loading)
     return (
       <SafeAreaView style={stlyes.container}>
         <ActivityIndicator size={'large'} />
@@ -30,7 +40,7 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={stlyes.container}>
-      {context.myProfile.profile?.type === 'master' ? (
+      {isMaster ? (
         <>
           <MasterProfileHeader editable />
           <FloatingInfo />

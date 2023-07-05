@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 import TwoColumnFlatList from 'components/TwoColumnFlatList';
 import {ActionButton} from 'components/ActionButton';
 import useTheme from 'hooks/useTheme';
@@ -7,7 +7,7 @@ import {AppContext} from 'providers/AppProvider';
 import CustomText from 'components/CustomText';
 import {ActivityIndicator} from 'react-native';
 
-export default function Portfolio({
+function Portfolio({
   route: {
     params: {editable},
   },
@@ -18,18 +18,25 @@ export default function Portfolio({
   const navigation = useNavigation();
   const context = useContext(AppContext);
 
-  const data = editable
-    ? context.master.myTattoos?.portfolio
-    : context.master.tattoos?.portfolio;
+  const data = useMemo(
+    () =>
+      editable
+        ? context.master.myTattoos.portfolio
+        : context.master.tattoos.portfolio,
+    [context.master.myTattoos.portfolio, context.master.tattoos.portfolio],
+  );
+  const loading = useMemo(
+    () => context.master.loading.tattoos,
+    [context.master.loading.tattoos],
+  );
 
-  const loading = editable
-    ? context.master.loading.myTattoos
-    : context.master.loading.tattoos;
+  console.log(loading);
 
   if (loading)
     return (
       <ActivityIndicator style={{marginTop: theme.space.s}} size={'large'} />
     );
+
   return (
     <>
       {!!editable && (
@@ -49,7 +56,7 @@ export default function Portfolio({
       <TwoColumnFlatList
         ListEmptyComponent={
           <CustomText style={{textAlign: 'center'}}>
-            No available tattoos yet...
+            No completed tattoos yet...
           </CustomText>
         }
         data={data}
@@ -60,3 +67,5 @@ export default function Portfolio({
     </>
   );
 }
+
+export default React.memo(Portfolio);

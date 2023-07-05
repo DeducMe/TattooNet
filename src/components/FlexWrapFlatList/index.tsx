@@ -3,12 +3,12 @@ import React from 'react';
 import ListItem from './ListItem';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 
-export default function FlexWrapFlatList({
+function FlexWrapFlatList({
   data,
   onPress,
 }: {
   data: {
-    image: string;
+    images: string;
   }[];
   onPress: () => void;
 }) {
@@ -17,11 +17,11 @@ export default function FlexWrapFlatList({
     <FlatList
       scrollEnabled={false}
       style={styles.flatList}
-      numColumns={10}
-      data={Array.from({length: 20})}
+      numColumns={data.length / 2}
+      data={data}
       horizontal={false}
       renderItem={({item, index}) => {
-        return <ListItem onPress={onPress} />;
+        return <ListItem image={item.images[0]} onPress={onPress} />;
       }}
       showsHorizontalScrollIndicator={false}></FlatList>
   );
@@ -38,3 +38,5 @@ const makeStyles = makeStyleSheet(theme => ({
     height: 300,
   },
 }));
+
+export default React.memo(FlexWrapFlatList);

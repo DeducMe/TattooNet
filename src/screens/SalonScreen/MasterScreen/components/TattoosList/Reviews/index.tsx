@@ -1,17 +1,19 @@
 import {View, Text, FlatList} from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 import ReviewsBlock from './ReviewsBlock';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {AppContext} from 'providers/AppProvider';
 import CustomText from 'components/CustomText';
 
-export default function Reviews({master}: {master: boolean}) {
+function Reviews({master}: {master: boolean}) {
   const styles = makeStyles();
   const context = useContext(AppContext);
 
-  const data = master ? context.master.myReviews : context.master.reviews;
+  const data = useMemo(
+    () => (master ? context.master.myReviews : context.master.reviews),
+    [context.master.loading.reviews],
+  );
 
-  console.log(data, 'test');
   return (
     <FlatList
       ListEmptyComponent={
@@ -20,7 +22,15 @@ export default function Reviews({master}: {master: boolean}) {
       style={styles.flatList}
       data={data}
       renderItem={({item, index}) => {
-        return <ReviewsBlock />;
+        return (
+          <ReviewsBlock
+            images={item.images}
+            name={item.name}
+            reviewText={item.text}
+            rating={item.rating}
+            date={new Date(item.updatedAt)}
+          />
+        );
       }}></FlatList>
   );
 }
@@ -35,3 +45,5 @@ const makeStyles = makeStyleSheet(theme => ({
     paddingHorizontal: theme.space.s,
   },
 }));
+
+export default React.memo(Reviews);

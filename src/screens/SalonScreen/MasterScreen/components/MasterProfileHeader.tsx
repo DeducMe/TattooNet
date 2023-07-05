@@ -1,5 +1,5 @@
 import {View, Text, Pressable, Image} from 'react-native';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomText from 'components/CustomText';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
@@ -91,13 +91,20 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
     resolver: yupResolver(masterEditable),
   });
 
-  const data = editable ? context.myProfile?.profile : context.master.master;
+  const data = useMemo(
+    () => (editable ? context.myProfile?.profile : context.master.master),
+    [context.myProfile?.loading, context.master.loading.master],
+  );
 
-  const loading = editable ? context.myProfile?.profile : context.master.master;
+  const loading = useMemo(
+    () =>
+      editable ? context.myProfile?.loading : context.master.loading.master,
+    [context.myProfile?.loading, context.master.loading.master],
+  );
 
   return (
     <>
-      <LoadingView loading={loading?.master} style={styles.container}>
+      <LoadingView loading={loading} style={styles.container}>
         <PressableStyled
           disabled={!editable}
           style={{justifyContent: 'center'}}

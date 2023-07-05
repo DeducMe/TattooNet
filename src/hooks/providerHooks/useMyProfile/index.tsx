@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppContext} from 'providers/AppProvider';
 import {MainContext} from 'providers/MainProvider';
-import {useContext, useState} from 'react';
+import {useContext, useMemo, useState} from 'react';
 
 export default function useMyProfile() {
   const context = useContext(MainContext);
@@ -100,13 +100,16 @@ export default function useMyProfile() {
     setProfile({...(profile || {}), email, name, phone});
   }
 
-  return {
-    sendEmail,
-    getMe,
-    updateProfile,
-    updateAvatar,
-    updateAddress,
-    loading,
-    profile,
-  };
+  return useMemo(
+    () => ({
+      sendEmail,
+      getMe,
+      updateProfile,
+      updateAvatar,
+      updateAddress,
+      loading,
+      profile,
+    }),
+    [context],
+  );
 }

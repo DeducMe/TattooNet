@@ -8,7 +8,8 @@ import {ActionButton} from 'components/ActionButton';
 import {useNavigation} from '@react-navigation/native';
 import GalleryList from 'components/GalleryList';
 import {Tattoo} from 'hooks/providerHooks/useMaster';
-import {AppContext} from 'providers/AppProvider';
+import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
+import PressableStyled from 'components/PressableStyled';
 
 function TattooScreen({
   route,
@@ -17,8 +18,28 @@ function TattooScreen({
 }) {
   const {available, item} = route.params || {};
   const context = useContext(AppContext);
+  const postContext = useContext(AppPostContextProvider);
   const navigation = useNavigation();
   const theme = useTheme();
+
+  function completeTattoo() {
+    const isMaster = item.masterProfile._id === context.myProfile.profile._id;
+
+    if (isMaster && !item.reviews?.length)
+      navigation.navigate('CompleteTattoo', {
+        id: item._id,
+        isMaster,
+        masterId: item.masterProfile._id,
+      });
+    else {
+      const body = {
+        _id: item._id,
+        masterId: item.masterProfile._id,
+      };
+
+      postContext.tattoo.submitTattoo(body);
+    }
+  }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -57,15 +78,25 @@ function TattooScreen({
               }}>
               by
             </CustomText>
-            <CustomText
-              bold
-              style={{
-                color: theme.colors.primary,
-                marginLeft: theme.space.xxs,
-                lineHeight: 21,
-              }}>
-              {item.masterProfile?.name}
-            </CustomText>
+            <PressableStyled
+              onPress={() =>
+                navigation.navigate(
+                  item.masterProfile._id === context.myProfile.profile._id
+                    ? 'Profile'
+                    : 'Master',
+                  {id: item.masterProfile._id},
+                )
+              }>
+              <CustomText
+                bold
+                style={{
+                  color: theme.colors.primary,
+                  marginLeft: theme.space.xxs,
+                  lineHeight: 21,
+                }}>
+                {item.masterProfile?.name}
+              </CustomText>
+            </PressableStyled>
           </View>
           <CustomText
             style={{
@@ -76,20 +107,27 @@ function TattooScreen({
           </CustomText>
         </View>
 
-        {available ? (
+        {item.reviews?.map(item => (
+          <ReviewsBlock
+            images={item.images}
+            name={item.name}
+            reviewText={item.text}
+            rating={item.rating}
+            date={new Date(item.updatedAt)}></ReviewsBlock>
+        ))}
+
+        {available && (
           <View
-            style={{justifyContent: 'center', marginTop: theme.space.xxxxl}}>
+            style={{
+              justifyContent: 'center',
+              marginTop: theme.space.xxxxl,
+              marginBottom: theme.space.s,
+            }}>
             <CustomText centered h2>
               This tattoo is available!
             </CustomText>
             <ActionButton
-              onPress={() =>
-                navigation.navigate('CompleteTattoo', {
-                  id: item._id,
-                  isMaster:
-                    item.masterProfile._id === context.myProfile.profile._id,
-                })
-              }
+              onPress={completeTattoo}
               style={{marginTop: theme.space.l}}
               roundButton
               title={
@@ -97,36 +135,6 @@ function TattooScreen({
                   ? 'Complete tattoo'
                   : 'I have this on me!'
               }
-            />
-            <ActionButton
-              onPress={() =>
-                navigation.navigate(
-                  item.masterProfile._id === context.myProfile.profile._id
-                    ? 'Profile'
-                    : 'Master',
-                  {id: item.masterProfile._id},
-                )
-              }
-              style={{marginTop: theme.space.l}}
-              roundButton
-              title="Master"
-            />
-          </View>
-        ) : (
-          <View style={{marginTop: theme.space.s}}>
-            <ReviewsBlock></ReviewsBlock>
-            <ActionButton
-              onPress={() =>
-                navigation.navigate(
-                  item.masterProfile._id === context.myProfile.profile._id
-                    ? 'Profile'
-                    : 'Master',
-                  {id: item.masterProfile._id},
-                )
-              }
-              style={{marginVertical: theme.space.l}}
-              roundButton
-              title="Master"
             />
           </View>
         )}

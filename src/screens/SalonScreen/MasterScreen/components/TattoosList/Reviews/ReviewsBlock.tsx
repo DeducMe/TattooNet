@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, Image, ScrollView, Pressable} from 'react-native';
 import React from 'react';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import PressableStyled from 'components/PressableStyled';
@@ -8,9 +8,18 @@ import IconComponent from 'components/Basic/IconComponent';
 import {format} from 'date-fns';
 import useTheme from 'hooks/useTheme';
 
-export default function ReviewsBlock({
+function ReviewsBlock({
+  images,
   date = new Date(),
+  rating = 5,
+  name = 'John Doe',
   reviewText = 'Example big review of a tattoo and master. Nice and not nice, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias quod placeat doloribus voluptatibus assumenda, eum dolor. Veniam, accusantium, alias corporis numquam neque, dignissimos nemo tempore vel adipisci libero aut iste.',
+}: {
+  images: string[];
+  date?: Date;
+  rating: number;
+  name: string;
+  reviewText: string;
 }) {
   const theme = useTheme();
   const styles = makeStyles();
@@ -19,10 +28,10 @@ export default function ReviewsBlock({
       {/* <CustomText style={{ marginBottom: theme.space.xs }}>{title}</CustomText> */}
       <View style={styles.userInfoBlock}>
         <View style={styles.starNameBlock}>
-          <StarBlock imageSize={15} rating={4} noNumber={true} />
+          <StarBlock imageSize={15} rating={rating} noNumber={true} />
 
           <CustomText numberOfLines={1} style={styles.nameText}>
-            John Doe
+            {name}
           </CustomText>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
@@ -48,6 +57,19 @@ export default function ReviewsBlock({
         }}>
         {reviewText || 'No review message'}
       </CustomText>
+      {!!images?.length && (
+        <ScrollView onStartShouldSetResponder={() => true} horizontal>
+          <Pressable style={{flexDirection: 'row'}}>
+            {images?.map(item => {
+              return (
+                <>
+                  <Image source={{uri: item}} style={styles.image} />
+                </>
+              );
+            })}
+          </Pressable>
+        </ScrollView>
+      )}
     </PressableStyled>
   );
 }
@@ -68,6 +90,13 @@ const makeStyles = makeStyleSheet(theme => ({
     alignItems: 'flex-start',
     width: '100%',
   },
+  image: {
+    marginTop: theme.space.xxs,
+    marginRight: theme.space.s,
+    borderRadius: theme.space.s,
+    width: 100,
+    height: 100,
+  },
   starNameBlock: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -75,3 +104,5 @@ const makeStyles = makeStyleSheet(theme => ({
   },
   nameText: {marginLeft: theme.space.xxs},
 }));
+
+export default React.memo(ReviewsBlock);

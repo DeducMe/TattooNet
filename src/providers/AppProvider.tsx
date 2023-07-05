@@ -40,31 +40,7 @@ export type CityT = {
   country: CountryT;
 };
 
-export interface AppContextT {
-  myProfile: {
-    getMe: () => void;
-    sendEmail: (email: string, text: string) => void;
-    updateAvatar: ({avatar}: {avatar: string}) => void;
-    updateProfile: ({
-      email,
-      phone,
-      name,
-    }: {
-      email: string;
-      phone: string;
-      name: string;
-    }) => void;
-    updateAddress: ({
-      address,
-      location,
-    }: {
-      address: string;
-      location: {longitude: number; latitude: number};
-    }) => void;
-    loading: boolean;
-    profile: any;
-  };
-  feed: {getFeed: () => void; feed: any[]; loading: boolean};
+export interface AppPostContextT {
   tattoo: {
     getTattoo: ({id}: {id: string}) => void;
     nullifyTattoo: () => void;
@@ -82,12 +58,6 @@ export interface AppContextT {
       images: string[];
       starRating: number;
     }) => void;
-  };
-  favorites: {
-    addFavorite: ({type, id}: {type: 'master' | 'tattoo'; id: string}) => void;
-    removeFavorite: ({id}: {id: string}) => void;
-    getFavorites: () => void;
-    favorites: any[];
   };
   newTattoo: {
     addImage: (image: string) => void;
@@ -116,6 +86,41 @@ export interface AppContextT {
     };
     loading: boolean;
   };
+}
+
+export interface AppContextT {
+  myProfile: {
+    getMe: () => void;
+    sendEmail: (email: string, text: string) => void;
+    updateAvatar: ({avatar}: {avatar: string}) => void;
+    updateProfile: ({
+      email,
+      phone,
+      name,
+    }: {
+      email: string;
+      phone: string;
+      name: string;
+    }) => void;
+    updateAddress: ({
+      address,
+      location,
+    }: {
+      address: string;
+      location: {longitude: number; latitude: number};
+    }) => void;
+    loading: boolean;
+    profile: any;
+  };
+  feed: {getFeed: () => void; feed: any[]; loading: boolean};
+
+  favorites: {
+    addFavorite: ({type, id}: {type: 'master' | 'tattoo'; id: string}) => void;
+    removeFavorite: ({id}: {id: string}) => void;
+    getFavorites: () => void;
+    favorites: any[];
+  };
+
   master: {
     getMaster: ({id}: {id: string}) => void;
     getTattoos: ({id}: {id: string}) => void;
@@ -126,7 +131,6 @@ export interface AppContextT {
     loading: {
       master: boolean;
       tattoos: boolean;
-      myTattoos: boolean;
       reviews: boolean;
     };
     master: any;
@@ -163,30 +167,14 @@ export const AppContext = React.createContext<AppContextT>({
     profile: null,
   },
   feed: {getFeed: () => {}, feed: [], loading: false},
-  tattoo: {
-    getTattoo: () => {},
-    nullifyTattoo: () => {},
-    tattoo: null,
-    submitTattoo: () => {},
-  },
+
   favorites: {
     addFavorite: () => {},
     removeFavorite: () => {},
     getFavorites: () => {},
     favorites: [],
   },
-  newTattoo: {
-    addImage: () => {},
-    updateAndSave: () => {},
-    nullify: () => {},
-    deleteImage: () => {},
-    newTattoo: {
-      name: '',
-      images: [],
-      type: 'new',
-    },
-    loading: false,
-  },
+
   profile: {
     getUsers: ({query, page, limit}) => {},
     loading: {
@@ -216,7 +204,30 @@ export const AppContext = React.createContext<AppContextT>({
   },
 });
 
+export const AppPostContextProvider = React.createContext<AppPostContextT>({
+  tattoo: {
+    getTattoo: () => {},
+    nullifyTattoo: () => {},
+    tattoo: null,
+    submitTattoo: () => {},
+  },
+
+  newTattoo: {
+    addImage: () => {},
+    updateAndSave: () => {},
+    nullify: () => {},
+    deleteImage: () => {},
+    newTattoo: {
+      name: '',
+      images: [],
+      type: 'new',
+    },
+    loading: false,
+  },
+});
+
 const {Provider} = AppContext;
+const {Provider: PostProvider} = AppPostContextProvider;
 
 export const AppProvider = props => {
   const myProfile = useMyProfile();
@@ -232,12 +243,10 @@ export const AppProvider = props => {
         profile,
         myProfile,
         feed,
-        tattoo,
         favorites,
-        newTattoo,
         master,
       }}>
-      {props.children}
+      <PostProvider value={{tattoo, newTattoo}}>{props.children}</PostProvider>
     </Provider>
   );
 };

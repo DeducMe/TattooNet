@@ -8,23 +8,23 @@ import {useForm} from 'react-hook-form';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import StarBlock from 'components/StarBlock';
 import {MainContext} from 'providers/MainProvider';
-import {AppContext} from 'providers/AppProvider';
+import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
 
 export default function CompleteTattooScreen({
   route,
 }: {
-  route: {params: {isMaster: boolean; id: string}};
+  route: {params: {isMaster: boolean; id: string; masterId: string}};
 }) {
   const styles = makeStyles();
   const mainContext = useContext(MainContext);
-  const context = useContext(AppContext);
+  const postContext = useContext(AppPostContextProvider);
 
   const [reviewText, setReviewText] = useState('');
   const [opened, setOpened] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [starRating, setStarRating] = useState(0);
-  const {isMaster, id} = route.params || {};
+  const {isMaster, masterId, id} = route.params || {};
 
   function removeImage(index: number) {
     setImages(images.filter((item, i) => i !== index));
@@ -39,18 +39,15 @@ export default function CompleteTattooScreen({
   }
 
   function submitTattoo() {
-    if (!selectedUser?._id && isMaster)
-      return mainContext.toast.showError('Please select user');
-
     const body = {
       reviewText,
       _id: id,
-      userProfileId: selectedUser?._id,
       images,
       starRating,
+      masterId,
     };
 
-    context.tattoo.submitTattoo(body);
+    postContext.tattoo.submitTattoo(body);
   }
   function onOpen(opened: boolean) {
     setOpened(opened);
@@ -73,32 +70,39 @@ export default function CompleteTattooScreen({
             data={images}
           />
 
-          <View style={styles.marginTopPaddingContainer}>
-            <StarBlock
-              noNumber
-              imageSize={40}
-              rating={starRating}
-              onPress={isMaster ? undefined : number => setStarRating(number)}
-            />
-          </View>
-          {isMaster && (
-            <FindUserProfile onOpen={onOpen} onChangeUser={onChangeUser} />
+          {!isMaster && (
+            <View style={styles.marginTopPaddingContainer}>
+              <StarBlock
+                noNumber
+                imageSize={40}
+                rating={starRating}
+                onPress={isMaster ? undefined : number => setStarRating(number)}
+              />
+            </View>
           )}
+          {/* {isMaster && (
+            <FindUserProfile onOpen={onOpen} onChangeUser={onChangeUser} />
+          )} */}
           <View style={styles.paddingContainer}>
-            <StyledControlledTextInput
-              containerStyle={styles.reviewInput}
-              control={control}
-              multiline
-              editable={!isMaster}
-              errorMessage={''}
-              name={'Text'}
-              staticHolder={'Review Text'}
-              onChangeText={text => setReviewText(text)}
-            />
+            {!isMaster && (
+              <StyledControlledTextInput
+                containerStyle={styles.reviewInput}
+                control={control}
+                multiline
+                editable={!isMaster}
+                errorMessage={''}
+                name={'Text'}
+                staticHolder={'Review Text'}
+                onChangeText={text => setReviewText(text)}
+              />
+            )}
 
             <ActionButton
               onPress={submitTattoo}
-              style={{width: '100%'}}
+              style={[
+                {width: '100%'},
+                isMaster && styles.marginTopPaddingContainer,
+              ]}
               roundButton
               title={
                 isMaster ? 'Complete tattoo' : 'Leave review'

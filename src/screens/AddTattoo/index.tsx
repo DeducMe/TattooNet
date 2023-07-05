@@ -1,7 +1,7 @@
 import {View, Text, ScrollView} from 'react-native';
 import React, {useContext, useState} from 'react';
 import GalleryList from 'components/GalleryList';
-import {AppContext} from 'providers/AppProvider';
+import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
 import useTheme from 'hooks/useTheme';
 import ControlledTextInput from 'components/Basic/ControlledInputText';
 import {useForm} from 'react-hook-form';
@@ -18,7 +18,7 @@ export default function AddTattooScreen({
   route: {params: {type: 'completed' | 'available'}};
 }) {
   const {type} = route.params;
-  const context = useContext(AppContext);
+  const context = useContext(AppPostContextProvider);
   const mainContext = useContext(MainContext);
   const [selectedCurrency, setSelectedCurrency] = useState(
     mainContext.currency.currency?.[0]?._id,

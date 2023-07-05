@@ -1,20 +1,28 @@
 import {View, Text} from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import CustomText from 'components/CustomText';
 import StarBlock from 'components/StarBlock';
 import {AppContext} from 'providers/AppProvider';
 import LoadingView from 'components/Basic/LoadingView';
 
-export default function FloatingInfo({master}: {master: boolean}) {
+function FloatingInfo({master}: {master: boolean}) {
   const styles = makeStyles();
   const context = useContext(AppContext);
-  const loading = master ? context.master.loading : context.master.loading;
-  const data = master ? context.master.myTattoos : context.master.tattoos;
+  const loading = useMemo(
+    () => context.master.loading.tattoos && context.master.loading.master,
+    [context.master.loading.tattoos, context.master.loading.master],
+  );
+  const data = useMemo(
+    () => (master ? context.master.myTattoos : context.master.tattoos),
+    [],
+  );
+
+  console.log(context.master.loading);
   return (
     <View style={styles.floatingInfo}>
       <View style={styles.floatingInfoItem}>
-        <LoadingView loading={loading.tattoos} style={styles.floatingInfoItem}>
+        <LoadingView loading={loading} style={styles.floatingInfoItem}>
           <CustomText bold>{data?.portfolio?.length}</CustomText>
         </LoadingView>
         <CustomText style={styles.floatingInfoItemBottomText}>
@@ -23,15 +31,23 @@ export default function FloatingInfo({master}: {master: boolean}) {
       </View>
       <LoadingView
         size="large"
-        loading={loading.tattoos}
+        loading={loading}
         style={styles.floatingInfoItemRating}>
-        <CustomText bold h1>
-          4.5
-        </CustomText>
-        <StarBlock rating={4.5} noNumber imageSize={20} />
+        {context.master.master?.rating && (
+          <>
+            <CustomText bold h1>
+              {context.master.master?.rating}
+            </CustomText>
+            <StarBlock
+              rating={context.master.master?.rating}
+              noNumber
+              imageSize={20}
+            />
+          </>
+        )}
       </LoadingView>
       <View style={styles.floatingInfoItem}>
-        <LoadingView loading={loading.tattoos} style={styles.floatingInfoItem}>
+        <LoadingView loading={loading} style={styles.floatingInfoItem}>
           <CustomText bold>{data?.available?.length}</CustomText>
         </LoadingView>
         <CustomText style={styles.floatingInfoItemBottomText}>
@@ -68,3 +84,5 @@ const makeStyles = makeStyleSheet(theme => ({
     textAlign: 'center',
   },
 }));
+
+export default React.memo(FloatingInfo);

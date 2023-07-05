@@ -1,12 +1,21 @@
 import {AppContext} from 'providers/AppProvider';
 import {CurrencyT, MainContext} from 'providers/MainProvider';
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useMemo, useState} from 'react';
+
+export type Review = {
+  images: string[];
+  text: string;
+  name: string;
+  rating: number;
+  updatedAt: string;
+};
 
 export type Tattoo = {
   _id: string;
   images: string[];
   name: string;
   price: number;
+  reviews: Review[];
   currency: CurrencyT;
   description?: string;
   masterProfile: {name: string; _id: string};
@@ -24,7 +33,6 @@ export default function useMaster() {
   const [loading, setLoading] = useState({
     master: false,
     tattoos: false,
-    myTattoos: false,
     reviews: false,
   });
 
@@ -37,7 +45,6 @@ export default function useMaster() {
   }, [loading]);
 
   async function getTattoos({id}: {id: string}) {
-    console.log('TATTOOS LOADING');
     setLoading({...loading, tattoos: true});
     const response = await context.auth.apiRequestContainer({
       call: 'tattoos/master',
@@ -66,7 +73,7 @@ export default function useMaster() {
 
   async function getMaster({id}: {id: string}) {
     console.log('ALO getMaster');
-    setLoading({...loading, master: true});
+    setLoading({...loading, master: true, tattoos: true});
 
     const response = await context.auth.apiRequestContainer({
       call: 'profile/search',
@@ -74,9 +81,8 @@ export default function useMaster() {
       body: {_id: id},
     });
 
-    console.log(response);
-
-    if (response.success) setMaster(response.data.profile[0]);
+    if (response.success)
+      setMaster(response.data.profile?.[0] || response.data.profile);
 
     setLoading({...loading, master: false});
   }
@@ -91,8 +97,6 @@ export default function useMaster() {
       body: {_id: id},
     });
 
-    console.log(response.data.reviews?.length, 'response.data.reviews');
-
     if (response.success) setReviews(response.data.reviews);
 
     setLoading({...loading, reviews: false});
@@ -106,11 +110,6 @@ export default function useMaster() {
       method: 'POST',
       body: {_id: id},
     });
-
-    console.log(
-      response.data.reviews?.length,
-      'response.data.reviews MY REVIEWS',
-    );
 
     if (response.success) setMyReviews(response.data.reviews);
 

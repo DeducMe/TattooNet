@@ -37,7 +37,8 @@ export default function FeedScreen() {
         }
         keyExtractor={(item, index) => `${index}`}
         renderItem={({item, index}) => {
-          console.log(item._id);
+          console.log(item?.tattoos.length);
+
           return (
             <ScrollView
               showsHorizontalScrollIndicator={false}

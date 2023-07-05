@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 import TwoColumnFlatList from 'components/TwoColumnFlatList';
 import {ActionButton} from 'components/ActionButton';
 import useTheme from 'hooks/useTheme';
@@ -6,8 +6,9 @@ import {AppContext} from 'providers/AppProvider';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from 'components/CustomText';
 import {ActivityIndicator} from 'react-native';
+import LoadingView from 'components/Basic/LoadingView';
 
-export default function Available({
+function Available({
   route: {
     params: {editable},
   },
@@ -17,17 +18,17 @@ export default function Available({
   const navigation = useNavigation();
   const theme = useTheme();
   const context = useContext(AppContext);
-  const data = editable
-    ? context.master.myTattoos?.available
-    : context.master.tattoos?.available;
-  const loading = editable
-    ? context.master.loading.myTattoos
-    : context.master.loading.tattoos;
-
-  if (loading)
-    return (
-      <ActivityIndicator style={{marginTop: theme.space.s}} size={'large'} />
-    );
+  const data = useMemo(
+    () =>
+      editable
+        ? context.master.myTattoos.available
+        : context.master.tattoos.available,
+    [context.master.myTattoos.available, context.master.tattoos.available],
+  );
+  const loading = useMemo(
+    () => context.master.loading.tattoos,
+    [context.master.loading.tattoos],
+  );
 
   return (
     <>
@@ -46,16 +47,20 @@ export default function Available({
           title="Add new available tattoo"></ActionButton>
       )}
 
-      <TwoColumnFlatList
-        ListEmptyComponent={
-          <CustomText style={{textAlign: 'center'}}>
-            No available tattoos yet...
-          </CustomText>
-        }
-        data={data}
-        editable={editable}
-        available={true}
-      />
+      <LoadingView loading={loading}>
+        <TwoColumnFlatList
+          ListEmptyComponent={
+            <CustomText style={{textAlign: 'center'}}>
+              No available tattoos yet...
+            </CustomText>
+          }
+          data={data}
+          editable={editable}
+          available={true}
+        />
+      </LoadingView>
     </>
   );
 }
+
+export default React.memo(Available);
