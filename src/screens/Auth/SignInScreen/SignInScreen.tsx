@@ -18,8 +18,6 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import LinearGradient from 'react-native-linear-gradient';
 import IconComponent from 'components/Basic/IconComponent';
 
-import {AppContext} from '../../../providers/AppProvider';
-import {apiRequest} from '../../../common/config';
 import useTheme from 'hooks/useTheme';
 import {RootStackParamList} from '../../../../App';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';

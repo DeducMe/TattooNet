@@ -1,6 +1,6 @@
 import {View, Text} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {apiRequest} from 'common/config';
+import {apiRequest} from 'common/api';
 import {AppContext, CurrencyT} from 'providers/AppProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

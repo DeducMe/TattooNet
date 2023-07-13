@@ -19,7 +19,6 @@ import {AppContext} from '../../../providers/AppProvider';
 import useTheme from 'hooks/useTheme';
 import {RootStackParamList} from '../../../../App';
 import ControlledTextInput from 'components/Basic/ControlledInputText';
-import {apiRequest} from 'common/config';
 import {MainContext} from 'providers/MainProvider';
 
 export default function SignUpScreen() {

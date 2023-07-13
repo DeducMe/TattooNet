@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {apiRequest} from 'common/config';
+import {apiRequest} from 'common/api';
 import {AppContext} from 'providers/AppProvider';
 import {MainContext} from 'providers/MainProvider';
 import {useContext, useEffect, useState} from 'react';
