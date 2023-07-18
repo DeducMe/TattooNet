@@ -6,6 +6,7 @@ src/common/config.ts
 
 # Xcode
 #
+android/app/src/main/AndroidManifest.xml
 build/
 *.pbxuser
 !default.pbxuser
