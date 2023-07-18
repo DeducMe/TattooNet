@@ -42,13 +42,14 @@ export default function useTattoo() {
     const isMaster = masterId === appContext.myProfile?.profile?._id;
 
     if (isMaster) {
-      await appContext.master.getMyTattoos({id: masterId});
+      await appContext.tattoos.getMyTattoos({id: masterId});
     } else {
-      await appContext.master.getTattoos({id: masterId});
+      await appContext.tattoos.getTattoos({id: masterId});
     }
 
     setLoading(false);
 
+    context.navigation?.goBack();
     context.navigation?.goBack();
   }
 

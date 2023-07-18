@@ -17,7 +17,6 @@ export default function ListItem({
   if (width < 150) width = 150;
   if (width > 450) width = 450;
 
-  console.log(image);
   return (
     <PressableStyled
       onPress={onPress}

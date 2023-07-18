@@ -10,7 +10,7 @@ function FlexWrapFlatList({
   data: {
     images: string;
   }[];
-  onPress: () => void;
+  onPress: (item: {images: string}) => void;
 }) {
   const styles = makeStyles();
   return (
@@ -21,7 +21,9 @@ function FlexWrapFlatList({
       data={data}
       horizontal={false}
       renderItem={({item, index}) => {
-        return <ListItem image={item.images[0]} onPress={onPress} />;
+        return (
+          <ListItem image={item.images[0]} onPress={() => onPress(item)} />
+        );
       }}
       showsHorizontalScrollIndicator={false}></FlatList>
   );

@@ -21,13 +21,13 @@ function Available({
   const data = useMemo(
     () =>
       editable
-        ? context.master.myTattoos.available
-        : context.master.tattoos.available,
-    [context.master.myTattoos.available, context.master.tattoos.available],
+        ? context.tattoos.myTattoos.available
+        : context.tattoos.tattoos.available,
+    [context.tattoos.myTattoos.available, context.tattoos.tattoos.available],
   );
   const loading = useMemo(
-    () => context.master.loading.tattoos,
-    [context.master.loading.tattoos],
+    () => context.tattoos.loading.tattoos,
+    [context.tattoos.loading.tattoos],
   );
 
   return (
@@ -55,6 +55,7 @@ function Available({
             </CustomText>
           }
           data={data}
+          marginTabBar
           editable={editable}
           available={true}
         />

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo} from 'react';
+import React, {Profiler, useContext, useEffect, useMemo} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import useTheme from 'hooks/useTheme';
@@ -43,7 +43,7 @@ export default function ProfileScreen() {
       {isMaster ? (
         <>
           <MasterProfileHeader editable />
-          <FloatingInfo />
+          <FloatingInfo master />
           <TattoosList id={context.myProfile.profile?._id} editable />
         </>
       ) : (

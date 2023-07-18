@@ -5,7 +5,7 @@ import useTheme from 'hooks/useTheme';
 import FastImage from 'react-native-fast-image';
 import PressableStyled from 'components/PressableStyled';
 import {useNavigation} from '@react-navigation/native';
-import {Tattoo} from 'hooks/providerHooks/useMaster';
+import {Tattoo} from 'hooks/providerHooks/useTattoos';
 
 export default function TwoColumnFlatList({
   editable,
@@ -30,6 +30,7 @@ export default function TwoColumnFlatList({
       contentContainerStyle={{
         paddingBottom: marginTabBar ? theme.common.tabNavigationHeight : 0,
       }}
+      showsVerticalScrollIndicator={false}
       ListEmptyComponent={ListEmptyComponent}
       columnWrapperStyle={{justifyContent: 'space-between'}}
       numColumns={2}

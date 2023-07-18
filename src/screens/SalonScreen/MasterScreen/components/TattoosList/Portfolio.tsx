@@ -21,13 +21,13 @@ function Portfolio({
   const data = useMemo(
     () =>
       editable
-        ? context.master.myTattoos.portfolio
-        : context.master.tattoos.portfolio,
-    [context.master.myTattoos.portfolio, context.master.tattoos.portfolio],
+        ? context.tattoos.myTattoos.portfolio
+        : context.tattoos.tattoos.portfolio,
+    [context.tattoos.myTattoos.portfolio, context.tattoos.tattoos.portfolio],
   );
   const loading = useMemo(
-    () => context.master.loading.tattoos,
-    [context.master.loading.tattoos],
+    () => context.tattoos.loading.tattoos,
+    [context.tattoos.loading.tattoos],
   );
 
   console.log(loading);

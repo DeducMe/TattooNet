@@ -25,7 +25,7 @@ function TattooScreen({
   function completeTattoo() {
     const isMaster = item.masterProfile._id === context.myProfile.profile._id;
 
-    if (isMaster && !item.reviews?.length)
+    if (!item.reviews?.length || !isMaster)
       navigation.navigate('CompleteTattoo', {
         id: item._id,
         isMaster,
@@ -107,14 +107,16 @@ function TattooScreen({
           </CustomText>
         </View>
 
-        {item.reviews?.map(item => (
-          <ReviewsBlock
-            images={item.images}
-            name={item.name}
-            reviewText={item.text}
-            rating={item.rating}
-            date={new Date(item.updatedAt)}></ReviewsBlock>
-        ))}
+        {item.reviews?.map(item => {
+          return (
+            <ReviewsBlock
+              images={item.images}
+              name={item.userProfileId?.name}
+              reviewText={item.text}
+              rating={item.rating}
+              date={new Date(item.updatedAt)}></ReviewsBlock>
+          );
+        })}
 
         {available && (
           <View

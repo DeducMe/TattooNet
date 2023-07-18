@@ -47,7 +47,7 @@ export const createFormData = async (photo: any) => {
   return a;
 };
 
-export default function ProfileHeader({editable}: ProfileHeaderProps) {
+function ProfileHeader({editable}: ProfileHeaderProps) {
   const modalizeRef = useRef<Modalize>(null);
   const editableModalizeRef = useRef<Modalize>(null);
   const navigation = useNavigation();
@@ -305,3 +305,5 @@ const makeStyles = makeStyleSheet(theme => ({
     paddingHorizontal: theme.space.xxs,
   },
 }));
+
+export default React.memo(ProfileHeader);

@@ -68,16 +68,6 @@ export default function AddTattooScreen({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      {!context.newTattoo.newTattoo.images?.length && (
-        <>
-          <View
-            style={{
-              backgroundColor: '#000',
-              height: 350,
-              width: theme.dimensions.width,
-            }}></View>
-        </>
-      )}
       <GalleryList
         onRemove={
           context.newTattoo.newTattoo.images?.length ? removeImage : undefined

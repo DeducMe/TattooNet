@@ -1,10 +1,10 @@
 # TattooNet
 
-This project is an open-source app that helps you find a tattoo master in your city and country. It is built using the MERN stack, with a strong connection to a Node.js Express backend that utilizes MongoDB for data storage.
+The TattooNet app is an open-source application designed to help users find tattoo artists in their city and country. It is built using the MERN stack, which includes MongoDB, Express, React native, and Node.js.
 
 ## Project Overview
 
-The TattooNet app is currently a pet project that showcases my experience with React Native. The app allows users to search for tattoo artists in their local area and provides information such as their portfolio, ratings, and contact details.
+The TattooNet is currently a pet project that showcases my experience with React Native. The app allows users to search for tattoo artists in their local area and provides information such as their portfolio, ratings, and contact details.
 
 ## Getting Started
 
@@ -14,6 +14,12 @@ To start the project, follow these steps:
 
    ```
    yarn
+   ```
+
+   and then:
+
+   ```
+   npx pod-install
    ```
 
 2. Create a configuration file by duplicating the `configExample.ts` file located in the `src/common` directory. Rename the duplicated file to `config.ts` and update the necessary configurations inside.

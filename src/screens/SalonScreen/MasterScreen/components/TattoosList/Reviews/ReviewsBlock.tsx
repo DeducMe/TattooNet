@@ -13,7 +13,7 @@ function ReviewsBlock({
   date = new Date(),
   rating = 5,
   name = 'John Doe',
-  reviewText = 'Example big review of a tattoo and master. Nice and not nice, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias quod placeat doloribus voluptatibus assumenda, eum dolor. Veniam, accusantium, alias corporis numquam neque, dignissimos nemo tempore vel adipisci libero aut iste.',
+  reviewText,
 }: {
   images: string[];
   date?: Date;

@@ -12,9 +12,10 @@ import useFeed from 'hooks/providerHooks/useFeed';
 import useTattoo from 'hooks/providerHooks/useTattoo';
 import useFavorites from 'hooks/providerHooks/useFavorites';
 import useNewTatto from 'hooks/providerHooks/useNewTattoo';
-import useMaster from 'hooks/providerHooks/useMaster';
+import useMaster, {Review} from 'hooks/providerHooks/useMaster';
 import useCountry from 'hooks/providerHooks/useCountry';
 import useProfile from 'hooks/providerHooks/useProfile';
+import useTattoos from 'hooks/providerHooks/useTattoos';
 
 export type CurrencyT = {
   _id: string;
@@ -51,12 +52,14 @@ export interface AppPostContextT {
       userProfileId,
       images,
       starRating,
+      masterId,
     }: {
       reviewText: string;
       _id: string;
       userProfileId: string;
       images: string[];
       starRating: number;
+      masterId: string;
     }) => void;
   };
   newTattoo: {
@@ -121,24 +124,32 @@ export interface AppContextT {
     favorites: any[];
   };
 
-  master: {
-    getMaster: ({id}: {id: string}) => void;
+  tattoos: {
     getTattoos: ({id}: {id: string}) => void;
     getMyTattoos: ({id}: {id: string}) => void;
+    nullifyTattoos: () => void;
+
+    loading: {
+      tattoos: boolean;
+    };
+    myTattoos: {available: any[]; portfolio: any[]};
+    tattoos: {available: any[]; portfolio: any[]};
+  };
+
+  master: {
+    getMaster: ({id}: {id: string}) => void;
     getReviews: ({id}: {id: string}) => void;
     getMyReviews: ({id}: {id: string}) => void;
     nullifyMaster: () => void;
     loading: {
       master: boolean;
-      tattoos: boolean;
       reviews: boolean;
     };
     master: any;
-    reviews: any[];
-    myReviews: any[];
-    myTattoos: {available: any[]; portfolio: any[]};
-    tattoos: {available: any[]; portfolio: any[]};
+    reviews: Review[];
+    myReviews: Review[];
   };
+
   profile: {
     getUsers: ({
       query,
@@ -182,10 +193,20 @@ export const AppContext = React.createContext<AppContextT>({
     },
     users: [],
   },
-  master: {
-    getMaster: () => {},
+  tattoos: {
     getTattoos: () => {},
     getMyTattoos: () => {},
+    nullifyTattoos: () => {},
+
+    loading: {
+      tattoos: false,
+    },
+    tattoos: {available: [], portfolio: []},
+    myTattoos: {available: [], portfolio: []},
+  },
+
+  master: {
+    getMaster: () => {},
     nullifyMaster: () => {},
     getReviews: () => {},
     getMyReviews: () => {},
@@ -194,13 +215,9 @@ export const AppContext = React.createContext<AppContextT>({
 
     loading: {
       master: false,
-      tattoos: false,
-      myTattoos: false,
       reviews: false,
     },
     master: {},
-    tattoos: {available: [], portfolio: []},
-    myTattoos: {available: [], portfolio: []},
   },
 });
 
@@ -237,6 +254,8 @@ export const AppProvider = props => {
   const favorites = useFavorites();
   const newTattoo = useNewTatto();
   const master = useMaster();
+  const tattoos = useTattoos();
+
   return (
     <Provider
       value={{
@@ -245,6 +264,7 @@ export const AppProvider = props => {
         feed,
         favorites,
         master,
+        tattoos,
       }}>
       <PostProvider value={{tattoo, newTattoo}}>{props.children}</PostProvider>
     </Provider>

@@ -10,15 +10,14 @@ function FloatingInfo({master}: {master: boolean}) {
   const styles = makeStyles();
   const context = useContext(AppContext);
   const loading = useMemo(
-    () => context.master.loading.tattoos && context.master.loading.master,
-    [context.master.loading.tattoos, context.master.loading.master],
+    () => context.tattoos.loading.tattoos && context.master.loading.master,
+    [context.tattoos.loading.tattoos, context.master.loading.master],
   );
   const data = useMemo(
-    () => (master ? context.master.myTattoos : context.master.tattoos),
+    () => (master ? context.tattoos.myTattoos : context.tattoos.tattoos),
     [],
   );
 
-  console.log(context.master.loading);
   return (
     <View style={styles.floatingInfo}>
       <View style={styles.floatingInfoItem}>

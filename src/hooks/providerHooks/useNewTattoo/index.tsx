@@ -1,10 +1,17 @@
 import useStateWithCallback from 'hooks/useStateWithCallback';
 import {AppContext, AppContextT} from 'providers/AppProvider';
 import {MainContext} from 'providers/MainProvider';
-import {SetStateAction, useContext, useState} from 'react';
+import {
+  SetStateAction,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 
 export default function useNewTatto() {
   const context = useContext(MainContext);
+  const appContext = useContext(AppContext);
 
   const [newTattoo, setNewTattoo] = useStateWithCallback<
     AppContextT['newTattoo']['newTattoo']
@@ -61,6 +68,10 @@ export default function useNewTatto() {
             if (response.success) nullify();
             setLoading(false);
 
+            appContext.tattoos.getMyTattoos({
+              id: appContext.myProfile.profile._id,
+            });
+
             context.navigation?.goBack();
           });
       },
@@ -85,5 +96,14 @@ export default function useNewTatto() {
     );
   }
 
-  return {addImage, updateAndSave, deleteImage, nullify, newTattoo, loading};
+  const result = {
+    addImage: useCallback(addImage, [newTattoo]),
+    updateAndSave: useCallback(updateAndSave, [newTattoo, appContext]),
+    deleteImage: useCallback(deleteImage, [newTattoo]),
+    nullify: useCallback(nullify, []),
+    newTattoo: useMemo(() => newTattoo, [newTattoo]),
+    loading: useMemo(() => loading, [loading]),
+  };
+
+  return useMemo(() => result, [context, result]);
 }

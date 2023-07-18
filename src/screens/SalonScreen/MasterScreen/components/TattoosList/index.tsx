@@ -15,8 +15,8 @@ function TattoosList({editable, id}: {editable?: boolean; id: string}) {
 
   useEffect(() => {
     editable
-      ? context.master.getMyTattoos({id})
-      : context.master.getTattoos({id});
+      ? context.tattoos.getMyTattoos({id})
+      : context.tattoos.getTattoos({id});
     editable
       ? context.master.getMyReviews({id})
       : context.master.getReviews({id});

@@ -21,11 +21,12 @@ function Reviews({master}: {master: boolean}) {
       }
       style={styles.flatList}
       data={data}
+      keyExtractor={item => item._id}
       renderItem={({item, index}) => {
         return (
           <ReviewsBlock
             images={item.images}
-            name={item.name}
+            name={item.userProfileId?.name}
             reviewText={item.text}
             rating={item.rating}
             date={new Date(item.updatedAt)}

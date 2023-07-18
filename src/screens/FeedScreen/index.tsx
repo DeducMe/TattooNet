@@ -133,7 +133,12 @@ export default function FeedScreen() {
               </PressableStyled>
               <FlexWrapFlatList
                 data={item.tattoos}
-                onPress={() => navigation.navigate('TattooScreen')}
+                onPress={item =>
+                  navigation.navigate('TattooScreen', {
+                    item,
+                    available: item.type === 'available',
+                  })
+                }
               />
             </ScrollView>
           );
