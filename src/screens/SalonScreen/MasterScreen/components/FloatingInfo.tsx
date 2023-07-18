@@ -15,7 +15,7 @@ function FloatingInfo({master}: {master: boolean}) {
   );
   const data = useMemo(
     () => (master ? context.tattoos.myTattoos : context.tattoos.tattoos),
-    [],
+    [master ? context.tattoos.myTattoos : context.tattoos.tattoos],
   );
 
   return (

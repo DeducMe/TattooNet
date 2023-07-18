@@ -18,10 +18,12 @@ function TattoosList({editable, id}: {editable?: boolean; id: string}) {
       ? context.tattoos.getMyTattoos({id})
       : context.tattoos.getTattoos({id});
     editable
-      ? context.master.getMyReviews({id})
-      : context.master.getReviews({id});
+      ? context.reviews.getMyReviews({id})
+      : context.reviews.getReviews({id});
     return () => {
       context.master.nullifyMaster();
+      context.tattoos.nullifyTattoos();
+      context.reviews.nullifyReviews();
     };
   }, []);
 

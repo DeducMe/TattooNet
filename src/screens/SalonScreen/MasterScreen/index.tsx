@@ -1,4 +1,4 @@
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, ActivityIndicator} from 'react-native';
 import React, {useContext, useEffect} from 'react';
 import MasterProfileHeader from './components/MasterProfileHeader';
 import FloatingInfo from './components/FloatingInfo';
@@ -15,10 +15,19 @@ export default function MasterScreen({route}: {route: {params: {id: string}}}) {
     context.master.getMaster({id});
   }, []);
 
+  const loading = context.master.loading.master;
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <MasterSkeleton /> */}
-      <MasterProfileHeader />
+      {loading ? (
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          size={'large'}></ActivityIndicator>
+      ) : (
+        <MasterProfileHeader />
+      )}
+
       <FloatingInfo master={false} />
       <TattoosList id={id} />
     </SafeAreaView>
@@ -29,5 +38,9 @@ const makeStyles = makeStyleSheet(theme => ({
   container: {
     flex: 1,
     paddingHorizontal: theme.space.s,
+  },
+  activityIndicator: {
+    height: 108.5,
+    marginVertical: theme.space.xs,
   },
 }));

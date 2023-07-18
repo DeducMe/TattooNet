@@ -27,14 +27,24 @@ allprojects {
      
     configurations.all {
         resolutionStrategy {
-            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+            force "com.facebook.react:react-native:0.71.10" 
         }
     }
    // other code
 }
 
+
+
 subprojects { subproject ->
     if(project['name'] == 'react-native-i18n'){
         project.configurations { compile { } }
+    }
+    afterEvaluate{
+        if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion
+                buildToolsVersion rootProject.ext.buildToolsVersion
+            }
+        }
     }
 }

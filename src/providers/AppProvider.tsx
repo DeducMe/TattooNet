@@ -16,6 +16,7 @@ import useMaster, {Review} from 'hooks/providerHooks/useMaster';
 import useCountry from 'hooks/providerHooks/useCountry';
 import useProfile from 'hooks/providerHooks/useProfile';
 import useTattoos from 'hooks/providerHooks/useTattoos';
+import useReviews from 'hooks/providerHooks/useReviews';
 
 export type CurrencyT = {
   _id: string;
@@ -136,18 +137,26 @@ export interface AppContextT {
     tattoos: {available: any[]; portfolio: any[]};
   };
 
-  master: {
-    getMaster: ({id}: {id: string}) => void;
+  reviews: {
     getReviews: ({id}: {id: string}) => void;
     getMyReviews: ({id}: {id: string}) => void;
+    nullifyReviews: () => void;
+
+    reviews: Review[];
+    myReviews: Review[];
+
+    loading: {
+      reviews: boolean;
+    };
+  };
+
+  master: {
+    getMaster: ({id}: {id: string}) => void;
     nullifyMaster: () => void;
     loading: {
       master: boolean;
-      reviews: boolean;
     };
     master: any;
-    reviews: Review[];
-    myReviews: Review[];
   };
 
   profile: {
@@ -205,17 +214,23 @@ export const AppContext = React.createContext<AppContextT>({
     myTattoos: {available: [], portfolio: []},
   },
 
-  master: {
-    getMaster: () => {},
-    nullifyMaster: () => {},
+  reviews: {
     getReviews: () => {},
     getMyReviews: () => {},
+    nullifyReviews: () => {},
     reviews: [],
     myReviews: [],
 
     loading: {
-      master: false,
       reviews: false,
+    },
+  },
+
+  master: {
+    getMaster: () => {},
+    nullifyMaster: () => {},
+    loading: {
+      master: false,
     },
     master: {},
   },
@@ -254,6 +269,7 @@ export const AppProvider = props => {
   const favorites = useFavorites();
   const newTattoo = useNewTatto();
   const master = useMaster();
+  const reviews = useReviews();
   const tattoos = useTattoos();
 
   return (
@@ -265,6 +281,7 @@ export const AppProvider = props => {
         favorites,
         master,
         tattoos,
+        reviews,
       }}>
       <PostProvider value={{tattoo, newTattoo}}>{props.children}</PostProvider>
     </Provider>

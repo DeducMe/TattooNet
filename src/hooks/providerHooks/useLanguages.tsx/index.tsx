@@ -1,4 +1,3 @@
-import I18n from 'react-native-i18n';
 import {useEffect, useState} from 'react';
 
 export type Language = 'en' | 'ru' | 'fr';
@@ -30,24 +29,12 @@ export const getCountries = (lang: string): Country[] =>
     }),
   );
 
-I18n.fallbacks = true;
-
-I18n.translations = {
-  en: {
-    greeting: 'Hi!',
-  },
-  ru: {
-    greeting: 'Привет!',
-  },
-};
-
 export default function useLanguages() {
   const [locale, setLocale] = useState<Language>('en');
   const [languages, setLanguages] = useState<Country[]>([]);
 
   useEffect(() => {
     setLanguages(getCountries(locale));
-    I18n.locale = locale;
   }, [locale]);
 
   return {languages, setLocale};

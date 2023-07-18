@@ -1,4 +1,4 @@
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, ActivityIndicator} from 'react-native';
 import React, {useContext, useMemo} from 'react';
 import ReviewsBlock from './ReviewsBlock';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
@@ -10,14 +10,20 @@ function Reviews({master}: {master: boolean}) {
   const context = useContext(AppContext);
 
   const data = useMemo(
-    () => (master ? context.master.myReviews : context.master.reviews),
-    [context.master.loading.reviews],
+    () => (master ? context.reviews.myReviews : context.reviews.reviews),
+    [context.reviews.loading.reviews],
   );
 
   return (
     <FlatList
       ListEmptyComponent={
-        <CustomText style={{textAlign: 'center'}}>No reviews yet...</CustomText>
+        context.reviews.loading.reviews ? (
+          <ActivityIndicator size={'large'}></ActivityIndicator>
+        ) : (
+          <CustomText style={{textAlign: 'center'}}>
+            No reviews yet...
+          </CustomText>
+        )
       }
       style={styles.flatList}
       data={data}
