@@ -22,6 +22,12 @@ To start the project, follow these steps:
    npx pod-install
    ```
 
+   on M1 you should use:
+
+   ```
+   arch -x86_64 pod install
+   ```
+
 2. Create a configuration file by duplicating the `configExample.ts` file located in the `src/common` directory. Rename the duplicated file to `config.ts` and update the necessary configurations inside.
 
 3. Run the app on iOS or Android devices using one of the following commands:

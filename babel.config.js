@@ -18,6 +18,7 @@ module.exports = {
           navigators: './src/navigators',
           providers: './src/providers',
           translations: './src/translations',
+          common: './src/common',
         },
       },
     ],

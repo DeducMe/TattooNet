@@ -38,6 +38,8 @@ export interface AppContextT {
       call: string;
       method: string;
       body?: object;
+      headers?: object;
+      noStringify?: boolean;
     }) => any;
   };
   navigation: NavigationProp<ReactNavigation.RootParamList> | null;

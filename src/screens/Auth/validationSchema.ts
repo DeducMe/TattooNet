@@ -11,8 +11,7 @@ export const schema = yup.object().shape({
     .max(16, 'Password is too long')
     .matches(/[a-zA-Z]/, 'Password must contain latin letters')
     .matches(/[0-9]/, 'Password must contain digits'),
-  // name: yup
-  //   .string()
-  //   .required('Name required field')
-  //   .matches(/^[a-zA-Z]*$/, 'Password must contain only latin letters'),
+  name: yup.string(),
+  // .required('Name required field')
+  // .matches(/^[a-zA-Z]*$/, 'Password must contain only latin letters'),
 });

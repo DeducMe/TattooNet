@@ -20,7 +20,7 @@ export default function MasterScreen({route}: {route: {params: {id: string}}}) {
   return (
     <SafeAreaView style={styles.container}>
       {/* <MasterSkeleton /> */}
-      {loading ? (
+      {!!loading ? (
         <ActivityIndicator
           style={styles.activityIndicator}
           size={'large'}></ActivityIndicator>

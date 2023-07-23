@@ -4,9 +4,10 @@ import FastImage from 'react-native-fast-image';
 import useTheme from 'hooks/useTheme';
 import {ActionButton} from 'components/ActionButton';
 import IconComponent from 'components/Basic/IconComponent';
-import {launchImageLibrary} from 'react-native-image-picker';
+// import {launchImageLibrary} from 'react-native-image-picker';
 import {AppContext} from 'providers/AppProvider';
 import {createFormData} from 'screens/SalonScreen/MasterScreen/components/MasterProfileHeader';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 export default function GalleryList({
   data,
@@ -19,14 +20,22 @@ export default function GalleryList({
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   function loadImage() {
-    launchImageLibrary({mediaType: 'photo'}, async response => {
-      if (response && response.assets && response.assets[0]) {
-        const usrphoto = response.assets[0];
-        const image = await createFormData(usrphoto);
-
-        onAdd && onAdd('data:image/jpeg;base64,' + image);
-      }
+    ImageCropPicker.openPicker({
+      width: 300,
+      height: 300,
+      cropperCircleOverlay: true,
+      cropping: true,
+    }).then((image: any) => {
+      onAdd && onAdd(image.data);
     });
+    // launchImageLibrary({mediaType: 'photo'}, async response => {
+    //   if (response && response.assets && response.assets[0]) {
+    //     const usrphoto = response.assets[0];
+    //     const image = await createFormData(usrphoto);
+
+    //     onAdd && onAdd('data:image/jpeg;base64,' + image);
+    //   }
+    // });
   }
 
   function removeImage() {

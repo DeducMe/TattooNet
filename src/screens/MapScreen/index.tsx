@@ -1,4 +1,10 @@
-import {View, Text, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Platform,
+  PermissionsAndroid,
+} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import MapSkeleton from 'components/Skeletons/Map';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -9,6 +15,7 @@ import PressableStyled from 'components/PressableStyled';
 import IconComponent from 'components/Basic/IconComponent';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {useNavigation} from '@react-navigation/native';
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
 export default function MapScreen() {
   const theme = useTheme();
@@ -23,7 +30,18 @@ export default function MapScreen() {
     longitudeDelta: 0.001,
   });
 
-  function goToUserLocation() {
+  async function goToUserLocation() {
+    if (Platform.OS === 'android')
+      try {
+        await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+          interval: 10000,
+          fastInterval: 5000,
+        });
+
+        // do some action after the gps has been activated by the user
+      } catch (error) {
+        console.log(error);
+      }
     Geolocation.getCurrentPosition(pos => {
       const crd = pos.coords;
       const newPosition = {
@@ -42,42 +60,58 @@ export default function MapScreen() {
   }
 
   useEffect(() => {
-    goToUserLocation();
+    async function requestPermissions() {
+      if (Platform.OS === 'ios') {
+        const granted = await Geolocation.requestAuthorization();
+        Geolocation.setRNConfiguration({
+          skipPermissionRequests: false,
+          authorizationLevel: 'whenInUse',
+        });
+        if (granted) {
+          goToUserLocation();
+        }
+      }
+
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+        console.log(granted, 'ALO');
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          goToUserLocation();
+        }
+      }
+    }
+    requestPermissions();
   }, []);
 
   return (
     <SafeAreaView>
-      <PressableStyled style={styles.floatingButton} onPress={goToUserLocation}>
-        <IconComponent
-          color={theme.colors.textColor}
-          size={20}
-          iconSet="FontAwesome5"
-          name="location-arrow"></IconComponent>
-      </PressableStyled>
-      <PressableStyled
-        style={[
-          styles.floatingButton,
-          {
-            bottom:
-              theme.common.tabNavigationHeight +
-              theme.common.tabNavigationInset +
-              50 +
-              theme.space.xs,
-          },
-        ]}
-        onPress={goToFeed}>
-        <IconComponent
-          color={theme.colors.textColor}
-          size={25}
-          iconSet="MaterialIcons"
-          name="filter-list"></IconComponent>
-      </PressableStyled>
+      <View style={styles.floatingContainer}>
+        <PressableStyled
+          style={styles.floatingButton}
+          onPress={goToUserLocation}>
+          <IconComponent
+            color={theme.colors.textColor}
+            size={20}
+            iconSet="FontAwesome5"
+            name="location-arrow"></IconComponent>
+        </PressableStyled>
+        <PressableStyled style={styles.floatingButton} onPress={goToFeed}>
+          <IconComponent
+            color={theme.colors.textColor}
+            size={25}
+            iconSet="MaterialIcons"
+            name="filter-list"></IconComponent>
+        </PressableStyled>
+      </View>
 
       <MapView
         ref={mapRef}
         showsUserLocation={true}
         followsUserLocation={true}
-        showsCompass={true}
+        showsMyLocationButton={false}
+        showsCompass={false}
         scrollEnabled={true}
         zoomEnabled={true}
         pitchEnabled={true}
@@ -92,14 +126,23 @@ export default function MapScreen() {
 }
 
 const makeStyles = makeStyleSheet(theme => ({
-  floatingButton: {
+  floatingContainer: {
     position: 'absolute',
-    bottom: theme.common.tabNavigationHeight + theme.common.tabNavigationInset,
+    bottom:
+      (Platform.OS === 'android'
+        ? theme.common.tabNavigationHeight * 2
+        : theme.common.tabNavigationHeight) + theme.common.tabNavigationInset,
+
     right: theme.space.s,
+    justifyContent: 'center',
+    width: 50,
+    zIndex: 1,
+  },
+  floatingButton: {
     width: 50,
     height: 50,
+    marginBottom: theme.space.s,
     backgroundColor: theme.colors.background,
-    zIndex: 1,
     borderRadius: 25,
     justifyContent: 'center',
   },

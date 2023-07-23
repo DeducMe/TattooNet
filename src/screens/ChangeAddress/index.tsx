@@ -24,7 +24,7 @@ import {AppContext, CityT} from 'providers/AppProvider';
 import {config} from 'common/config';
 import {useNavigation} from '@react-navigation/native';
 
-Geocoder.init('AIzaSyC0sNPvGP7hcw5OJdUwyMDQueBpaXbDlbM');
+Geocoder.init(config.geocoderKey);
 
 export default function ChangeAddress() {
   const mapRef = useRef<MapView>(null);
@@ -176,7 +176,6 @@ export default function ChangeAddress() {
   });
 
   async function checkAddress(payload: any) {
-    console.log(payload);
     const {
       country_code,
       state,
@@ -207,12 +206,13 @@ export default function ChangeAddress() {
     if (addressString) searchString += `, ${addressString}`;
 
     await checkAddress(payload);
-    await appContext.profile.updateAddress({
+    console.log(appContext.myProfile.updateAddress);
+    await appContext.myProfile.updateAddress({
       address: searchString,
       location: marker,
     });
 
-    navigation.goBack();
+    // navigation.goBack();
   }
 
   function chooseCity(item: CityT) {

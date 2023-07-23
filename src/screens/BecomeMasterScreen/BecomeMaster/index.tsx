@@ -32,10 +32,13 @@ export default function BecomeMaster() {
 
   useEffect(() => {
     async function start() {
-      setEmailSend((await AsyncStorage.getItem('emailSend')) || '');
+      const emailSend = (await AsyncStorage.getItem('emailSend')) || '';
+      setEmailSend(emailSend);
+
+      console.log(context.myProfile?.profile?.email || emailSend);
+      setValue('email', context.myProfile.profile.email || emailSend);
     }
-    // get me
-    // context.myProfile.getMe();
+
     start();
   }, []);
 
@@ -43,6 +46,7 @@ export default function BecomeMaster() {
     control,
     handleSubmit,
     formState: {errors},
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });

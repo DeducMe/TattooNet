@@ -1,5 +1,11 @@
 import useAuth, {Token} from 'hooks/providerHooks/useAuth';
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import useCurrency from 'hooks/providerHooks/useCurrency';
 import useLanguages, {
   Country,
@@ -12,11 +18,11 @@ import useFeed from 'hooks/providerHooks/useFeed';
 import useTattoo from 'hooks/providerHooks/useTattoo';
 import useFavorites from 'hooks/providerHooks/useFavorites';
 import useNewTatto from 'hooks/providerHooks/useNewTattoo';
-import useMaster, {Review} from 'hooks/providerHooks/useMaster';
-import useCountry from 'hooks/providerHooks/useCountry';
 import useProfile from 'hooks/providerHooks/useProfile';
 import useTattoos from 'hooks/providerHooks/useTattoos';
-import useReviews from 'hooks/providerHooks/useReviews';
+import useReviews, {Review} from 'hooks/providerHooks/useReviews';
+import {MainContext} from './MainProvider';
+import useMaster from 'hooks/providerHooks/useMaster';
 
 export type CurrencyT = {
   _id: string;
@@ -176,7 +182,7 @@ export interface AppContextT {
   };
 }
 
-export const AppContext = React.createContext<AppContextT>({
+const AppContextInitialValue = {
   myProfile: {
     getMe: () => {},
     sendEmail: () => {},
@@ -234,7 +240,11 @@ export const AppContext = React.createContext<AppContextT>({
     },
     master: {},
   },
-});
+};
+
+export const AppContext = React.createContext<AppContextT>(
+  AppContextInitialValue,
+);
 
 export const AppPostContextProvider = React.createContext<AppPostContextT>({
   tattoo: {
@@ -262,28 +272,25 @@ const {Provider} = AppContext;
 const {Provider: PostProvider} = AppPostContextProvider;
 
 export const AppProvider = props => {
-  const myProfile = useMyProfile();
-  const profile = useProfile();
-  const feed = useFeed();
-  const tattoo = useTattoo();
-  const favorites = useFavorites();
-  const newTattoo = useNewTatto();
-  const master = useMaster();
-  const reviews = useReviews();
-  const tattoos = useTattoos();
+  const mainContext = useContext(MainContext);
+  const providerValue = {
+    profile: useProfile(),
+    myProfile: useMyProfile(),
+    feed: useFeed(),
+    favorites: useFavorites(),
+    master: useMaster(),
+    reviews: useReviews(),
+    tattoos: useTattoos(),
+  };
+
+  const postProviderValue = {
+    newTattoo: useNewTatto(),
+    tattoo: useTattoo(),
+  };
 
   return (
-    <Provider
-      value={{
-        profile,
-        myProfile,
-        feed,
-        favorites,
-        master,
-        tattoos,
-        reviews,
-      }}>
-      <PostProvider value={{tattoo, newTattoo}}>{props.children}</PostProvider>
+    <Provider value={providerValue}>
+      <PostProvider value={postProviderValue}>{props.children}</PostProvider>
     </Provider>
   );
 };

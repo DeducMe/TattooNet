@@ -13,6 +13,7 @@ export default function useFeed() {
       call: 'feed',
       method: 'GET',
     });
+
     setLoading(false);
 
     setFeed(response.data.feed);

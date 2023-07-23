@@ -1,5 +1,5 @@
 import {View, Text, Pressable, Image} from 'react-native';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomText from 'components/CustomText';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
@@ -17,13 +17,14 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import PhoneCodePicker from 'components/PhoneCodePicker';
 import Separator from 'components/Basic/Separator';
 import {AppContext} from 'providers/AppProvider';
-import {launchImageLibrary} from 'react-native-image-picker';
+
 import {Platform} from 'react-native';
 import RNFS from 'react-native-fs';
 import Gravatar from 'components/Gravatar';
 import {schema} from '../validationSchema';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-
+import ProfileDataForm from 'components/ProfileDataForm';
+import ImageCropPicker from 'react-native-image-crop-picker';
 export type ProfileHeaderProps = {
   editable?: boolean;
 };
@@ -41,7 +42,6 @@ export const createFormData = async (photo: any) => {
       type: 'error',
     });
     return null;
-    console.log(e.message, 'errr');
   });
 
   return a;
@@ -55,8 +55,6 @@ function ProfileHeader({editable}: ProfileHeaderProps) {
   const theme = useTheme();
   const context = useContext(AppContext);
   const [favorite, setFavorite] = useState(false);
-  const [phoneCodeModalVisible, setPhoneCodeModalVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>('+7');
 
   // useEffect(() => {
   //   if (modalizeRef.current) {
@@ -65,17 +63,17 @@ function ProfileHeader({editable}: ProfileHeaderProps) {
   // }, [modalizeRef.current]);
 
   function loadAvatar() {
-    launchImageLibrary({mediaType: 'photo'}, async response => {
-      if (response && response.assets && response.assets[0]) {
-        const usrphoto = response.assets[0];
+    ImageCropPicker.openPicker({
+      width: 300,
+      height: 300,
+      cropperCircleOverlay: true,
+      cropping: true,
+    }).then((image: any) => {
+      console.log(image);
 
-        const avatar = await createFormData(usrphoto);
-        if (!avatar) return;
-
-        context.myProfile.updateAvatar({
-          avatar,
-        });
-      }
+      context.myProfile.updateAvatar({
+        avatar: image,
+      });
     });
   }
 
@@ -83,22 +81,9 @@ function ProfileHeader({editable}: ProfileHeaderProps) {
     editableModalizeRef.current?.open();
   }
 
-  function submitInfo(payload: any) {
-    const {email, phone, name} = payload || {};
-    context.myProfile.updateProfile({
-      email,
-      phone,
-      name,
-    });
+  function onSave() {
+    editableModalizeRef.current?.close();
   }
-
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
 
   return (
     <>
@@ -122,7 +107,7 @@ function ProfileHeader({editable}: ProfileHeaderProps) {
           <CustomText h1>
             {context.myProfile.profile?.name || 'Name'}
           </CustomText>
-          <CustomText>
+          <CustomText numberOfLines={2}>
             {context.myProfile.profile?.address || 'Address'}
           </CustomText>
           {editable && (
@@ -156,121 +141,9 @@ function ProfileHeader({editable}: ProfileHeaderProps) {
           </PressableStyled>
         )}
       </View>
-      <BottomSheet modalizeRef={modalizeRef}>
-        <View style={styles.bottomSheetContainer}>
-          <PressableStyled>
-            <CustomText>phone number</CustomText>
-          </PressableStyled>
-          {/* <SocialButtons
-            data={[
-              {type: 'facebook', link: 'facebook.com'},
-              {type: 'vk', link: 'vk.com'},
-            ]}
-          /> */}
-        </View>
-      </BottomSheet>
 
       <BottomSheet modalHeight={500} modalizeRef={editableModalizeRef}>
-        <View
-          style={[
-            styles.bottomSheetContainer,
-            {height: 500, justifyContent: 'space-between'},
-          ]}>
-          <View
-            style={{
-              marginTop: theme.space.xs,
-            }}>
-            <StyledControlledTextInput
-              containerStyle={{marginBottom: theme.space.xs}}
-              staticHolder="Name"
-              errorMessage={errors.email?.message || ''}
-              control={control}
-              name="name"
-              label="Name"
-            />
-
-            <StyledControlledTextInput
-              containerStyle={{marginBottom: theme.space.xs}}
-              staticHolder="Email"
-              errorMessage={errors.email?.message || ''}
-              control={control}
-              name="email"
-              label="Email"
-            />
-            <View>
-              <CustomText>Phone</CustomText>
-              <View style={{flexDirection: 'row'}}>
-                <View>
-                  <PressableStyled
-                    style={{
-                      width: 50,
-                      height: 50,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    onPress={() => setPhoneCodeModalVisible(true)}>
-                    <View
-                      style={{
-                        width: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: 50,
-                        backgroundColor: 'rgba(128, 128, 128, 0.1)',
-                        borderRadius: theme.space.s,
-                      }}>
-                      <CustomText>{selectedCountry}</CustomText>
-                    </View>
-                    <PhoneCodePicker
-                      visible={phoneCodeModalVisible}
-                      onDismiss={() => setPhoneCodeModalVisible(false)}
-                      onChooseCountry={country => {
-                        setSelectedCountry(country);
-                        // setCountryCode && setCountryCode(country);
-                      }}
-                    />
-                  </PressableStyled>
-                </View>
-
-                <StyledControlledTextInput
-                  containerStyle={{
-                    marginLeft: theme.space.s,
-                    flex: 1,
-                  }}
-                  style={{
-                    height: 30,
-                    width: '100%',
-                    alignItems: 'center',
-                  }}
-                  inputStyle={{
-                    height: 50,
-                  }}
-                  hideTitle
-                  staticHolder="Phone"
-                  errorMessage={errors.phone?.message || ''}
-                  control={control}
-                  name="phone"
-                  label="Phone"
-                />
-              </View>
-            </View>
-            {/* <SocialButtons
-              data={[
-                {type: 'facebook', link: 'facebook.com'},
-                {type: 'vk', link: 'vk.com'},
-              ]}
-            /> */}
-          </View>
-
-          <ActionButton
-            style={{
-              marginBottom: theme.common.tabNavigationHeight + theme.space.xxxl,
-              alignSelf: 'flex-end',
-              width: '100%',
-            }}
-            roundButton
-            onPress={handleSubmit(submitInfo)}
-            title={'Save'}></ActionButton>
-        </View>
+        <ProfileDataForm onSave={onSave}></ProfileDataForm>
       </BottomSheet>
     </>
   );

@@ -20,6 +20,7 @@ import useTheme from 'hooks/useTheme';
 import {RootStackParamList} from '../../../../App';
 import ControlledTextInput from 'components/Basic/ControlledInputText';
 import {MainContext} from 'providers/MainProvider';
+import {ActionButton} from 'components/ActionButton';
 
 export default function SignUpScreen() {
   const theme = useTheme();
@@ -69,11 +70,13 @@ export default function SignUpScreen() {
                 : theme.colors.backgroundDarker,
             },
           ]}>
-          <TextInput
-            onChangeText={text => setName(text)}
+          <ControlledTextInput
+            control={control}
+            name="name"
+            label="name"
             keyboardType={'default'}
-            placeholder={'Name'}
-            value={name}
+            errorMessage={''}
+            staticHolder={'Name'}
           />
         </View>
         <View style={styles.errorView}>
@@ -162,18 +165,18 @@ export default function SignUpScreen() {
             </Text>
           )}
         </View>
-        <TouchableOpacity
+
+        <ActionButton
+          loading={context.auth.loading}
           onPress={handleSubmit(onSubmit)}
-          style={styles.signInButton}>
-          <Text
-            style={{
-              fontSize: theme.fontSizes.large,
-              color: theme.colors.textColor,
-              fontWeight: 'bold',
-            }}>
-            Sign Up
-          </Text>
-        </TouchableOpacity>
+          style={styles.signInButton}
+          title="Sign Up"
+          textStyle={{
+            fontSize: theme.fontSizes.large,
+            color: '#fff',
+            fontWeight: theme.fontWeights.bold,
+          }}
+        />
       </View>
     </LinearGradient>
   );
@@ -208,21 +211,14 @@ const makeStyles = (theme: any) =>
       borderBottomColor: theme.colors.backgroundDarker,
     },
     signInButton: {
-      backgroundColor: theme.colors.PRIMARY,
+      backgroundColor: theme.colors.primary,
       alignItems: 'center',
       justifyContent: 'center',
       height: 50,
       width: '100%',
       borderRadius: 8,
       marginTop: 32,
-      shadowColor: theme.colors.PRIMARY,
-      shadowOffset: {
-        width: 0,
-        height: 4,
-      },
-      shadowOpacity: 0.36,
-      shadowRadius: 6.68,
-      elevation: 12,
+      ...theme.defaultShadow,
     },
     forgotPasswordView: {
       alignSelf: 'flex-end',

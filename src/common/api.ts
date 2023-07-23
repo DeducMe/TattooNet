@@ -5,16 +5,19 @@ export const apiRequest = async (
   path: string,
   method: string,
   body?: any,
+  headers?: any,
   token?: string | any,
+  noStringify?: boolean,
 ) => {
   const response = await fetch(`${URL}${path}`, {
     method,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: '*/*',
+      'accept-encoding': '*/*',
+      ...(headers ? headers : {'Content-Type': 'application/json'}),
       ...(token ? {Authorization: token} : {}),
     },
-    ...(!!body ? {body: JSON.stringify(body)} : {}),
+    ...(!!body ? (noStringify ? {body} : {body: JSON.stringify(body)}) : {}),
   });
 
   let errorMessage = '';

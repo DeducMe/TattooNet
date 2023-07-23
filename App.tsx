@@ -32,6 +32,7 @@ function App(): JSX.Element {
 
   //   checkFirstTime();
   // }, []);
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>

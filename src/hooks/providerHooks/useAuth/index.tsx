@@ -35,8 +35,9 @@ export default function useAuth(props?: {tokenProp?: Token}) {
           : '',
       );
     }
-    setToken(reg.token);
     await AsyncStorage.setItem('token', reg.token);
+
+    setToken(reg.token);
   }
 
   async function login(payload) {
@@ -61,8 +62,9 @@ export default function useAuth(props?: {tokenProp?: Token}) {
           : '',
       );
     }
-    setToken(auth.token);
     await AsyncStorage.setItem('token', auth.token);
+
+    setToken(auth.token);
   }
 
   useEffect(() => {
@@ -85,14 +87,27 @@ export default function useAuth(props?: {tokenProp?: Token}) {
     call,
     method,
     body,
+    headers,
+    noStringify,
   }: {
     call: string;
     method: string;
     body?: object;
+    headers?: object;
+    noStringify?: boolean;
   }) {
     let response;
+    const asyncToken = await AsyncStorage.getItem('token');
+    console.log(asyncToken, 'asyncToken');
     try {
-      response = await apiRequest(call, method, body, token);
+      response = await apiRequest(
+        call,
+        method,
+        body,
+        headers,
+        asyncToken,
+        noStringify,
+      );
     } catch ({message}: any) {
       context.toast.showError(message || `Api error in ${call}`);
       console.log(message, 'API ERROR CHECK in ', call);

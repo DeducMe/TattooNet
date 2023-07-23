@@ -18,11 +18,11 @@ import {masterEditable} from './validationSchema';
 import PhoneCodePicker from 'components/PhoneCodePicker';
 import Separator from 'components/Basic/Separator';
 import {AppContext} from 'providers/AppProvider';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {Platform} from 'react-native';
 import RNFS from 'react-native-fs';
 import Gravatar from 'components/Gravatar';
 import LoadingView from 'components/Basic/LoadingView';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 export type MasterProfileHeaderProps = {
   editable?: boolean;
@@ -57,16 +57,15 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
   // }, [modalizeRef.current]);
 
   function loadAvatar() {
-    launchImageLibrary({mediaType: 'photo'}, async response => {
-      if (response && response.assets && response.assets[0]) {
-        const usrphoto = response.assets[0];
-        const avatar = await createFormData(usrphoto);
-        if (!avatar) return;
-
-        context.myProfile.updateAvatar({
-          avatar,
-        });
-      }
+    ImageCropPicker.openPicker({
+      width: 300,
+      height: 300,
+      cropperCircleOverlay: true,
+      cropping: true,
+    }).then((image: any) => {
+      context.myProfile.updateAvatar({
+        avatar: image,
+      });
     });
   }
 

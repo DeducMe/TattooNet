@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {bufferToBase64String} from 'common/function';
 import {AppContext} from 'providers/AppProvider';
 import {MainContext} from 'providers/MainProvider';
-import {useContext, useMemo, useState} from 'react';
+import {useCallback, useContext, useMemo, useState} from 'react';
+import {Platform} from 'react-native';
 
 export default function useMyProfile() {
   const context = useContext(MainContext);
@@ -27,6 +29,11 @@ export default function useMyProfile() {
       method: 'GET',
     });
 
+    if (response.data.profile.avatar?.imageObject?.[0]?.data?.data)
+      response.data.profile.avatar = `data:image/jpeg;base64,${bufferToBase64String(
+        response.data.profile.avatar.imageObject[0].data.data,
+      )}`;
+
     if (!response.success) return context.toast.showError('get profile error');
 
     setLoading(false);
@@ -34,9 +41,12 @@ export default function useMyProfile() {
   }
 
   async function updateAddress({address, location}) {
+    console.log({address, location});
     setLoading(true);
+
+    console.log('updateAddress');
     try {
-      await context.auth.apiRequestContainer({
+      const response = await context.auth.apiRequestContainer({
         call: 'profile',
         method: 'PUT',
         body: {
@@ -47,7 +57,11 @@ export default function useMyProfile() {
           },
         },
       });
-    } catch {
+
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+
       return setLoading(false);
     }
 
@@ -66,13 +80,26 @@ export default function useMyProfile() {
   async function updateAvatar({avatar}) {
     setLoading(true);
     let a;
+
+    const file = {
+      uri: avatar.path, // e.g. 'file:///path/to/file/image123.jpg'
+      name: avatar.filename, // e.g. 'image123.jpg',
+      type: avatar.mime, // e.g. 'image/jpg'
+    };
+
+    console.log(file);
+    const data = new FormData();
+    data.append('image', file);
+
     try {
       a = await context.auth.apiRequestContainer({
         call: 'profile',
-        method: 'PUT',
-        body: {
-          avatar: 'data:image/jpeg;base64,' + avatar,
+        method: 'POST',
+        body: data,
+        headers: {
+          'Content-Type': `multipart/form-data; `,
         },
+        noStringify: true,
       });
     } catch {
       setLoading(false);
@@ -80,7 +107,7 @@ export default function useMyProfile() {
     setLoading(false);
     setProfile({
       ...(profile || {}),
-      avatar: 'data:image/jpeg;base64,' + avatar,
+      avatar: avatar.path,
     });
   }
 
@@ -96,20 +123,19 @@ export default function useMyProfile() {
       },
     });
 
+    console.log(response);
+
     setLoading(false);
     setProfile({...(profile || {}), email, name, phone});
   }
 
-  return useMemo(
-    () => ({
-      sendEmail,
-      getMe,
-      updateProfile,
-      updateAvatar,
-      updateAddress,
-      loading,
-      profile,
-    }),
-    [context],
-  );
+  return {
+    sendEmail: useCallback(sendEmail, []),
+    getMe: useCallback(getMe, []),
+    updateProfile: useCallback(updateProfile, [profile]),
+    updateAvatar: useCallback(updateAvatar, [profile]),
+    updateAddress: useCallback(updateAddress, [profile]),
+    loading: useMemo(() => loading, [loading]),
+    profile: useMemo(() => profile, [profile]),
+  };
 }

@@ -17,8 +17,10 @@ export default function FeedScreen() {
   const context = useContext(AppContext);
 
   useEffect(() => {
-    context.feed.getFeed();
+    if (!context.feed.feed?.length) context.feed.getFeed();
   }, []);
+
+  console.log(context.feed.feed);
 
   if (context.feed.loading || !context.feed.feed?.length)
     return <FeedSkeleton />;
@@ -30,14 +32,9 @@ export default function FeedScreen() {
       </CustomText>
       <FlatList
         data={context.feed.feed}
-        contentContainerStyle={
-          {
-            // paddingHorizontal: theme.space.s,
-          }
-        }
         keyExtractor={(item, index) => `${index}`}
         renderItem={({item, index}) => {
-          console.log(item?.tattoos.length);
+          console.log(item);
 
           return (
             <ScrollView
@@ -64,7 +61,7 @@ export default function FeedScreen() {
                 <FastImage
                   style={{
                     height: 180,
-                    width: '100%',
+                    width: 230,
                     borderTopLeftRadius: theme.space.s,
                     borderTopRightRadius: theme.space.s,
                   }}
@@ -83,7 +80,12 @@ export default function FeedScreen() {
                       justifyContent: 'space-between',
                     }}>
                     <CustomText h2>{item.name}</CustomText>
-                    <StarBlock imageSize={15} rating={Number(5)} />
+                    {!!item.rating && (
+                      <StarBlock
+                        imageSize={15}
+                        rating={Number(item?.rating || 5)}
+                      />
+                    )}
                   </View>
 
                   <View
@@ -114,20 +116,9 @@ export default function FeedScreen() {
                       }}>
                       <CustomText>some tag</CustomText>
                     </View>
-                    <View
-                      style={{
-                        borderRadius: theme.space.xs,
-                        borderWidth: 1,
-                        marginRight: theme.space.xs,
-                        paddingHorizontal: theme.space.xxs,
-                        paddingVertical: theme.space.xxxs,
-                        marginBottom: theme.space.xxxs,
-                      }}>
-                      <CustomText>some tag</CustomText>
-                    </View>
                   </View>
                   <Pressable>
-                    <CustomText grayed>address here</CustomText>
+                    <CustomText grayed>{item?.address}</CustomText>
                   </Pressable>
                 </View>
               </PressableStyled>
