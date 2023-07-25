@@ -10,20 +10,23 @@ import StarBlock from 'components/StarBlock';
 import PressableStyled from 'components/PressableStyled';
 import {useNavigation} from '@react-navigation/native';
 import {AppContext} from 'providers/AppProvider';
+import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 
 export default function FeedScreen() {
   const theme = useTheme();
   const navigation = useNavigation();
   const context = useContext(AppContext);
 
+  const styles = makeStyles();
+
   useEffect(() => {
     if (!context.feed.feed?.length) context.feed.getFeed();
   }, []);
 
-  console.log(context.feed.feed);
-
   if (context.feed.loading || !context.feed.feed?.length)
     return <FeedSkeleton />;
+
+  console.log('render profile');
 
   return (
     <SafeAreaView>
@@ -34,8 +37,6 @@ export default function FeedScreen() {
         data={context.feed.feed}
         keyExtractor={(item, index) => `${index}`}
         renderItem={({item, index}) => {
-          console.log(item);
-
           return (
             <ScrollView
               showsHorizontalScrollIndicator={false}
@@ -94,26 +95,10 @@ export default function FeedScreen() {
                       flexWrap: 'wrap',
                       marginTop: theme.space.xs,
                     }}>
-                    <View
-                      style={{
-                        borderRadius: theme.space.xs,
-                        borderWidth: 1,
-                        marginRight: theme.space.xs,
-                        paddingHorizontal: theme.space.xxs,
-                        paddingVertical: theme.space.xxxs,
-                        marginBottom: theme.space.xxxs,
-                      }}>
+                    <View style={styles.tagStyle}>
                       <CustomText>some tag</CustomText>
                     </View>
-                    <View
-                      style={{
-                        borderRadius: theme.space.xs,
-                        borderWidth: 1,
-                        marginRight: theme.space.xs,
-                        paddingHorizontal: theme.space.xxs,
-                        paddingVertical: theme.space.xxxs,
-                        marginBottom: theme.space.xxxs,
-                      }}>
+                    <View style={styles.tagStyle}>
                       <CustomText>some tag</CustomText>
                     </View>
                   </View>
@@ -137,3 +122,14 @@ export default function FeedScreen() {
     </SafeAreaView>
   );
 }
+
+const makeStyles = makeStyleSheet(theme => ({
+  tagStyle: {
+    borderRadius: theme.space.xs,
+    borderWidth: 1,
+    marginRight: theme.space.xs,
+    paddingHorizontal: theme.space.xxs,
+    paddingVertical: theme.space.xxxs,
+    marginBottom: theme.space.xxxs,
+  },
+}));

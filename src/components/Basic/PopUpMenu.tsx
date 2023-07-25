@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import ImagePicker from 'react-native-image-crop-picker';
 import IconComponent from './IconComponent';
 import {IconPack} from 'common/getIcon';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 // TODO этот компонент точно в папку профиля и также переименуй чтобы было ясно что эта штука меняет аватар
 
@@ -23,26 +23,25 @@ export default function PopUpMenu() {
   const [avatar, setAvatar] = useState('');
 
   const selectImage = () => {
-    ImagePicker.openPicker({
+    ImageCropPicker.openPicker({
       width: 100,
       height: 100,
       cropperCircleOverlay: true,
       cropping: true,
-      includeBase64: true,
-    }).then((image: any) => {
-      setAvatar('data:image/jpeg;base64,' + image.data);
+    }).then(image => {
+      setAvatar(image.path);
     });
   };
 
   const openCamera = () => {
-    ImagePicker.openCamera({
+    ImageCropPicker.openCamera({
       width: 100,
       height: 100,
       cropperCircleOverlay: true,
       cropping: true,
       includeBase64: true,
     }).then((image: any) => {
-      setAvatar('data:image/jpeg;base64,' + image.data);
+      setAvatar('data:image/jpeg;base64,' + image);
     });
   };
 

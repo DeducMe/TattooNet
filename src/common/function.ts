@@ -58,3 +58,25 @@ export function bufferToBase64String(arrayBuffer: number[]) {
     ),
   );
 }
+
+export function makeImagesFromResponseBase64(imagesObj: any, isArray: boolean) {
+  let arr: string[] = [];
+
+  if (isArray) {
+    arr = imagesObj.map(item => {
+      return `data:image/jpeg;base64,${bufferToBase64String(
+        item.imageObject[0].data.data,
+      )}`;
+    });
+
+    return arr;
+  } else {
+    arr = [
+      `data:image/jpeg;base64,${bufferToBase64String(
+        imagesObj.imageObject[0].data.data,
+      )}`,
+    ];
+
+    return arr[0];
+  }
+}

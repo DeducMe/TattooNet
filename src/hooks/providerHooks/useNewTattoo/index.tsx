@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 
 export default function useNewTatto() {
   const context = useContext(MainContext);
@@ -58,11 +59,32 @@ export default function useNewTatto() {
         description,
       },
       newTattoo => {
+        const {images, ...props} = newTattoo;
+
+        const files = images.map(image => ({
+          uri: image.path, // e.g. 'file:///path/to/file/image123.jpg'
+          name: image.filename, // e.g. 'image123.jpg',
+          type: image.mime, // e.g. 'image/jpg'
+        }));
+
+        const data = new FormData();
+
+        files.forEach(item => {
+          data.append('images[]', item);
+        });
+        Object.keys(props).forEach(key => {
+          data.append(key, props[key]);
+        });
+
         context.auth
           .apiRequestContainer({
             call: 'tattoos',
             method: 'POST',
-            body: newTattoo,
+            body: data,
+            headers: {
+              'Content-Type': `multipart/form-data; `,
+            },
+            noStringify: true,
           })
           .then(response => {
             if (response.success) nullify();
@@ -73,11 +95,14 @@ export default function useNewTatto() {
             });
 
             context.navigation?.goBack();
+          })
+          .catch(e => {
+            setLoading(false);
           });
       },
     );
   }
-  function addImage(image: string) {
+  function addImage(image: ImageOrVideo) {
     setNewTattoo(
       {
         ...newTattoo,

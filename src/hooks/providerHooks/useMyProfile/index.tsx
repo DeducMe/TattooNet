@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {bufferToBase64String} from 'common/function';
+import {
+  bufferToBase64String,
+  makeImagesFromResponseBase64,
+} from 'common/function';
 import {AppContext} from 'providers/AppProvider';
 import {MainContext} from 'providers/MainProvider';
 import {useCallback, useContext, useMemo, useState} from 'react';
@@ -28,11 +31,11 @@ export default function useMyProfile() {
       call: 'profile',
       method: 'GET',
     });
-
     if (response.data.profile.avatar?.imageObject?.[0]?.data?.data)
-      response.data.profile.avatar = `data:image/jpeg;base64,${bufferToBase64String(
-        response.data.profile.avatar.imageObject[0].data.data,
-      )}`;
+      response.data.profile.avatar = makeImagesFromResponseBase64(
+        response.data.profile.avatar,
+        false,
+      );
 
     if (!response.success) return context.toast.showError('get profile error');
 
@@ -48,7 +51,7 @@ export default function useMyProfile() {
     try {
       const response = await context.auth.apiRequestContainer({
         call: 'profile',
-        method: 'PUT',
+        method: 'POST',
         body: {
           address,
           location: {
@@ -79,7 +82,6 @@ export default function useMyProfile() {
 
   async function updateAvatar({avatar}) {
     setLoading(true);
-    let a;
 
     const file = {
       uri: avatar.path, // e.g. 'file:///path/to/file/image123.jpg'
@@ -87,12 +89,11 @@ export default function useMyProfile() {
       type: avatar.mime, // e.g. 'image/jpg'
     };
 
-    console.log(file);
     const data = new FormData();
     data.append('image', file);
 
     try {
-      a = await context.auth.apiRequestContainer({
+      await context.auth.apiRequestContainer({
         call: 'profile',
         method: 'POST',
         body: data,
@@ -115,15 +116,13 @@ export default function useMyProfile() {
     setLoading(true);
     const response = await context.auth.apiRequestContainer({
       call: 'profile',
-      method: 'PUT',
+      method: 'POST',
       body: {
         email,
         name,
         phone,
       },
     });
-
-    console.log(response);
 
     setLoading(false);
     setProfile({...(profile || {}), email, name, phone});

@@ -23,20 +23,13 @@ export default function useTattoo() {
     setTattoo(null);
   }
 
-  async function submitTattoo({
-    reviewText,
-    _id,
-    userProfileId,
-    images,
-    starRating,
-    masterId,
-  }) {
+  async function submitTattoo({reviewText, _id, images, starRating, masterId}) {
     setLoading(true);
 
     const response = await context.auth.apiRequestContainer({
       call: 'reviews',
       method: 'POST',
-      body: {reviewText, _id, userProfileId, images, starRating},
+      body: {reviewText, _id, images, starRating},
     });
 
     const isMaster = masterId === appContext.myProfile?.profile?._id;

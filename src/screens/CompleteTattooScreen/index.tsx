@@ -9,6 +9,7 @@ import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import StarBlock from 'components/StarBlock';
 import {MainContext} from 'providers/MainProvider';
 import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 
 export default function CompleteTattooScreen({
   route,
@@ -21,7 +22,7 @@ export default function CompleteTattooScreen({
 
   const [reviewText, setReviewText] = useState('');
   const [opened, setOpened] = useState(false);
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<ImageOrVideo[]>([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [starRating, setStarRating] = useState(0);
   const {isMaster, masterId, id} = route.params || {};
@@ -30,7 +31,7 @@ export default function CompleteTattooScreen({
     setImages(images.filter((item, i) => i !== index));
   }
 
-  function addImage(image: string) {
+  function addImage(image: ImageOrVideo) {
     setImages(images.concat([image]));
   }
 
@@ -67,7 +68,7 @@ export default function CompleteTattooScreen({
           <GalleryList
             onRemove={images?.length ? removeImage : undefined}
             onAdd={addImage}
-            data={images}
+            data={images.map(item => item.path)}
           />
 
           {!isMaster && (

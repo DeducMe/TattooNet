@@ -11,6 +11,7 @@ import StyledControlledTextInput from 'components/StyledControlledTextInput';
 import {ActionButton} from 'components/ActionButton';
 import SelectDropdown from 'react-native-select-dropdown';
 import {MainContext} from 'providers/MainProvider';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 
 export default function AddTattooScreen({
   route,
@@ -26,7 +27,7 @@ export default function AddTattooScreen({
 
   const theme = useTheme();
 
-  function addImage(image: string) {
+  function addImage(image: ImageOrVideo) {
     context.newTattoo.addImage(image);
   }
 
@@ -73,7 +74,7 @@ export default function AddTattooScreen({
           context.newTattoo.newTattoo.images?.length ? removeImage : undefined
         }
         onAdd={addImage}
-        data={context.newTattoo.newTattoo.images}
+        data={context.newTattoo.newTattoo.images.map(item => item.path)}
       />
       <View
         style={{

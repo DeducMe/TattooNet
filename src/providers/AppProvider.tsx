@@ -23,6 +23,7 @@ import useTattoos from 'hooks/providerHooks/useTattoos';
 import useReviews, {Review} from 'hooks/providerHooks/useReviews';
 import {MainContext} from './MainProvider';
 import useMaster from 'hooks/providerHooks/useMaster';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 
 export type CurrencyT = {
   _id: string;
@@ -56,21 +57,19 @@ export interface AppPostContextT {
     submitTattoo: ({
       reviewText,
       _id,
-      userProfileId,
       images,
       starRating,
       masterId,
     }: {
       reviewText: string;
       _id: string;
-      userProfileId: string;
-      images: string[];
+      images: ImageOrVideo[];
       starRating: number;
       masterId: string;
     }) => void;
   };
   newTattoo: {
-    addImage: (image: string) => void;
+    addImage: (image: ImageOrVideo) => void;
     updateAndSave: ({
       name,
       price,

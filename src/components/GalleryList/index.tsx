@@ -7,7 +7,7 @@ import IconComponent from 'components/Basic/IconComponent';
 // import {launchImageLibrary} from 'react-native-image-picker';
 import {AppContext} from 'providers/AppProvider';
 import {createFormData} from 'screens/SalonScreen/MasterScreen/components/MasterProfileHeader';
-import ImageCropPicker from 'react-native-image-crop-picker';
+import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 
 export default function GalleryList({
   data,
@@ -15,7 +15,7 @@ export default function GalleryList({
   onRemove,
 }: {
   data: any[];
-  onAdd?: (image: string) => void;
+  onAdd?: (ImageOrVideo: ImageOrVideo) => void;
   onRemove?: (index: number) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(0);
@@ -25,8 +25,8 @@ export default function GalleryList({
       height: 300,
       cropperCircleOverlay: true,
       cropping: true,
-    }).then((image: any) => {
-      onAdd && onAdd(image.data);
+    }).then(image => {
+      onAdd && onAdd(image);
     });
     // launchImageLibrary({mediaType: 'photo'}, async response => {
     //   if (response && response.assets && response.assets[0]) {

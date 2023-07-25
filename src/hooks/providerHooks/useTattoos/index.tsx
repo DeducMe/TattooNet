@@ -2,6 +2,7 @@ import {AppContext} from 'providers/AppProvider';
 import {CurrencyT, MainContext} from 'providers/MainProvider';
 import {useContext, useEffect, useMemo, useState} from 'react';
 import {Review} from '../useMaster';
+import {makeImagesFromResponseBase64} from 'common/function';
 
 export type Tattoo = {
   _id: string;
@@ -40,7 +41,28 @@ export default function useTattoos() {
       body: {id},
     });
 
-    if (response.success) setTattoos(response.data.tattoos);
+    console.log(response);
+
+    if (response.success) {
+      const result = response.data.tattoos;
+
+      const available = result.available.map(item => {
+        if (item.images[0]?.imageObject?.[0]?.data?.data)
+          item.images = makeImagesFromResponseBase64(item.images, true);
+        return item;
+      });
+
+      const portfolio = result.portfolio.map(item => {
+        if (item.images[0]?.imageObject?.[0]?.data?.data)
+          item.images = makeImagesFromResponseBase64(item.images, true);
+        return item;
+      });
+
+      result.available = available;
+      result.portfolio = portfolio;
+
+      setTattoos(result);
+    }
 
     setLoading({...loading, tattoos: false});
   }
@@ -53,8 +75,26 @@ export default function useTattoos() {
       method: 'POST',
       body: {id},
     });
+    if (response.success) {
+      const result = response.data.tattoos;
 
-    if (response.success) setMyTattoos(response.data.tattoos);
+      const available = result.available.map(item => {
+        if (item.images[0]?.imageObject?.[0]?.data?.data)
+          item.images = makeImagesFromResponseBase64(item.images, true);
+        return item;
+      });
+
+      const portfolio = result.portfolio.map(item => {
+        if (item.images[0]?.imageObject?.[0]?.data?.data)
+          item.images = makeImagesFromResponseBase64(item.images, true);
+        return item;
+      });
+
+      result.available = available;
+      result.portfolio = portfolio;
+
+      setMyTattoos(result);
+    }
 
     setLoading({...loading, tattoos: false});
   }

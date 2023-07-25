@@ -12,30 +12,26 @@ import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import MapScreen from 'screens/MapScreen';
 import MoreScreen from 'screens/MoreScreen';
 
-export const CustomButtonTabNavigation = ({
-  children,
-  onPress,
-  accessibilityState,
-  ...props
-}: any) => {
-  const theme = useTheme();
-  const styles = makeStyles();
-  console.log(accessibilityState);
-  return (
-    <Pressable style={styles.Button} onPress={onPress}>
-      <View
-        style={{
-          backgroundColor: accessibilityState.selected
-            ? theme.colors.primary
-            : theme.colors.background,
-          ...styles.shadow,
-          ...styles.ViewButton,
-        }}>
-        {children}
-      </View>
-    </Pressable>
-  );
-};
+export const CustomButtonTabNavigation = React.memo(
+  ({children, onPress, accessibilityState}: any) => {
+    const theme = useTheme();
+    const styles = makeStyles();
+    return (
+      <Pressable style={styles.Button} onPress={onPress}>
+        <View
+          style={{
+            backgroundColor: accessibilityState.selected
+              ? theme.colors.primary
+              : theme.colors.background,
+            ...styles.shadow,
+            ...styles.ViewButton,
+          }}>
+          {children}
+        </View>
+      </Pressable>
+    );
+  },
+);
 
 const TabStackNavigator = () => {
   const theme = useTheme();
