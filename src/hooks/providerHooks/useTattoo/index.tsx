@@ -23,21 +23,43 @@ export default function useTattoo() {
     setTattoo(null);
   }
 
-  async function submitTattoo({reviewText, _id, images, starRating, masterId}) {
+  async function submitTattoo(params) {
+    const {images, ...props} = params;
     setLoading(true);
+    const files = images.map(image => ({
+      uri: image.path, // e.g. 'file:///path/to/file/image123.jpg'
+      name: image.filename, // e.g. 'image123.jpg',
+      type: image.mime, // e.g. 'image/jpg'
+    }));
 
-    const response = await context.auth.apiRequestContainer({
-      call: 'reviews',
-      method: 'POST',
-      body: {reviewText, _id, images, starRating},
+    const data = new FormData();
+
+    files.forEach(item => {
+      data.append('images[]', item);
     });
 
-    const isMaster = masterId === appContext.myProfile?.profile?._id;
+    Object.keys(props).forEach(key => {
+      data.append(key, props[key]);
+    });
+
+    console.log(files);
+
+    await context.auth.apiRequestContainer({
+      call: 'reviews',
+      method: 'POST',
+      body: data,
+      headers: {
+        'Content-Type': `multipart/form-data; `,
+      },
+      noStringify: true,
+    });
+
+    const isMaster = props.masterId === appContext.myProfile?.profile?._id;
 
     if (isMaster) {
-      await appContext.tattoos.getMyTattoos({id: masterId});
+      await appContext.tattoos.getMyTattoos({id: props.masterId});
     } else {
-      await appContext.tattoos.getTattoos({id: masterId});
+      await appContext.tattoos.getTattoos({id: props.masterId});
     }
 
     setLoading(false);

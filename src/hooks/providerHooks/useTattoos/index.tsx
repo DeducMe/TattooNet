@@ -1,7 +1,7 @@
 import {AppContext} from 'providers/AppProvider';
 import {CurrencyT, MainContext} from 'providers/MainProvider';
 import {useContext, useEffect, useMemo, useState} from 'react';
-import {Review} from '../useMaster';
+import {Review} from '../useReviews';
 import {makeImagesFromResponseBase64} from 'common/function';
 
 export type Tattoo = {
@@ -49,12 +49,25 @@ export default function useTattoos() {
       const available = result.available.map(item => {
         if (item.images[0]?.imageObject?.[0]?.data?.data)
           item.images = makeImagesFromResponseBase64(item.images, true);
+
+        if (item.reviews?.[0]?.images[0]?.imageObject?.[0]?.data?.data)
+          item.reviews = item.reviews.map(el => {
+            el.images = makeImagesFromResponseBase64(el.images, true);
+            return el;
+          });
+
         return item;
       });
 
       const portfolio = result.portfolio.map(item => {
         if (item.images[0]?.imageObject?.[0]?.data?.data)
           item.images = makeImagesFromResponseBase64(item.images, true);
+
+        if (item.reviews?.[0]?.images[0]?.imageObject?.[0]?.data?.data)
+          item.reviews = item.reviews.map(el => {
+            el.images = makeImagesFromResponseBase64(el.images, true);
+            return el;
+          });
         return item;
       });
 
@@ -69,6 +82,8 @@ export default function useTattoos() {
 
   async function getMyTattoos({id}: {id: string}) {
     setLoading({...loading, tattoos: true});
+
+    console.log(id, 'WTF');
 
     const response = await context.auth.apiRequestContainer({
       call: 'tattoos/master',

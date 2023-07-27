@@ -2,7 +2,7 @@ import React, {Profiler, useContext, useEffect, useMemo} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import useTheme from 'hooks/useTheme';
-import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
+import {AppContext} from 'providers/AppProvider';
 import MasterProfileHeader from 'screens/SalonScreen/MasterScreen/components/MasterProfileHeader';
 import FloatingInfo from 'screens/SalonScreen/MasterScreen/components/FloatingInfo';
 import TattoosList from 'screens/SalonScreen/MasterScreen/components/TattoosList';
@@ -14,13 +14,10 @@ export default function ProfileScreen() {
   const theme = useTheme();
   const stlyes = makeStyles();
   const context = useContext(AppContext);
-  const postContext = useContext(AppPostContextProvider);
 
   useEffect(() => {
-    if (!postContext.newTattoo.loading) {
-      context.myProfile.getMe();
-    }
-  }, [postContext.newTattoo.loading]);
+    context.myProfile.getMe();
+  }, []);
 
   const loading = useMemo(
     () => context.myProfile.loading,

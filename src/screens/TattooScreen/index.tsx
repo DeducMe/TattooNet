@@ -8,7 +8,9 @@ import {ActionButton} from 'components/ActionButton';
 import {useNavigation} from '@react-navigation/native';
 import GalleryList from 'components/GalleryList';
 import {Tattoo} from 'hooks/providerHooks/useMaster';
-import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
+import {AppContext} from 'providers/AppProvider';
+import {AppPostContextProvider} from 'providers/PostProvider';
+
 import PressableStyled from 'components/PressableStyled';
 
 function TattooScreen({
@@ -21,20 +23,21 @@ function TattooScreen({
   const postContext = useContext(AppPostContextProvider);
   const navigation = useNavigation();
   const theme = useTheme();
-
+  console.log(item.reviews);
   function completeTattoo() {
-    const isMaster = item.masterProfile._id === context.myProfile.profile._id;
-
+    const masterId = item.masterProfile._id || item.masterProfile;
+    const isMaster = masterId === context.myProfile.profile._id;
+    console.log(item.masterProfile);
     if (!item.reviews?.length || !isMaster)
       navigation.navigate('CompleteTattoo', {
         id: item._id,
         isMaster,
-        masterId: item.masterProfile._id,
+        masterId: masterId,
       });
     else {
       const body = {
         _id: item._id,
-        masterId: item.masterProfile._id,
+        masterId: masterId,
       };
 
       postContext.tattoo.submitTattoo(body);

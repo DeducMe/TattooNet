@@ -1,3 +1,4 @@
+import {makeImagesFromResponseBase64} from 'common/function';
 import {AppContext} from 'providers/AppProvider';
 import {MainContext} from 'providers/MainProvider';
 import {useContext, useState} from 'react';
@@ -16,7 +17,24 @@ export default function useFeed() {
 
     setLoading(false);
 
-    setFeed(response.data.feed);
+    if (response.success) {
+      const result = response.data.feed.map(item => {
+        item.tattoos = item.tattoos.map(item => {
+          if (item.images[0]?.imageObject?.[0]?.data?.data)
+            item.images = makeImagesFromResponseBase64(item.images, true);
+          return item;
+        });
+        if (item.master.avatar?.imageObject?.[0]?.data?.data)
+          item.master.avatar = makeImagesFromResponseBase64(
+            item.master.avatar,
+            false,
+          );
+
+        return item;
+      });
+
+      setFeed(result);
+    }
   }
 
   return {getFeed, feed, loading};

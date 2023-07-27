@@ -1,7 +1,7 @@
 import {View, Text, ScrollView} from 'react-native';
 import React, {useContext, useState} from 'react';
 import GalleryList from 'components/GalleryList';
-import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
+import {AppPostContextProvider} from 'providers/PostProvider';
 import useTheme from 'hooks/useTheme';
 import ControlledTextInput from 'components/Basic/ControlledInputText';
 import {useForm} from 'react-hook-form';

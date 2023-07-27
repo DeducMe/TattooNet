@@ -88,13 +88,14 @@ export default function useNewTatto() {
           })
           .then(response => {
             if (response.success) nullify();
-            setLoading(false);
 
             appContext.tattoos.getMyTattoos({
               id: appContext.myProfile.profile._id,
             });
 
             context.navigation?.goBack();
+
+            // context.navigation?.goBack();
           })
           .catch(e => {
             setLoading(false);

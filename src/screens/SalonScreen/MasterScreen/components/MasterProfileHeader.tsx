@@ -1,4 +1,4 @@
-import {View, Text, Pressable, Image} from 'react-native';
+import {View, Text, Pressable, Image, Linking} from 'react-native';
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomText from 'components/CustomText';
@@ -46,9 +46,18 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
   const styles = makeStyles();
   const theme = useTheme();
   const context = useContext(AppContext);
+
+  const data = editable ? context.myProfile?.profile : context.master.master;
+  const loading = useMemo(
+    () =>
+      editable ? context.myProfile?.loading : context.master.loading.master,
+    [context.myProfile?.loading, context.master.loading.master],
+  );
   const [favorite, setFavorite] = useState(false);
   const [phoneCodeModalVisible, setPhoneCodeModalVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>('+7');
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    data?.phoneCode || '+7',
+  );
 
   // useEffect(() => {
   //   if (modalizeRef.current) {
@@ -69,16 +78,22 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
     });
   }
 
+  function onPhonePress() {
+    const phoneNumber = data.phoneCode + data.phone;
+    Linking.openURL(`tel:${phoneNumber}`);
+  }
+
   function editInfo() {
     editableModalizeRef.current?.open();
   }
 
-  function submitInfo(payload: any) {
+  async function submitInfo(payload: any) {
     const {email, phone, name} = payload || {};
-    context.myProfile.updateProfile({
+    await context.myProfile.updateProfile({
       email,
       phone,
       name,
+      phoneCode: selectedCountry,
     });
   }
 
@@ -89,17 +104,6 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
   } = useForm({
     resolver: yupResolver(masterEditable),
   });
-
-  const data = useMemo(
-    () => (editable ? context.myProfile?.profile : context.master.master),
-    [context.myProfile?.loading, context.master.loading.master],
-  );
-
-  const loading = useMemo(
-    () =>
-      editable ? context.myProfile?.loading : context.master.loading.master,
-    [context.myProfile?.loading, context.master.loading.master],
-  );
 
   return (
     <>
@@ -155,9 +159,12 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
       </LoadingView>
       <BottomSheet modalizeRef={modalizeRef}>
         <View style={styles.bottomSheetContainer}>
-          <PressableStyled>
-            <CustomText>phone number</CustomText>
-          </PressableStyled>
+          {!!data.phoneCode && !!data.phone && (
+            <PressableStyled onPress={onPhonePress}>
+              <CustomText>Phone:</CustomText>
+              <CustomText>{data.phoneCode + data.phone}</CustomText>
+            </PressableStyled>
+          )}
           {/* <SocialButtons
             data={[
               {type: 'facebook', link: 'facebook.com'},

@@ -39,9 +39,8 @@ export default function PopUpMenu() {
       height: 100,
       cropperCircleOverlay: true,
       cropping: true,
-      includeBase64: true,
     }).then((image: any) => {
-      setAvatar('data:image/jpeg;base64,' + image);
+      setAvatar(image.path);
     });
   };
 

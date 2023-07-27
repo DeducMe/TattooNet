@@ -23,7 +23,6 @@ export default function GalleryList({
     ImageCropPicker.openPicker({
       width: 300,
       height: 300,
-      cropperCircleOverlay: true,
       cropping: true,
     }).then(image => {
       onAdd && onAdd(image);

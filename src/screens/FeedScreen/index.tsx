@@ -26,7 +26,7 @@ export default function FeedScreen() {
   if (context.feed.loading || !context.feed.feed?.length)
     return <FeedSkeleton />;
 
-  console.log('render profile');
+  console.log('render feed');
 
   return (
     <SafeAreaView>
@@ -44,7 +44,7 @@ export default function FeedScreen() {
               style={{flexDirection: 'row'}}>
               <PressableStyled
                 onPress={() => {
-                  navigation.navigate('Master', {id: item._id});
+                  navigation.navigate('Master', {id: item.master._id});
                 }}
                 style={({pressed}) => [
                   {
@@ -67,7 +67,7 @@ export default function FeedScreen() {
                     borderTopRightRadius: theme.space.s,
                   }}
                   source={{
-                    uri: item.avatar,
+                    uri: item.master.avatar,
                   }}
                 />
                 <View
@@ -80,11 +80,11 @@ export default function FeedScreen() {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <CustomText h2>{item.name}</CustomText>
-                    {!!item.rating && (
+                    <CustomText h2>{item.master.name}</CustomText>
+                    {!!item.master.rating && (
                       <StarBlock
                         imageSize={15}
-                        rating={Number(item?.rating || 5)}
+                        rating={Number(item.master?.rating || 5)}
                       />
                     )}
                   </View>
@@ -103,7 +103,7 @@ export default function FeedScreen() {
                     </View>
                   </View>
                   <Pressable>
-                    <CustomText grayed>{item?.address}</CustomText>
+                    <CustomText grayed>{item.master?.address}</CustomText>
                   </Pressable>
                 </View>
               </PressableStyled>

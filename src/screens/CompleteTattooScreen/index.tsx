@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import StarBlock from 'components/StarBlock';
 import {MainContext} from 'providers/MainProvider';
-import {AppContext, AppPostContextProvider} from 'providers/AppProvider';
+import {AppPostContextProvider} from 'providers/PostProvider';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 
 export default function CompleteTattooScreen({
@@ -17,7 +17,6 @@ export default function CompleteTattooScreen({
   route: {params: {isMaster: boolean; id: string; masterId: string}};
 }) {
   const styles = makeStyles();
-  const mainContext = useContext(MainContext);
   const postContext = useContext(AppPostContextProvider);
 
   const [reviewText, setReviewText] = useState('');
@@ -26,6 +25,7 @@ export default function CompleteTattooScreen({
   const [selectedUser, setSelectedUser] = useState(null);
   const [starRating, setStarRating] = useState(0);
   const {isMaster, masterId, id} = route.params || {};
+  console.log(id, masterId);
 
   function removeImage(index: number) {
     setImages(images.filter((item, i) => i !== index));

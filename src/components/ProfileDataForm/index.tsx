@@ -19,8 +19,13 @@ const ProfileDataForm = ({onSave}: {onSave?: () => void}) => {
   const styles = makeStyles();
   const theme = useTheme();
   const navigation = useNavigation();
+
+  const data = context.myProfile?.profile;
+
   const [phoneCodeModalVisible, setPhoneCodeModalVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>('+7');
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    data.phoneCode || '+7',
+  );
 
   async function submitInfo(payload: any) {
     const {email, phone, name} = payload || {};
@@ -28,6 +33,7 @@ const ProfileDataForm = ({onSave}: {onSave?: () => void}) => {
       email,
       phone,
       name,
+      phoneCode: selectedCountry,
     });
 
     onSave?.();
@@ -45,11 +51,6 @@ const ProfileDataForm = ({onSave}: {onSave?: () => void}) => {
       email: context.myProfile.profile.phone,
     },
   });
-
-  const data = useMemo(
-    () => context.myProfile?.profile,
-    [context.myProfile?.loading],
-  );
 
   return (
     <View

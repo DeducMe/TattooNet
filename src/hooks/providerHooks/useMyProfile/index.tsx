@@ -39,8 +39,8 @@ export default function useMyProfile() {
 
     if (!response.success) return context.toast.showError('get profile error');
 
-    setLoading(false);
     setProfile(response.data.profile);
+    setLoading(false);
   }
 
   async function updateAddress({address, location}) {
@@ -105,14 +105,14 @@ export default function useMyProfile() {
     } catch {
       setLoading(false);
     }
-    setLoading(false);
     setProfile({
       ...(profile || {}),
       avatar: avatar.path,
     });
+    setLoading(false);
   }
 
-  async function updateProfile({email, name, phone}) {
+  async function updateProfile({email, name, phone, phoneCode}) {
     setLoading(true);
     const response = await context.auth.apiRequestContainer({
       call: 'profile',
@@ -121,11 +121,12 @@ export default function useMyProfile() {
         email,
         name,
         phone,
+        phoneCode,
       },
     });
 
+    setProfile({...(profile || {}), email, name, phone, phoneCode});
     setLoading(false);
-    setProfile({...(profile || {}), email, name, phone});
   }
 
   return {

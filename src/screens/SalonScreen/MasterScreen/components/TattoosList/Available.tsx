@@ -30,6 +30,10 @@ function Available({
     [context.tattoos.loading.tattoos],
   );
 
+  if (loading)
+    return (
+      <ActivityIndicator style={{marginTop: theme.space.s}} size={'large'} />
+    );
   return (
     <>
       {!!editable && (
@@ -47,19 +51,17 @@ function Available({
           title="Add new available tattoo"></ActionButton>
       )}
 
-      <LoadingView loading={loading}>
-        <TwoColumnFlatList
-          ListEmptyComponent={
-            <CustomText style={{textAlign: 'center'}}>
-              No available tattoos yet...
-            </CustomText>
-          }
-          data={data}
-          marginTabBar
-          editable={editable}
-          available={true}
-        />
-      </LoadingView>
+      <TwoColumnFlatList
+        ListEmptyComponent={
+          <CustomText style={{textAlign: 'center'}}>
+            No available tattoos yet...
+          </CustomText>
+        }
+        data={data}
+        marginTabBar
+        editable={editable}
+        available={true}
+      />
     </>
   );
 }

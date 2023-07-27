@@ -21,7 +21,7 @@ function FloatingInfo({master}: {master: boolean}) {
   return (
     <View style={styles.floatingInfo}>
       <View style={styles.floatingInfoItem}>
-        <LoadingView loading={loading} style={styles.floatingInfoItem}>
+        <LoadingView loading={loading}>
           <CustomText bold>{data?.portfolio?.length}</CustomText>
         </LoadingView>
         <CustomText style={styles.floatingInfoItemBottomText}>
@@ -32,7 +32,7 @@ function FloatingInfo({master}: {master: boolean}) {
         size="large"
         loading={loading}
         style={styles.floatingInfoItemRating}>
-        {context.master.master?.rating && (
+        {!!context.master.master?.rating && (
           <>
             <CustomText bold h1>
               {context.master.master?.rating}
@@ -46,8 +46,10 @@ function FloatingInfo({master}: {master: boolean}) {
         )}
       </LoadingView>
       <View style={styles.floatingInfoItem}>
-        <LoadingView loading={loading} style={styles.floatingInfoItem}>
-          <CustomText bold>{data?.available?.length}</CustomText>
+        <LoadingView loading={loading}>
+          <CustomText numberOfLines={1} bold>
+            {data?.available?.length}
+          </CustomText>
         </LoadingView>
         <CustomText style={styles.floatingInfoItemBottomText}>
           available tattoos

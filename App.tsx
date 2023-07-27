@@ -12,6 +12,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AppNavigationContainer from 'AppNavigationContainer';
 import Toast from 'react-native-toast-message';
 import {MainProvider} from 'providers/MainProvider';
+import {PostProvider} from 'providers/PostProvider';
 
 export type RootStackParamList = {
   SignUp: undefined;
@@ -39,7 +40,9 @@ function App(): JSX.Element {
         {/* <GestureHandlerRootView style={{flex: 1}}> */}
         <MainProvider>
           <AppProvider>
-            <AppNavigationContainer />
+            <PostProvider>
+              <AppNavigationContainer />
+            </PostProvider>
           </AppProvider>
         </MainProvider>
         <Toast />

@@ -14,6 +14,7 @@ function TattoosList({editable, id}: {editable?: boolean; id: string}) {
   const context = useContext(AppContext);
 
   useEffect(() => {
+    console.log('REQUEST IN USEEFFECT');
     editable
       ? context.tattoos.getMyTattoos({id})
       : context.tattoos.getTattoos({id});
