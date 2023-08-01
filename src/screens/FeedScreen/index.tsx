@@ -11,6 +11,8 @@ import PressableStyled from 'components/PressableStyled';
 import {useNavigation} from '@react-navigation/native';
 import {AppContext} from 'providers/AppProvider';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
+import IconComponent from 'components/Basic/IconComponent';
+import TagList from 'components/TagList';
 
 export default function FeedScreen() {
   const theme = useTheme();
@@ -29,10 +31,10 @@ export default function FeedScreen() {
   console.log('render feed');
 
   return (
-    <SafeAreaView>
-      <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
+    <SafeAreaView style={{flex: 1}}>
+      {/* <CustomText style={{paddingHorizontal: theme.space.xs}} bold h2>
         Top masters
-      </CustomText>
+      </CustomText> */}
       <FlatList
         data={context.feed.feed}
         keyExtractor={(item, index) => `${index}`}
@@ -59,17 +61,34 @@ export default function FeedScreen() {
                     ...theme.defaultShadow,
                   },
                 ]}>
-                <FastImage
-                  style={{
-                    height: 180,
-                    width: 230,
-                    borderTopLeftRadius: theme.space.s,
-                    borderTopRightRadius: theme.space.s,
-                  }}
-                  source={{
-                    uri: item.master.avatar,
-                  }}
-                />
+                <View>
+                  <FastImage
+                    style={{
+                      height: 180,
+                      width: 230,
+                      borderTopLeftRadius: theme.space.s,
+                      borderTopRightRadius: theme.space.s,
+                    }}
+                    source={{
+                      uri: item.master.avatar,
+                    }}
+                  />
+                  <View
+                    style={{
+                      marginLeft: theme.space.xs,
+                      bottom: theme.space.xs,
+                      position: 'absolute',
+                    }}>
+                    {!!item.master.rating && (
+                      <StarBlock
+                        noNumber
+                        imageSize={15}
+                        rating={Number(item.master?.rating || 5)}
+                      />
+                    )}
+                  </View>
+                </View>
+
                 <View
                   style={{
                     paddingHorizontal: theme.space.xs,
@@ -80,31 +99,26 @@ export default function FeedScreen() {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <CustomText h2>{item.master.name}</CustomText>
-                    {!!item.master.rating && (
-                      <StarBlock
-                        imageSize={15}
-                        rating={Number(item.master?.rating || 5)}
-                      />
-                    )}
+                    <CustomText
+                      numberOfLines={1}
+                      style={{overflow: 'hidden'}}
+                      h2>
+                      {item.master.name}
+                    </CustomText>
                   </View>
 
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flexWrap: 'wrap',
-                      marginTop: theme.space.xs,
-                    }}>
-                    <View style={styles.tagStyle}>
-                      <CustomText>some tag</CustomText>
-                    </View>
-                    <View style={styles.tagStyle}>
-                      <CustomText>some tag</CustomText>
-                    </View>
-                  </View>
                   <Pressable>
                     <CustomText grayed>{item.master?.address}</CustomText>
                   </Pressable>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'flex-end',
+                    flex: 1,
+                    paddingHorizontal: theme.space.xs,
+                    marginBottom: theme.space.xxs,
+                  }}>
+                  <TagList data={item.master.styles}></TagList>
                 </View>
               </PressableStyled>
               <FlexWrapFlatList
@@ -125,11 +139,9 @@ export default function FeedScreen() {
 
 const makeStyles = makeStyleSheet(theme => ({
   tagStyle: {
-    borderRadius: theme.space.xs,
-    borderWidth: 1,
+    flexDirection: 'row',
     marginRight: theme.space.xs,
-    paddingHorizontal: theme.space.xxs,
     paddingVertical: theme.space.xxxs,
-    marginBottom: theme.space.xxxs,
+    backgroundColor: theme.colors.background,
   },
 }));

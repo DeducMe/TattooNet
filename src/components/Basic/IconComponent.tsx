@@ -8,7 +8,7 @@ import {StyleProp} from 'react-native';
 
 type Props = {
   name: string;
-  color: string;
+  color?: string;
   size: number;
   iconSet: IconPack;
   style?: StyleProp<ViewStyle>;

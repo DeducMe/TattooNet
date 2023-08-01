@@ -1,4 +1,4 @@
-import {View, Text, Pressable, Image, Linking} from 'react-native';
+import {View, Text, Pressable, Image, Linking, ScrollView} from 'react-native';
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomText from 'components/CustomText';
@@ -23,6 +23,7 @@ import RNFS from 'react-native-fs';
 import Gravatar from 'components/Gravatar';
 import LoadingView from 'components/Basic/LoadingView';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import TagList from 'components/TagList';
 
 export type MasterProfileHeaderProps = {
   editable?: boolean;
@@ -157,29 +158,31 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
           </PressableStyled>
         )}
       </LoadingView>
-      <BottomSheet modalizeRef={modalizeRef}>
-        <View style={styles.bottomSheetContainer}>
-          {!!data.phoneCode && !!data.phone && (
-            <PressableStyled onPress={onPhonePress}>
-              <CustomText>Phone:</CustomText>
-              <CustomText>{data.phoneCode + data.phone}</CustomText>
-            </PressableStyled>
-          )}
-          {/* <SocialButtons
+      {!editable && (
+        <BottomSheet modalizeRef={modalizeRef}>
+          <View style={styles.bottomSheetContainer}>
+            {!!data.phoneCode && !!data.phone && (
+              <PressableStyled onPress={onPhonePress}>
+                <CustomText>Phone:</CustomText>
+                <CustomText>{data.phoneCode + data.phone}</CustomText>
+              </PressableStyled>
+            )}
+            {/* <SocialButtons
             data={[
               {type: 'facebook', link: 'facebook.com'},
               {type: 'vk', link: 'vk.com'},
             ]}
           /> */}
-        </View>
-      </BottomSheet>
+          </View>
+        </BottomSheet>
+      )}
 
-      <BottomSheet modalHeight={500} modalizeRef={editableModalizeRef}>
-        <View
-          style={[
-            styles.bottomSheetContainer,
-            {height: 500, justifyContent: 'space-between'},
-          ]}>
+      <BottomSheet modalHeight={570} modalizeRef={editableModalizeRef}>
+        <ScrollView
+          style={[styles.bottomSheetContainer, {height: 570}]}
+          contentContainerStyle={{
+            justifyContent: 'space-between',
+          }}>
           <View
             style={{
               marginTop: theme.space.xs,
@@ -301,9 +304,29 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
               ]}
             /> */}
           </View>
-
+          <View style={styles.tagContainer}>
+            {context.myProfile.profile.styles?.length ? (
+              <TagList data={context.myProfile.profile.styles}></TagList>
+            ) : (
+              <View style={{flex: 1}}>
+                <CustomText>Add your tattoo styles</CustomText>
+              </View>
+            )}
+            <ActionButton
+              onPress={() => navigation.navigate('AddTags', {})}
+              roundButton
+              style={{width: 50, height: 50}}>
+              <IconComponent
+                color={'#fff'}
+                name="chevron-right"
+                iconSet="MaterialCommunityIcons"
+                size={35}
+              />
+            </ActionButton>
+          </View>
           <ActionButton
             style={{
+              marginTop: theme.space.s,
               marginBottom: theme.common.tabNavigationHeight + theme.space.xxxl,
               alignSelf: 'flex-end',
               width: '100%',
@@ -311,7 +334,7 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
             roundButton
             onPress={handleSubmit(submitInfo)}
             title={'Save'}></ActionButton>
-        </View>
+        </ScrollView>
       </BottomSheet>
     </>
   );
@@ -321,6 +344,12 @@ const makeStyles = makeStyleSheet(theme => ({
   bottomSheetContainer: {
     paddingHorizontal: theme.space.xs,
     paddingVertical: theme.space.s,
+  },
+  tagContainer: {
+    marginVertical: theme.space.xs,
+    flexDirection: 'row',
+    height: 71,
+    alignItems: 'center',
   },
   avatar: {
     borderRadius: 30,

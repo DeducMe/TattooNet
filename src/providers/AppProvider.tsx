@@ -51,6 +51,7 @@ export type CityT = {
 
 export interface AppContextT {
   myProfile: {
+    toggleStyle: (name: string) => void;
     getMe: () => void;
     sendEmail: (email: string, text: string) => void;
     updateAvatar: ({avatar}: {avatar: string}) => void;
@@ -142,6 +143,7 @@ const AppContextInitialValue = {
     updateProfile: () => {},
     updateAvatar: () => {},
     updateAddress: () => {},
+    toggleStyle: () => {},
     loading: false,
     profile: null,
   },

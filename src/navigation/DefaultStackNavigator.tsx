@@ -24,6 +24,7 @@ import ChangeAddress from 'screens/ChangeAddress';
 import CompleteTattooScreen from 'screens/CompleteTattooScreen';
 import FavoritesScreen from 'screens/FavoritesScreen';
 import SettingsScreen from 'screens/SettingsScreen';
+import AddTags from 'screens/AddTags';
 
 const screens = [
   {
@@ -63,7 +64,7 @@ const screens = [
 
   //   noPreset: true,
   // },
-
+  {name: 'AddTags', component: AddTags},
   {
     name: 'AddTattoo',
     component: AddTattooScreen,

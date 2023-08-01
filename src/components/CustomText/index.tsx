@@ -30,6 +30,7 @@ export default function CustomText({
             : theme.fontSizes.medium,
           fontWeight: bold ? theme.fontWeights.bold : theme.fontWeights.normal,
           textAlign: centered ? 'center' : 'left',
+          color: sub ? theme.colors.primary : theme.colors.textColor,
         },
         style,
       ]}>

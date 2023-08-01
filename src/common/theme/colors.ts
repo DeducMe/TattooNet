@@ -17,8 +17,8 @@ const colors = (theme: 'light' | 'dark') => ({
 
   // Secondary
   secondary: {
-    light: '#A3BFFF',
-    dark: '#A3BFFF',
+    light: '#0C9CEB',
+    dark: '#0C9CEB',
   }[theme],
 
   // Error

@@ -32,6 +32,7 @@
     "react-i18next": "^13.0.2",
     "react-native": "0.71.10",
     "react-native-android-location-enabler": "^1.2.2",
+    "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-fast-image": "^8.6.3",
     "react-native-floating-action": "^1.22.0",
     "react-native-fs": "^2.20.0",

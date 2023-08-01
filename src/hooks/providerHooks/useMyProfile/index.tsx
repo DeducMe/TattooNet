@@ -25,6 +25,17 @@ export default function useMyProfile() {
     setLoading(false);
   }
 
+  function toggleStyle(name: string) {
+    let styles = profile.styles || [];
+    if (styles.includes(name)) {
+      styles = styles.filter(item => item !== name);
+    } else {
+      styles.push(name);
+    }
+
+    setProfile({...profile, styles});
+  }
+
   async function getMe() {
     setLoading(true);
     const response = await context.auth.apiRequestContainer({
@@ -113,6 +124,7 @@ export default function useMyProfile() {
   }
 
   async function updateProfile({email, name, phone, phoneCode}) {
+    console.log(profile.styles);
     setLoading(true);
     const response = await context.auth.apiRequestContainer({
       call: 'profile',
@@ -122,6 +134,7 @@ export default function useMyProfile() {
         name,
         phone,
         phoneCode,
+        styles: profile.styles || [],
       },
     });
 
@@ -130,6 +143,7 @@ export default function useMyProfile() {
   }
 
   return {
+    toggleStyle: useCallback(toggleStyle, [profile]),
     sendEmail: useCallback(sendEmail, []),
     getMe: useCallback(getMe, []),
     updateProfile: useCallback(updateProfile, [profile]),
