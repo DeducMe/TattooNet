@@ -13,6 +13,7 @@ import {AppContext} from 'providers/AppProvider';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import IconComponent from 'components/Basic/IconComponent';
 import TagList from 'components/TagList';
+import MasterBlock from 'components/MasterBlock';
 
 export default function FeedScreen() {
   const theme = useTheme();
@@ -44,83 +45,7 @@ export default function FeedScreen() {
               showsHorizontalScrollIndicator={false}
               horizontal
               style={{flexDirection: 'row'}}>
-              <PressableStyled
-                onPress={() => {
-                  navigation.navigate('Master', {id: item.master._id});
-                }}
-                style={({pressed}) => [
-                  {
-                    opacity: pressed ? 0.5 : 1.0,
-                    width: 230,
-                    height: 300,
-                    marginBottom: theme.space.s,
-                    marginLeft: theme.space.s,
-                    backgroundColor: theme.colors.background,
-                    borderRadius: theme.space.s,
-                    flexDirection: 'row',
-                    ...theme.defaultShadow,
-                  },
-                ]}>
-                <View>
-                  <FastImage
-                    style={{
-                      height: 180,
-                      width: 230,
-                      borderTopLeftRadius: theme.space.s,
-                      borderTopRightRadius: theme.space.s,
-                    }}
-                    source={{
-                      uri: item.master.avatar,
-                    }}
-                  />
-                  <View
-                    style={{
-                      marginLeft: theme.space.xs,
-                      bottom: theme.space.xs,
-                      position: 'absolute',
-                    }}>
-                    {!!item.master.rating && (
-                      <StarBlock
-                        noNumber
-                        imageSize={15}
-                        rating={Number(item.master?.rating || 5)}
-                      />
-                    )}
-                  </View>
-                </View>
-
-                <View
-                  style={{
-                    paddingHorizontal: theme.space.xs,
-                    marginTop: theme.space.xxs,
-                  }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <CustomText
-                      numberOfLines={1}
-                      style={{overflow: 'hidden'}}
-                      h2>
-                      {item.master.name}
-                    </CustomText>
-                  </View>
-
-                  <Pressable>
-                    <CustomText grayed>{item.master?.address}</CustomText>
-                  </Pressable>
-                </View>
-                <View
-                  style={{
-                    justifyContent: 'flex-end',
-                    flex: 1,
-                    paddingHorizontal: theme.space.xs,
-                    marginBottom: theme.space.xxs,
-                  }}>
-                  <TagList data={item.master.styles}></TagList>
-                </View>
-              </PressableStyled>
+              <MasterBlock master={item.master} />
               <FlexWrapFlatList
                 data={item.tattoos}
                 onPress={item =>

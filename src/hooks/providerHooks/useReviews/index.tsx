@@ -1,3 +1,4 @@
+import {makeImagesFromResponseBase64} from 'common/function';
 import {MainContext} from 'providers/MainProvider';
 import {useContext, useState} from 'react';
 
@@ -27,8 +28,13 @@ export default function useReviews() {
       method: 'POST',
       body: {_id: id},
     });
+    const result = response.data.reviews.map(item => {
+      if (item.images[0]?.imageObject?.[0]?.data?.data)
+        item.images = makeImagesFromResponseBase64(item.images, true);
 
-    if (response.success) setReviews(response.data.reviews);
+      return item;
+    });
+    if (response.success) setReviews(result);
 
     setLoading({...loading, reviews: false});
   }
@@ -42,7 +48,14 @@ export default function useReviews() {
       body: {_id: id},
     });
 
-    if (response.success) setMyReviews(response.data.reviews);
+    const result = response.data.reviews.map(item => {
+      if (item.images[0]?.imageObject?.[0]?.data?.data)
+        item.images = makeImagesFromResponseBase64(item.images, true);
+
+      return item;
+    });
+
+    if (response.success) setMyReviews(result);
 
     setLoading({...loading, reviews: false});
   }

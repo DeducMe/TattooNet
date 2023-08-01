@@ -109,7 +109,6 @@ function TattooScreen({
             {item.description}
           </CustomText>
         </View>
-
         {item.reviews?.map(item => {
           return (
             <ReviewsBlock
@@ -117,7 +116,8 @@ function TattooScreen({
               name={item.userProfileId?.name}
               reviewText={item.text}
               rating={item.rating}
-              date={new Date(item.updatedAt)}></ReviewsBlock>
+              date={new Date(item.updatedAt)}
+            />
           );
         })}
 

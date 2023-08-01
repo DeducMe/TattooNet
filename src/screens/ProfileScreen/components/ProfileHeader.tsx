@@ -25,6 +25,7 @@ import {schema} from '../validationSchema';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import ProfileDataForm from 'components/ProfileDataForm';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import HeartButton from 'components/HeartButton';
 export type ProfileHeaderProps = {
   editable?: boolean;
 };
@@ -54,7 +55,6 @@ function ProfileHeader({editable}: ProfileHeaderProps) {
   const styles = makeStyles();
   const theme = useTheme();
   const context = useContext(AppContext);
-  const [favorite, setFavorite] = useState(false);
 
   // useEffect(() => {
   //   if (modalizeRef.current) {
@@ -122,24 +122,11 @@ function ProfileHeader({editable}: ProfileHeaderProps) {
             />
           )}
         </View>
-        {!editable && (
-          <PressableStyled
-            onPress={() => {
-              setFavorite(!favorite);
-            }}
-            style={{
-              position: 'absolute',
-              right: theme.dimensions.width * 0.1,
-              top: theme.space.xs,
-            }}>
-            <IconComponent
-              iconSet="AntDesign"
-              name={favorite ? 'heart' : 'hearto'}
-              color={theme.colors.error}
-              size={30}
-            />
-          </PressableStyled>
-        )}
+        {/* {!editable && (
+          <HeartButton
+            type="master"
+            id={context.myProfile.profile?._id}></HeartButton>
+        )} */}
       </View>
 
       <BottomSheet modalHeight={500} modalizeRef={editableModalizeRef}>

@@ -5,7 +5,7 @@ import PressableStyled from 'components/PressableStyled';
 import StarBlock from 'components/StarBlock';
 import CustomText from 'components/CustomText';
 import IconComponent from 'components/Basic/IconComponent';
-import {format} from 'date-fns';
+import {format, isDate} from 'date-fns';
 import useTheme from 'hooks/useTheme';
 
 function ReviewsBlock({
@@ -35,7 +35,7 @@ function ReviewsBlock({
           </CustomText>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
-          {!!date ? (
+          {!!isDate(date) && !isNaN(date) ? (
             <CustomText>{format(date, 'dd MMM yyyy')}</CustomText>
           ) : (
             <CustomText style={{color: theme.colors.contrast}}>

@@ -5,7 +5,13 @@ import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {AppContext} from 'providers/AppProvider';
 import CustomText from 'components/CustomText';
 
-function Reviews({master}: {master: boolean}) {
+function Reviews({
+  route: {
+    params: {master},
+  },
+}: {
+  route: {params: {master: boolean}};
+}) {
   const styles = makeStyles();
   const context = useContext(AppContext);
 
@@ -16,6 +22,8 @@ function Reviews({master}: {master: boolean}) {
 
   return (
     <FlatList
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         context.reviews.loading.reviews ? (
           <ActivityIndicator size={'large'}></ActivityIndicator>
@@ -44,8 +52,10 @@ function Reviews({master}: {master: boolean}) {
 
 const makeStyles = makeStyleSheet(theme => ({
   contentContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    paddingBottom:
+      theme.common.tabNavigationHeight +
+      theme.common.tabNavigationInset +
+      theme.space.xs,
   },
   flatList: {
     paddingTop: theme.space.s,

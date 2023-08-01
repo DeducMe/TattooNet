@@ -24,6 +24,7 @@ import Gravatar from 'components/Gravatar';
 import LoadingView from 'components/Basic/LoadingView';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import TagList from 'components/TagList';
+import HeartButton from 'components/HeartButton';
 
 export type MasterProfileHeaderProps = {
   editable?: boolean;
@@ -124,6 +125,9 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
               secure: true,
             }}
           />
+          {!editable && !!data && (
+            <HeartButton type="master" item={data}></HeartButton>
+          )}
         </PressableStyled>
         <View style={styles.userInfo}>
           <CustomText h1>{data?.name}</CustomText>
@@ -139,26 +143,8 @@ function MasterProfileHeader({editable}: MasterProfileHeaderProps) {
             title={editable ? 'Edit info' : 'Contact'}
           />
         </View>
-        {!editable && (
-          <PressableStyled
-            onPress={() => {
-              setFavorite(!favorite);
-            }}
-            style={{
-              position: 'absolute',
-              right: 0,
-              top: 0,
-            }}>
-            <IconComponent
-              iconSet="AntDesign"
-              name={favorite ? 'heart' : 'hearto'}
-              color={theme.colors.error}
-              size={30}
-            />
-          </PressableStyled>
-        )}
       </LoadingView>
-      {!editable && (
+      {!editable && !!data && (
         <BottomSheet modalizeRef={modalizeRef}>
           <View style={styles.bottomSheetContainer}>
             {!!data.phoneCode && !!data.phone && (

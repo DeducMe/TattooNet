@@ -79,8 +79,14 @@ export interface AppContextT {
   feed: {getFeed: () => void; feed: any[]; loading: boolean};
 
   favorites: {
-    addFavorite: ({type, id}: {type: 'master' | 'tattoo'; id: string}) => void;
-    removeFavorite: ({id}: {id: string}) => void;
+    addFavorite: ({type, item}: {type: 'master' | 'tattoo'; item: any}) => void;
+    removeFavorite: ({
+      type,
+      id,
+    }: {
+      type: 'master' | 'tattoo';
+      id: string;
+    }) => void;
     getFavorites: () => void;
     favorites: any[];
   };

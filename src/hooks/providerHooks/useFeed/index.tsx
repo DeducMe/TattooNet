@@ -22,6 +22,11 @@ export default function useFeed() {
         item.tattoos = item.tattoos.map(item => {
           if (item.images[0]?.imageObject?.[0]?.data?.data)
             item.images = makeImagesFromResponseBase64(item.images, true);
+          item.reviews.map(el => {
+            if (el.images[0]?.imageObject?.[0]?.data?.data)
+              el.images = makeImagesFromResponseBase64(el.images, true);
+            return el;
+          });
           return item;
         });
         if (item.master.avatar?.imageObject?.[0]?.data?.data)

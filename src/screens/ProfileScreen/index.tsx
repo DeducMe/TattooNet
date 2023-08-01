@@ -17,6 +17,7 @@ export default function ProfileScreen() {
 
   useEffect(() => {
     context.myProfile.getMe();
+    context.favorites.getFavorites();
   }, []);
 
   const loading = useMemo(

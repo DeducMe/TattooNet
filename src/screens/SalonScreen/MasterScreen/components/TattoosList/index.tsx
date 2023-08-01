@@ -59,7 +59,12 @@ function TattoosList({editable, id}: {editable?: boolean; id: string}) {
         component={Available}
         initialParams={{editable}}
       />
-      <Tab.Screen key={'key'} name={'Reviews'} component={Reviews} />
+      <Tab.Screen
+        key={'key'}
+        name={'Reviews'}
+        initialParams={{master: editable}}
+        component={Reviews}
+      />
     </Tab.Navigator>
   );
 }

@@ -10,12 +10,17 @@ function FloatingInfo({master}: {master: boolean}) {
   const styles = makeStyles();
   const context = useContext(AppContext);
   const loading = useMemo(
-    () => context.tattoos.loading.tattoos && context.master.loading.master,
+    () => context.tattoos.loading.tattoos || context.master.loading.master,
     [context.tattoos.loading.tattoos, context.master.loading.master],
   );
   const data = useMemo(
     () => (master ? context.tattoos.myTattoos : context.tattoos.tattoos),
     [master ? context.tattoos.myTattoos : context.tattoos.tattoos],
+  );
+
+  const profile = useMemo(
+    () => (master ? context.myProfile.profile : context.master.master),
+    [master ? context.myProfile.profile : context.master.master],
   );
 
   return (
@@ -32,16 +37,12 @@ function FloatingInfo({master}: {master: boolean}) {
         size="large"
         loading={loading}
         style={styles.floatingInfoItemRating}>
-        {!!context.master.master?.rating && (
+        {!!profile?.rating && (
           <>
             <CustomText bold h1>
-              {context.master.master?.rating}
+              {profile?.rating}
             </CustomText>
-            <StarBlock
-              rating={context.master.master?.rating}
-              noNumber
-              imageSize={20}
-            />
+            <StarBlock rating={profile?.rating} noNumber imageSize={20} />
           </>
         )}
       </LoadingView>

@@ -27,9 +27,7 @@ export default function TwoColumnFlatList({
   return (
     <FlatList
       style={styles.flatList}
-      contentContainerStyle={{
-        paddingBottom: marginTabBar ? theme.common.tabNavigationHeight : 0,
-      }}
+      contentContainerStyle={marginTabBar && styles.contentContainer}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={ListEmptyComponent}
       columnWrapperStyle={{justifyContent: 'space-between'}}
@@ -64,8 +62,10 @@ export default function TwoColumnFlatList({
 
 const makeStyles = makeStyleSheet(theme => ({
   contentContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    paddingBottom:
+      theme.common.tabNavigationHeight +
+      theme.common.tabNavigationInset +
+      theme.space.xs,
   },
   flatList: {},
 }));
