@@ -60,10 +60,14 @@ function ReviewsBlock({
       {!!images?.length && (
         <ScrollView onStartShouldSetResponder={() => true} horizontal>
           <Pressable style={{flexDirection: 'row'}}>
-            {images?.map(item => {
+            {images?.map((item, index) => {
               return (
                 <>
-                  <Image source={{uri: item}} style={styles.image} />
+                  <Image
+                    key={`${index}`}
+                    source={{uri: item}}
+                    style={styles.image}
+                  />
                 </>
               );
             })}

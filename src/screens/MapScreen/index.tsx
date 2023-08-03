@@ -5,10 +5,10 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import MapSkeleton from 'components/Skeletons/Map';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import useTheme from 'hooks/useTheme';
 import Geolocation from '@react-native-community/geolocation';
 import PressableStyled from 'components/PressableStyled';
@@ -16,12 +16,16 @@ import IconComponent from 'components/Basic/IconComponent';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 import {useNavigation} from '@react-navigation/native';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import {AppContext} from 'providers/AppProvider';
+import MapButtons from './components/MapButtons';
+import MasterAround from './components/MasterAround';
 
 export default function MapScreen() {
   const theme = useTheme();
+  const styles = makeStyles();
   const navigation = useNavigation();
   const mapRef = useRef<MapView>(null);
-  const styles = makeStyles();
+  const context = useContext(AppContext);
 
   const [position, setPosition] = useState({
     latitude: 10,
@@ -29,6 +33,10 @@ export default function MapScreen() {
     latitudeDelta: 0.001,
     longitudeDelta: 0.001,
   });
+
+  useEffect(() => {
+    if (!context.feed.feed?.length) context.feed.getFeed();
+  }, []);
 
   async function goToUserLocation() {
     if (Platform.OS === 'android')
@@ -55,8 +63,15 @@ export default function MapScreen() {
     });
   }
 
-  function goToFeed() {
-    navigation.navigate('Feed');
+  function setChosenItem(number: number) {
+    const location = context.feed.feed?.[number]?.master?.location;
+    if (!location) return;
+    const coords = {
+      latitude: location.coordinates[1],
+      longitude: location.coordinates[0],
+    };
+
+    mapRef.current?.animateToRegion(coords, 200);
   }
 
   useEffect(() => {
@@ -85,27 +100,25 @@ export default function MapScreen() {
     requestPermissions();
   }, []);
 
-  return (
-    <SafeAreaView>
-      <View style={styles.floatingContainer}>
-        <PressableStyled
-          style={styles.floatingButton}
-          onPress={goToUserLocation}>
-          <IconComponent
-            color={theme.colors.textColor}
-            size={20}
-            iconSet="FontAwesome5"
-            name="location-arrow"></IconComponent>
-        </PressableStyled>
-        <PressableStyled style={styles.floatingButton} onPress={goToFeed}>
-          <IconComponent
-            color={theme.colors.textColor}
-            size={25}
-            iconSet="MaterialIcons"
-            name="filter-list"></IconComponent>
-        </PressableStyled>
-      </View>
+  const masterMarkers = useMemo(
+    () =>
+      context.feed.feed.map((item, index) => ({
+        key: index,
+        title: item.master.name,
+        coordinate: {
+          latitude: item.master.location.coordinates[1],
+          longitude: item.master.location.coordinates[0],
+        },
+      })),
+    [context.feed.feed],
+  );
 
+  return (
+    <>
+      <View style={styles.floatingContainer}>
+        <MapButtons mapRef={mapRef} setPosition={setPosition} />
+        <MasterAround setChosenItem={setChosenItem}></MasterAround>
+      </View>
       <MapView
         ref={mapRef}
         showsUserLocation={true}
@@ -120,30 +133,26 @@ export default function MapScreen() {
           width: theme.dimensions.width,
           height: theme.dimensions.height,
         }}
-        initialRegion={position}></MapView>
-    </SafeAreaView>
+        initialRegion={position}>
+        {masterMarkers.map((item, index) => (
+          <Marker
+            key={item.key}
+            coordinate={item.coordinate}
+            title={item.title}
+          />
+        ))}
+      </MapView>
+    </>
   );
 }
 
 const makeStyles = makeStyleSheet(theme => ({
   floatingContainer: {
     position: 'absolute',
-    bottom:
-      (Platform.OS === 'android'
-        ? theme.common.tabNavigationHeight * 2
-        : theme.common.tabNavigationHeight) + theme.common.tabNavigationInset,
-
-    right: theme.space.s,
+    bottom: theme.common.tabNavigationHeight + theme.common.tabNavigationInset,
     justifyContent: 'center',
-    width: 50,
     zIndex: 1,
-  },
-  floatingButton: {
-    width: 50,
-    height: 50,
-    marginBottom: theme.space.s,
-    backgroundColor: theme.colors.background,
-    borderRadius: 25,
-    justifyContent: 'center',
+    width: theme.dimensions.width,
+    alignItems: 'flex-end',
   },
 }));

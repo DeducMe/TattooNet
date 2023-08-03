@@ -3,6 +3,8 @@ import {MainContext} from 'providers/MainProvider';
 import {useContext, useState} from 'react';
 
 export type Review = {
+  userProfileId: any;
+  _id: string;
   images: string[];
   text: string;
   name: string;
