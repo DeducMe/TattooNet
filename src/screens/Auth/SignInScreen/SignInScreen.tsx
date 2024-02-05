@@ -16,98 +16,9 @@ import {schema} from '../validationSchema';
 import {RootStackParamList} from '../../../../App';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
 
-// Smaller component for the header
-function Header({
-  text,
-  color,
-  onPress,
-}: {
-  text: string;
-  color: string;
-  onPress?: () => void;
-}) {
-  const styles = makeStyles();
-
-  return (
-    <Pressable onPress={onPress} style={styles.firstHeadereContainer}>
-      <Text style={[styles.textHeader, {color}]}>{text}</Text>
-    </Pressable>
-  );
-}
-
-// Smaller component for the input field
-function InputField({
-  control,
-  name,
-  label,
-  keyboardType,
-  errorMessage,
-  staticHolder,
-  isSecureTextEntry,
-  setIsSecureEntry,
-}) {
-  const theme = useTheme();
-  const styles = makeStyles();
-
-  return (
-    <View
-      style={[
-        styles.inputContainer,
-        {
-          borderBottomColor: errorMessage
-            ? theme.colors.error
-            : theme.colors.backgroundDarker,
-          justifyContent: isSecureTextEntry ? 'space-between' : 'flex-start',
-        },
-      ]}>
-      <ControlledTextInput
-        control={control}
-        secureTextEntry={isSecureTextEntry}
-        name={name}
-        label={label}
-        keyboardType={keyboardType}
-        errorMessage={errorMessage}
-        staticHolder={staticHolder}
-      />
-      {isSecureTextEntry && (
-        <View style={{alignSelf: 'center'}}>
-          <Pressable
-            onPress={() => {
-              setIsSecureEntry(prev => !prev);
-            }}>
-            <IconComponent
-              iconSet="Ionicons"
-              name={isSecureTextEntry ? 'eye-off-outline' : 'eye-outline'}
-              color={theme.colors.backgroundDarker}
-              size={25}
-            />
-          </Pressable>
-        </View>
-      )}
-    </View>
-  );
-}
-
-// Smaller component for the error message
-function ErrorMessage({message}) {
-  const theme = useTheme();
-  const styles = makeStyles();
-
-  return (
-    <View style={styles.errorView}>
-      {typeof message === 'string' && (
-        <Text
-          style={{
-            color: theme.colors.error,
-            paddingBottom: 5,
-            alignContent: 'flex-start',
-          }}>
-          {message}
-        </Text>
-      )}
-    </View>
-  );
-}
+import {Header} from './components/Header';
+import {ErrorMessage} from './components/ErrorMessage';
+import {InputField} from './components/InputField';
 
 export default function SignInScreen() {
   const theme = useTheme();
@@ -152,7 +63,7 @@ export default function SignInScreen() {
           isSecureTextEntry={false}
           setIsSecureEntry={setIsSecureEntry}
         />
-        <ErrorMessage message={errors.email?.message} />
+        <ErrorMessage message={errors.email?.message || ''} />
         <InputField
           control={control}
           name="password"
@@ -163,7 +74,7 @@ export default function SignInScreen() {
           isSecureTextEntry={isSecureTextEntry}
           setIsSecureEntry={setIsSecureEntry}
         />
-        <ErrorMessage message={errors.password?.message} />
+        <ErrorMessage message={errors.password?.message || ''} />
         <View style={styles.forgotPasswordView}>
           <Pressable>
             {({pressed}) => (
