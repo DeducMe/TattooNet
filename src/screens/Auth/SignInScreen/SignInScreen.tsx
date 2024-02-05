@@ -1,38 +1,119 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Pressable,
-  StatusBar,
-  ToastAndroid,
-} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
-import ControlledTextInput from 'components/Basic/ControlledInputText';
+import React, {useContext, useState} from 'react';
+import {View, Text, Pressable} from 'react-native';
 import {useForm} from 'react-hook-form';
-import {schema} from '../validationSchema';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import LinearGradient from 'react-native-linear-gradient';
+
+import ControlledTextInput from 'components/Basic/ControlledInputText';
 import IconComponent from 'components/Basic/IconComponent';
+import {ActionButton} from 'components/ActionButton';
 
 import useTheme from 'hooks/useTheme';
+import {MainContext} from 'providers/MainProvider';
+import {schema} from '../validationSchema';
 import {RootStackParamList} from '../../../../App';
 import {makeStyleSheet} from 'common/theme/makeStyleSheet';
-import {ActionButton} from 'components/ActionButton';
-import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {MainContext} from 'providers/MainProvider';
+
+// Smaller component for the header
+function Header({
+  text,
+  color,
+  onPress,
+}: {
+  text: string;
+  color: string;
+  onPress?: () => void;
+}) {
+  const styles = makeStyles();
+
+  return (
+    <Pressable onPress={onPress} style={styles.firstHeadereContainer}>
+      <Text style={[styles.textHeader, {color}]}>{text}</Text>
+    </Pressable>
+  );
+}
+
+// Smaller component for the input field
+function InputField({
+  control,
+  name,
+  label,
+  keyboardType,
+  errorMessage,
+  staticHolder,
+  isSecureTextEntry,
+  setIsSecureEntry,
+}) {
+  const theme = useTheme();
+  const styles = makeStyles();
+
+  return (
+    <View
+      style={[
+        styles.inputContainer,
+        {
+          borderBottomColor: errorMessage
+            ? theme.colors.error
+            : theme.colors.backgroundDarker,
+          justifyContent: isSecureTextEntry ? 'space-between' : 'flex-start',
+        },
+      ]}>
+      <ControlledTextInput
+        control={control}
+        secureTextEntry={isSecureTextEntry}
+        name={name}
+        label={label}
+        keyboardType={keyboardType}
+        errorMessage={errorMessage}
+        staticHolder={staticHolder}
+      />
+      {isSecureTextEntry && (
+        <View style={{alignSelf: 'center'}}>
+          <Pressable
+            onPress={() => {
+              setIsSecureEntry(prev => !prev);
+            }}>
+            <IconComponent
+              iconSet="Ionicons"
+              name={isSecureTextEntry ? 'eye-off-outline' : 'eye-outline'}
+              color={theme.colors.backgroundDarker}
+              size={25}
+            />
+          </Pressable>
+        </View>
+      )}
+    </View>
+  );
+}
+
+// Smaller component for the error message
+function ErrorMessage({message}) {
+  const theme = useTheme();
+  const styles = makeStyles();
+
+  return (
+    <View style={styles.errorView}>
+      {typeof message === 'string' && (
+        <Text
+          style={{
+            color: theme.colors.error,
+            paddingBottom: 5,
+            alignContent: 'flex-start',
+          }}>
+          {message}
+        </Text>
+      )}
+    </View>
+  );
+}
 
 export default function SignInScreen() {
   const theme = useTheme();
   const styles = makeStyles();
   const context = useContext(MainContext);
   const [isSecureTextEntry, setIsSecureEntry] = useState(true);
-
-  // changeNavigationBarColor('#000');
-  // StatusBar.setTranslucent(true);
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
@@ -54,93 +135,35 @@ export default function SignInScreen() {
       angle={135}
       angleCenter={{x: 0.5, y: 0.5}}
       style={{flex: 1}}>
-      <View style={styles.firstHeadereContainer}>
-        <Text style={[styles.textHeader, {color: theme.colors.primary}]}>
-          Sign In
-        </Text>
-      </View>
-      <View style={styles.secondHeaderContainer}>
-        <Text
-          style={[styles.textHeader, {color: theme.colors.secondary}]}
-          onPress={() => navigation.navigate('SignUp')}>
-          Sign Up
-        </Text>
-      </View>
+      <Header text="Sign In" color={theme.colors.primary} />
+      <Header
+        text="Sign Up"
+        color={theme.colors.secondary}
+        onPress={() => navigation.navigate('SignUp')}
+      />
       <View style={styles.container}>
-        <View
-          style={[
-            styles.inputContainer,
-            {
-              borderBottomColor: errors.email?.message
-                ? theme.colors.error
-                : theme.colors.backgroundDarker,
-            },
-          ]}>
-          <ControlledTextInput
-            control={control}
-            name="email"
-            label="email"
-            keyboardType={'default'}
-            errorMessage={''}
-            staticHolder={'Email'}
-          />
-        </View>
-        <View style={styles.errorView}>
-          {typeof errors.email?.message === 'string' && (
-            <Text
-              style={{
-                color: theme.colors.error,
-                paddingBottom: 5,
-                alignContent: 'flex-start',
-              }}>
-              {errors.email.message}
-            </Text>
-          )}
-        </View>
-        <View
-          style={[
-            styles.inputContainer,
-            {
-              borderBottomColor: errors.email?.message
-                ? theme.colors.error
-                : theme.colors.backgroundDarker,
-              justifyContent: 'space-between',
-            },
-          ]}>
-          <ControlledTextInput
-            control={control}
-            secureTextEntry={isSecureTextEntry}
-            name="password"
-            label="password"
-            keyboardType={'default'}
-            errorMessage={''}
-            staticHolder={'Password'}
-          />
-          <View style={{alignSelf: 'center'}}>
-            <Pressable
-              onPress={() => {
-                setIsSecureEntry(prev => !prev);
-              }}>
-              <IconComponent
-                iconSet="Ionicons"
-                name={isSecureTextEntry ? 'eye-off-outline' : 'eye-outline'}
-                color={theme.colors.backgroundDarker}
-                size={25}
-              />
-            </Pressable>
-          </View>
-        </View>
-        <View style={styles.errorView}>
-          {typeof errors.password?.message === 'string' && (
-            <Text
-              style={{
-                color: theme.colors.error,
-                alignContent: 'flex-start',
-              }}>
-              {errors.password.message}
-            </Text>
-          )}
-        </View>
+        <InputField
+          control={control}
+          name="email"
+          label="email"
+          keyboardType="default"
+          errorMessage={errors.email?.message}
+          staticHolder="Email"
+          isSecureTextEntry={false}
+          setIsSecureEntry={setIsSecureEntry}
+        />
+        <ErrorMessage message={errors.email?.message} />
+        <InputField
+          control={control}
+          name="password"
+          label="password"
+          keyboardType="default"
+          errorMessage={errors.password?.message}
+          staticHolder="Password"
+          isSecureTextEntry={isSecureTextEntry}
+          setIsSecureEntry={setIsSecureEntry}
+        />
+        <ErrorMessage message={errors.password?.message} />
         <View style={styles.forgotPasswordView}>
           <Pressable>
             {({pressed}) => (
